@@ -47,7 +47,6 @@ def main():
     # Google カレンダーでは、夏時間による問題を回避するため、協定世界時（UTC）を採用しています。
     # 作成した予定は UTC に変換されますが、常にそのユーザーの現地時刻で表示されます。
     now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
-    print('Getting the upcoming 10 events')
     events_result = service.events().list(calendarId='primary', timeMin=now,
                                         maxResults=10, singleEvents=True,
                                         orderBy='startTime').execute()
@@ -58,9 +57,13 @@ def main():
         print('No upcoming events found.')
     for event in events:
         start = event['start'].get('dateTime', event['start'].get('date'))
-        series = pd.Series([start, event['summary']], index=df.columns)
+        series = pd.Series([lib.PyUtils.ConvertIso2YMDHMS(start), event['summary']], index=df.columns)
         df = df.append(series, ignore_index = True)
-        print(start, event['summary'])
+
+    # データ削除クエリを発行
+    SQL_TEMPLATE = "DELETE FROM [dbo].[Calendar]"   # SQL原本
+    editSql = SQL_TEMPLATE                          # SQL原本に置換をかける
+    lib.PyUtils.ExecuteSQLBySQLServer(editSql)      # DELETE文の発行
 
     # データ追加クエリを発行
     SQL_TEMPLATE = "INSERT INTO [dbo].[Calendar]([ymdhms],[summary]) VALUES ('{0}','{1}')"
@@ -71,7 +74,7 @@ def main():
         lib.PyUtils.ExecuteSQLBySQLServer(editSql)  # INSERT文の発行
 
     # 選択クエリを発行
-    SQL_TEMPLATE = "SELECT * FROM [dbo].[顧客]"     # SQL原本
+    SQL_TEMPLATE = "SELECT FORMAT(A.ymdhms,'yyyy-MM-dd HH:mm') AS ymdhms, A.summary FROM [dbo].[Calendar] AS A" # SQL原本
     editSql = SQL_TEMPLATE                          # SQL原本に置換をかける
     df = lib.PyUtils.ReadQueryBySQLServer(editSql)  # SELECT文の発行
     for line in df.values:
