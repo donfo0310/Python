@@ -4,7 +4,7 @@ import os.path
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
-import lib.PyUtils
+import lib.Util
 import pandas as pd
 
 # If modifying these scopes, delete the file token.pickle.
@@ -57,13 +57,13 @@ def main():
         print('No upcoming events found.')
     for event in events:
         start = event['start'].get('dateTime', event['start'].get('date'))
-        series = pd.Series([lib.PyUtils.ConvertIso2YMDHMS(start), event['summary']], index=df.columns)
+        series = pd.Series([lib.Util.ConvertIso2YMDHMS(start), event['summary']], index=df.columns)
         df = df.append(series, ignore_index = True)
 
     # データ削除クエリを発行
     SQL_TEMPLATE = "DELETE FROM [dbo].[Calendar]"   # SQL原本
     editSql = SQL_TEMPLATE                          # SQL原本に置換をかける
-    lib.PyUtils.ExecuteSQLBySQLServer(editSql)      # DELETE文の発行
+    lib.Util.ExecuteSQLBySQLServer(editSql)      # DELETE文の発行
 
     # データ追加クエリを発行
     SQL_TEMPLATE = "INSERT INTO [dbo].[Calendar]([ymdhms],[summary]) VALUES ('{0}','{1}')"
@@ -71,12 +71,12 @@ def main():
         editSql = SQL_TEMPLATE                      # SQL原本
         for i,col in enumerate(line):               # SQL原本に置換をかける
             editSql = editSql.replace('{' + str(i) + '}', col)
-        lib.PyUtils.ExecuteSQLBySQLServer(editSql)  # INSERT文の発行
+        lib.Util.ExecuteSQLBySQLServer(editSql)  # INSERT文の発行
 
     # 選択クエリを発行
     SQL_TEMPLATE = "SELECT FORMAT(A.ymdhms,'yyyy-MM-dd HH:mm') AS ymdhms, A.summary FROM [dbo].[Calendar] AS A" # SQL原本
     editSql = SQL_TEMPLATE                          # SQL原本に置換をかける
-    df = lib.PyUtils.ReadQueryBySQLServer(editSql)  # SELECT文の発行
+    df = lib.Util.ReadQueryBySQLServer(editSql)  # SELECT文の発行
     for line in df.values:
         print(','.join(line))                       # SQL結果を調理して提供
 
