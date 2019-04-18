@@ -7,8 +7,8 @@ def GetNowYM():
     return datetime.strftime(d, '%Y%m')
 
 def GetAddYM(i):
-    """ systemYMに i を加味した値を返します。
-    例:2008年01月を現在として、1と引数指定すると200802, -1と引数指定すると200712 """
+    """ systemYMに i を加味した値を返します。\n
+    例: 2019年04月を現在として -1: 201903, +1: 201905 """
     d = datetime.today() + relativedelta(months=i)
     return datetime.strftime(d, '%Y%m')
     
