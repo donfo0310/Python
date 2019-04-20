@@ -36,7 +36,15 @@ def CountWorkday(yyyymmdd_st, yyyymmdd_en, workday='1111100'):
     retValue += workday[:(d_range_cnt - len(retValue)) % 7]
     return retValue.count('1')
 
+def IsOverlap(yyyymmdd_sten1sten2):
+    """2つの期間が重なり合うかどうかを判定する。例えば号機等の重複判定にも使えます\n
+        例：20190401-20190415,20190410-20190430 のように指定します"""
+    ymd1 = yyyymmdd_sten1sten2.split(',')[0].split('-')
+    ymd2 = yyyymmdd_sten1sten2.split(',')[1].split('-')
+    return ymd2[0] <= ymd1[1] and ymd1[0] <=ymd2[1]
+
 if __name__ == '__main__':
     print(GetNowYM(),GetAddYM(-1),GetAddYM(1))
     print(ConvertToFormal('20190419'),ConvertToYMD(datetime.today()))
     print(CountWorkday('20190406','20190430'))
+    print(IsOverlap('20190401-20190430,20190410-20190420'),IsOverlap('20190401-20190415,20190410-20190430'),IsOverlap('20190410-20190430,20190401-20190415'),IsOverlap('20190401-20190409,20190410-20190430'),IsOverlap('20190410-20190430,20190401-20190409'))
