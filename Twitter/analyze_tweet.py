@@ -43,7 +43,7 @@ def analyze_tweet():
 
     plt.imshow(wordcloud)
     plt.axis("off")
-    plt.show()
+    plt.savefig('output.png')
 
 if __name__ == '__main__':
 

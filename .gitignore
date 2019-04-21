@@ -3,4 +3,6 @@ basic_read_googlecalendar/token.pickle
 basic_connect-api_estat/api_setting/appid.txt
 Twitter/api_setting
 Twitter/__pycache__
+Twitter/output.png
+Twitter/output.txt
 .ipynb_checkpoints
