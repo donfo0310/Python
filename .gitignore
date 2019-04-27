@@ -1,3 +1,7 @@
+Analyze_stocks/api_setting
+Analyze_stocks/data
+Analyze_stocks/__pycache__
+Analyze_stocks/lib/__pycache__
 basic_read_googlecalendar/credentials.json
 basic_read_googlecalendar/token.pickle
 basic_connect-api_estat/api_setting/appid.txt
