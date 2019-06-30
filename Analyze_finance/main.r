@@ -1,7 +1,10 @@
 # RでXBRLデータを取得してみた
 # http://horihorio.hatenablog.com/entry/2014/12/15/235107
 
+# 作業スペースの全オブジェクトを消す（全て消すときはrm(list = ls())）
 rm(list=ls())
+# 関数 invisible() を使うことで，関数 gc() の実行結果を表示しないようにする。
+# 直前の結果を保存している隠しオブジェクト.Last.valueが大きい場合、gc()を2回連続で行なうとよい。
 invisible(gc()); invisible(gc())
 
 # library
@@ -10,23 +13,35 @@ library("XML")
 library("plyr")
 
 # Get Securities-Code
-tmp.list <- paste0("D:\\OneDrive\\ドキュメント\\Project\\Python\\FinancialAnalysis\\master\\TSE1.csv", dir("./master/", pattern = "TSE1.csv") )
+# 市場第一部 （内国株）:TSE1
+# 市場第二部:TSE2
+# マザーズ （内国株）:Mothers
+# JASDAQ(グロース）:JQG
+# JASDAQ（スタンダード）: JQS
+
+# master ディレクトリのcsvをすべて取得
+setwd("D:\\OneDrive\\ドキュメント\\Project\\Python\\Analyze_finance")
+tmp.list <- paste0("./master/", dir("./master/", pattern = "*.csv") )
+
+# SIC ... Standard Industrial Classification 産業分類コード
 tmp.master.SIC <- list()
 master.SIC     <- c()
-
-# csv-path list
+# marged csv-path list
 for (i in 1:length(tmp.list)) {
-  
-  mkt.name <- sub(".txt", "", unlist(strsplit(tmp.list[i], "/"))[3])  # ex. TSE1
-  tmp.master.SIC[[i]] <- read.table(tmp.list[i], sep = "\t", header = TRUE, stringsAsFactors = FALSE)
-  tmp.master.SIC[[i]] <- cbind( mkt.name, tmp.master.SIC[[i]] )
+  mkt.name <- sub(".csv", "", unlist(strsplit(tmp.list[i], "/"))[3])  # ex.TSE1
+  tmp.master.SIC[[i]] <- read.csv(tmp.list[i], header = TRUE, stringsAsFactors = FALSE, fileEncoding = "UTF-8-BOM") # stringsAsFactors:カテゴリ変換しません
+  print(paste(mkt.name, nrow(tmp.master.SIC[[i]]), ncol(tmp.master.SIC[[i]])))
+  tmp.master.SIC[[i]] <- cbind( mkt.name, tmp.master.SIC[[i]] ) # 市場名とくっつける
   master.SIC <- rbind(master.SIC, tmp.master.SIC[[i]][1:6])
 }
+#[1] "master.SIC 7936 6[mkt.name,日付,コード,銘柄名,市場.商品区分,X33業種コード]"
+print(paste('master.SIC', nrow(master.SIC), paste0(ncol(master.SIC), '[', paste(colnames(master.SIC), collapse=","), ']')) )
+# 数字から始まる項目名には勝手にXがつくようだ。それを削除している
 colnames(master.SIC) <- sub("X","",colnames(master.SIC))
 rm(list=c("i", "mkt.name", ls(pattern = "tmp*"))) # cleanup
 
-# Output Securities-Code
-write.table(master.SIC, "./master/master_SIC.txt", sep = "\t", col.names = TRUE, row.names = TRUE)
+# Output Securities-Code（master_SIC.txtという名前で中間出力する）
+write.table(master.SIC, "./master/master_SIC.txt", sep = "\t", col.names = TRUE, row.names = TRUE, fileEncoding = "UTF-8")
 
 # Get XBRL
 # Get Ready
@@ -44,6 +59,12 @@ api.service.url <- "http://resource.ufocatch.com/atom/edinetx" # API-URI
 date.from <- as.Date('2013/6/1')
 date.to   <- as.Date('2013/6/30')
 
+
+
+# ########################
+# ここまで読解終わってます
+# ########################
+
 # Get XBRL
 for (strSIC in SICs[1:1]){
 
@@ -54,10 +75,10 @@ for (strSIC in SICs[1:1]){
   Sys.sleep(1)
 
   # Get res
-  objQuery <- httpGET(strURL) 
+  req <- httpGET(strURL) 
   
   # Exchange API-Response to XMLInternalDocument from xmlParse
-  objXML <- xmlParse(objQuery,encoding="UTF-8")
+  objXML <- xmlParse(req,encoding="UTF-8")
   # Get namespace as vector(simplify=TRUE)
   objXML.namespaces <- xmlNamespaceDefinitions(objXML,simplify=TRUE)
   # set void pre-fix to dafault namespase
