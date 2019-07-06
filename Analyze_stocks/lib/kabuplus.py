@@ -39,4 +39,4 @@ def get_csv_file(yyyymmdd):
     # log
     now = datetime.datetime.now()
     with open('result.log', mode='a') as f:
-        f.write('\n' + now.strftime("%Y/%m/%d %H:%M:%S ") + str(res.status_code))
+        f.write('\n' + now.strftime("%Y/%m/%d %a %H:%M:%S ") + str(res.status_code))
