@@ -78,7 +78,7 @@ for securities_code in df['コード'].astype(str):
                     print(securities_code, company_name, title, '...', 'OK')
                     # Unzip
                     with urllib.request.urlopen(url) as res:
-                        ZipFile(io.BytesIO(res.read())).extractall(out_folder + '/' + edinet_code)
+                        ZipFile(io.BytesIO(res.read())).extractall(out_folder + '/' + securities_code)
 
         # APIの負荷があるので、Sleepの時間は、短くしないで下さい
         time.sleep(10)
