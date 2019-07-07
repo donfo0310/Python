@@ -59,12 +59,6 @@ api.service.url <- "http://resource.ufocatch.com/atom/edinetx" # API-URI
 date.from <- as.Date('2013/6/1')
 date.to   <- as.Date('2013/6/30')
 
-
-
-# ########################
-# ここまで読解終わってます
-# ########################
-
 # Get XBRL
 for (strSIC in SICs[1:1]){
 
@@ -77,14 +71,14 @@ for (strSIC in SICs[1:1]){
   # Get res
   req <- httpGET(strURL) 
   
-  # Exchange API-Response to XMLInternalDocument from xmlParse
+  # API-Response to XMLInternalDocument
   objXML <- xmlParse(req,encoding="UTF-8")
-  # Get namespace as vector(simplify=TRUE)
+  # Get namespace
   objXML.namespaces <- xmlNamespaceDefinitions(objXML,simplify=TRUE)
   # set void pre-fix to dafault namespase
   names(objXML.namespaces)[ names(objXML.namespaces)=="" ] <- "default"
   
-  # element-node: Specify entry
+  # element-node: <entry>
   nodes.entry <- getNodeSet(objXML,"//default:entry",namespaces=objXML.namespaces)
   # Extract Only Yuho
   lst.YUHO <- list()
@@ -93,24 +87,29 @@ for (strSIC in SICs[1:1]){
   for(node in nodes.entry){
 
     lst.temp <- list()
+    
     # Get <title> tag
     title.value <- xpathSApply(node,path="default:title",fun=xmlValue,namespaces=objXML.namespaces)
-    # is yuho? *yukashokenhoukokusho*
+    # is yuho? *有価証券報告書*
     is.YUHO <- grepl(pat="*有価証券報告書*",x=title.value)
 
     if(is.YUHO){
       
-      # operand as 'Filing date' teishutubi
+      # operand as 'Filing date' 提出日 <updated>
       is.date <- xpathSApply(node,path="default:updated",fun=xmlValue,namespaces=objXML.namespaces)
-      is.date <- as.Date(substr(is.date, 1, 10))
+      is.date <- as.Date(substr(is.date, 1, 10))  # YYYY-MM-DD
 
+      # 提出日を絞る
       if (date.from <= is.date && is.date <= date.to) {
+        
         # Get ID
         lst.temp$id <- xpathSApply(node,path="default:id",fun=xmlValue,namespaces=objXML.namespaces)
         lst.temp$title <- title.value
+        
         # Get href as type='application/zip' from <link> tag
         lst.temp$url <- xpathSApply(node,path="default:link[@type='application/zip']/@href",namespaces=objXML.namespaces)
         lst.YUHO[[lst.temp$id]] <- lst.temp
+        
       }
 
     }
@@ -121,6 +120,11 @@ for (strSIC in SICs[1:1]){
   dat.export <- ldply(lst.YUHO,.fun=data.frame)[, -1]
   
   if(!sum(dim(dat.export))==0){ # 該当なしの場合は抜ける
+    
+    # ########################
+    # ここまで読解終わってます
+    # ########################
+
     for(lst in lst.YUHO){
       temp <- getBinaryURL(url=lst$url ) # this is binary
       writeBin( temp, paste0("data/",lst$id,".zip") ) # save zip
