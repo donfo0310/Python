@@ -88,5 +88,7 @@ for securities_code in df['コード'].astype(str):
             print(securities_code, company_name, '...', 'NG')
             continue
 
+# log
 t.append(time.strftime("%Y/%m/%d %H:%M:%S", time.strptime(time.ctime())))
-print('Congrats!', ', '.join(t))
+with open('result.log', mode='a') as f:
+    f.write('\nCongrats! ' + ', '.join(t))
