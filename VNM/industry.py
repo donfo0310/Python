@@ -3,6 +3,7 @@ import urllib.request
 from bs4 import BeautifulSoup
 import pandas as pd
 
+mkt_code = []
 symbol = []
 company_name = []
 industry1 = []
@@ -20,6 +21,7 @@ soup = BeautifulSoup(html, 'lxml')
 for td in soup.find_all('td', class_='table_list_center'):
     a = td.find('a')
     if a:
+        mkt_code.append('HOSE')
         symbol.append(a.text.strip())
         company_name.append(a.get('title'))
     img = td.find('img')
@@ -34,6 +36,7 @@ soup = BeautifulSoup(html, 'lxml')
 for td in soup.find_all('td', class_='table_list_center'):
     a = td.find('a')
     if a:
+        mkt_code.append('HNX')
         symbol.append(a.text.strip())
         company_name.append(a.get('title'))
     img = td.find('img')
@@ -42,5 +45,6 @@ for td in soup.find_all('td', class_='table_list_center'):
         industry2.append(re.search(r'\[(.+)\]', img.get('title')).group(1))
 
 # Output
-df = pd.DataFrame({'Symbol':symbol, 'Company_name':company_name, 'industry1':industry1, 'industry2':industry2})
+df = pd.DataFrame({'Market_code':mkt_code, 'Symbol':symbol, 'Company_name':company_name, 'industry1':industry1, 'industry2':industry2})
 df.to_csv('data/industry.csv', index=False)
+print('Congrats!')
