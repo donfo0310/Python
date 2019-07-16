@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>GoogleMapsAPI Sample</title>
+
+    <!-- googlemap api -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgDQ9wpQPMQIcYU0FzpNElatGKnt--1Qg" type="text/javascript"></script>
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+
+    <!-- jsonファイルを読み込んだりする js -->
+    <script src="{% static 'googlemaps/js/map.js' %}"></script>
+
+</head>
+
+<body onload="initialize()">
+
+    <!-- 地図の生成 -->
+    <div id="map_canvas" style="width: 500px; height: 500px"></div>
+
+    <!-- 取得した緯度経度リストを debug 表示 -->
+    以下のリストが取得できました
+    <ul>
+        {% for j in json %}
+            <li>{{ j.lat }},{{ j.lng }},{{ j.name }}</li>
+        {% endfor %}
+    </ul>
+    以下のリストは取得できませんでした
+    <ul>
+        {% for j in miss %}
+            <li>{{ j.lat }},{{ j.lng }},{{ j.name }}</li>
+        {% endfor %}
+    </ul>
+
+    <form>
+        <p>
+            <input type="text" name="データ名" value="35.383575,139.344170" />
+            <input type="button" id="btn" value="マーカー作成" onclick="loadJson()" />
+        </p>
+    </form>
+
+    </body>
+
+</html>
