@@ -1,50 +1,47 @@
-import os, re
+"""業種情報を取得します"""
+import os
+import re
 import urllib.request
 from bs4 import BeautifulSoup
 import pandas as pd
 
-mkt_code = []
-symbol = []
-company_name = []
-industry1 = []
-industry2 = []
+MKT_CODE = []
+SYMBOL_CODE = []
+COMPANY_NAME = []
+INDUSTRY1 = []
+INDUSTRY2 = []
 
 # data フォルダがなかったら作成
-out_folder = os.path.dirname(r'./data/')
-if not os.path.exists(out_folder):
-    os.makedirs(out_folder)
+OUT_FOLDER = os.path.dirname(r'./data/')
+if not os.path.exists(OUT_FOLDER):
+    os.makedirs(OUT_FOLDER)
+
+def scraping(url, mkt):
+    """ Market_code, Symbol, Company_name, industry1, industry2 """
+    soup = BeautifulSoup(urllib.request.urlopen(url).read(), 'lxml')
+    for tag_td in soup.find_all('td', class_='table_list_center'):
+        tag_a = tag_td.find('a')
+        if tag_a:
+            MKT_CODE.append(mkt)
+            SYMBOL_CODE.append(tag_a.text.strip())
+            COMPANY_NAME.append(tag_a.get('title'))
+        tag_img = tag_td.find('img')
+        if tag_img:
+            INDUSTRY1.append(re.sub(r'\[(.+)\]', '', tag_img.get('title')))
+            INDUSTRY2.append(re.search(r'\[(.+)\]', tag_img.get('title')).group(1))
 
 # ホーチミン証券取引所
-url = 'https://www.viet-kabu.com/stock/hcm.html'
-html = urllib.request.urlopen(url).read()
-soup = BeautifulSoup(html, 'lxml')
-for td in soup.find_all('td', class_='table_list_center'):
-    a = td.find('a')
-    if a:
-        mkt_code.append('HOSE')
-        symbol.append(a.text.strip())
-        company_name.append(a.get('title'))
-    img = td.find('img')
-    if img:
-        industry1.append(re.sub(r'\[(.+)\]', '', img.get('title')))
-        industry2.append(re.search(r'\[(.+)\]', img.get('title')).group(1))
-
+scraping('https://www.viet-kabu.com/stock/hcm.html', 'HOSE')
 # ハノイ証券取引所
-url = 'https://www.viet-kabu.com/stock/hn.html'
-html = urllib.request.urlopen(url).read()
-soup = BeautifulSoup(html, 'lxml')
-for td in soup.find_all('td', class_='table_list_center'):
-    a = td.find('a')
-    if a:
-        mkt_code.append('HNX')
-        symbol.append(a.text.strip())
-        company_name.append(a.get('title'))
-    img = td.find('img')
-    if img:
-        industry1.append(re.sub(r'\[(.+)\]', '', img.get('title')))
-        industry2.append(re.search(r'\[(.+)\]', img.get('title')).group(1))
+scraping('https://www.viet-kabu.com/stock/hn.html', 'HNX')
 
 # Output
-df = pd.DataFrame({'Market_code':mkt_code, 'Symbol':symbol, 'Company_name':company_name, 'industry1':industry1, 'industry2':industry2})
-df.to_csv('data/industry.csv', index=False)
+DF = pd.DataFrame({
+    'Market_code':MKT_CODE,
+    'Symbol':SYMBOL_CODE,
+    'Company_name':COMPANY_NAME,
+    'industry1':INDUSTRY1,
+    'industry2':INDUSTRY2})
+
+DF.to_csv('data/industry.csv', index=False)
 print('Congrats!')
