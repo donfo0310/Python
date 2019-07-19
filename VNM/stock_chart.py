@@ -1,5 +1,6 @@
 """銘柄のチャートをpngで取得します"""
 import os
+import time
 import urllib.request
 from bs4 import BeautifulSoup
 
@@ -15,6 +16,8 @@ def scraping(mkt, symbol):
     tag_img = soup.find(id='chart_search_left').find('img')
     if tag_img:
         urllib.request.urlretrieve(tag_img['src'], 'chart/{0}.png'.format(symbol))
+        print(symbol)
+    time.sleep(1)
 
 scraping('hcm', 'SAB')
 scraping('hcm', 'GAS')

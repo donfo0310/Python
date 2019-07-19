@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -7,7 +8,7 @@
     <title>VNMビューア</title>
 
     <!-- css -->
-    <link rel="stylesheet" href="CSS/style.css"> 
+    <link rel="stylesheet" href="{% static 'vietnam_research/css/style.css' %}"> 
 
 </head>
 <body>
@@ -17,19 +18,22 @@
     <!-- 同業比較したいから、昇順keyつけてdbから出力 -->
     <!-- 上場日・主な事業・業種・ -->
     <h2>SABサイゴンビール</h2>
-    <img src="chart/SAB.png" alt="SAB">
+    <img src="{% static 'vietnam_research/chart/SAB.png' %}" alt="SAB">
     <h2>PHRフオックホア ゴム</h2>
-    <img src="chart/PHR.png" alt="PHR">
+    <img src="{% static 'vietnam_research/chart/PHR.png' %}" alt="PHR">
     <h2>GASペトロベトナムガス</h2>
-    <img src="chart/GAS.png" alt="GAS">
+    <img src="{% static 'vietnam_research/chart/GAS.png' %}" alt="GAS">
     <h2>PPCファーライ火力発電</h2>
-    <img src="chart/PPC.png" alt="PPC">
+    <img src="{% static 'vietnam_research/chart/PPC.png' %}" alt="PPC">
     <h2>FMCサオタ食品</h2>
-    <img src="chart/FMC.png" alt="FMC">
+    <img src="{% static 'vietnam_research/chart/FMC.png' %}" alt="FMC">
     <h2>VHCビンホアン（水産）</h2>
-    <img src="chart/VHC.png" alt="VHC">
+    <img src="{% static 'vietnam_research/chart/VHC.png' %}" alt="VHC">
     <h2>VNMビナミルク</h2>
-    <img src="chart/VNM.png" alt="VNM">
+    <img src="{% static 'vietnam_research/chart/VNM.png' %}" alt="VNM">
+
+    <h2>PERとは</h2>
+    <img src="{% static 'vietnam_research/images/PER.jpg' %}" alt="PER">
 
 </body>
 </html>
