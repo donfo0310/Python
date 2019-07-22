@@ -10,10 +10,38 @@
     <!-- css -->
     <link rel="stylesheet" href="{% static 'vietnam_research/css/style.css' %}"> 
 
+    <!-- chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
 </head>
 <body>
     
     <h1>ここは非表示</h1>
+
+    <!-- Django to Javascript -->
+    <script>
+        var industry1 = [];
+        var count_by_industry = [];
+        var sum_by_industry = [];
+    </script>
+    {% for i in industry %}
+        <script>
+            industry1.push("{{ i.industry1 }}")
+            count_by_industry.push("{{ i.cnt }}");
+        </script>
+    {% endfor %}
+    {% for i in marketcap %}
+        <script>
+            sum_by_industry.push(Math.round(parseFloat("{{ i.agg }}") *100) /100);
+        </script>
+    {% endfor %}
+    <script>
+        document.write("JavaScriptを使って出力しています。<BR>");
+        document.write(industry1.join('-')+"<BR>");
+        document.write(count_by_industry.join('-')+"<BR>");
+        document.write(sum_by_industry.join(' '));
+        document.write("<BR>JavaScriptを使って出力しました。");
+    </script>
 
     <!-- 同業比較したいから、昇順keyつけてdbから出力 -->
     <!-- 上場日・主な事業・業種・ -->

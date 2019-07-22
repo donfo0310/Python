@@ -17,7 +17,7 @@ def scraping(mkt, symbol):
     if tag_img:
         urllib.request.urlretrieve(tag_img['src'], 'chart/{0}.png'.format(symbol))
         print(symbol)
-    time.sleep(1)
+    time.sleep(2)
 
 scraping('hcm', 'SAB')
 scraping('hcm', 'GAS')
