@@ -40,8 +40,10 @@ def scraping(url, mkt):
         MARKET_CAP.append(float(temp))
 
 # ホーチミン証券取引所
+print('HOSE')
 scraping('https://www.viet-kabu.com/stock/hcm.html', 'HOSE')
 # ハノイ証券取引所
+print('HNX')
 scraping('https://www.viet-kabu.com/stock/hn.html', 'HNX')
 
 # Output
