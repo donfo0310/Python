@@ -9,4 +9,5 @@ class Industry(models.Model):
     industry1 = models.CharField(max_length=10)
     industry2 = models.CharField(max_length=20)
     marketcap = models.DecimalField(max_digits=7, decimal_places=2, default=0.00)
+    marketcap_percentage = models.DecimalField(max_digits=4, decimal_places=1, default=0.0)
     pub_date = models.DateTimeField('date published')
