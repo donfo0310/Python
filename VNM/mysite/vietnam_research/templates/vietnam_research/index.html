@@ -51,10 +51,10 @@
     <div class="radarChart1" style="display: inline-flex;"><h2>企業数</h2></div>
     <div class="radarChart2" style="display: inline-flex;"><h2>時価総額</h2></div>
     <script>
-        var margin = { top: 50, right: 80, bottom: 50, left: 80 };
+        var margin = { top: 50, right: 130, bottom: 50, left: 80 };
         var data1 = [
             {   
-                name: 'cnt agg by industry',
+                name: 'cnt',
                 axes: [
                         {axis: industry1_name[0], value: cnt_agg_by_industry[0]},
                         {axis: industry1_name[1], value: cnt_agg_by_industry[1]},
@@ -73,7 +73,7 @@
         // data1.axes.push({axis: industry1_name, value: cnt_agg_by_industry});
 
         var data2 = [
-            {   name: 'cap agg by industry',
+            {   name: 'cap',
                 axes: [
                         {axis: industry1_name[0], value: cap_agg_by_industry[0]},
                         {axis: industry1_name[1], value: cap_agg_by_industry[1]},
@@ -96,8 +96,11 @@
             margin: margin,
             levels: 5,
             roundStrokes: true,
-            color: d3.scaleOrdinal().range(["#26AF32", "#762712"]),
-            format: '.2f'
+            color: d3.scaleOrdinal().range(["#ff5900"]), // orange, blue
+            dotRadius: 3,
+            format: '.2f',
+            legend: { title: 'Agg by Ind', translateX: 150, translateY: 40 },
+            unit: '%'
         };
         RadarChart(".radarChart1", data1, radarChartOptions);
         RadarChart(".radarChart2", data2, radarChartOptions);

@@ -47,7 +47,7 @@ const RadarChart = function RadarChart(parent_selector, data, options) {
 	 labelFactor: 1.25, 	//How much farther than the radius of the outer circle should the labels be placed
 	 wrapWidth: 60, 		//The number of pixels after which a label needs to be given a new line
 	 opacityArea: 0.35, 	//The opacity of the area of the blob
-	 dotRadius: 4, 			//The size of the colored circles of each blog
+	 dotRadius: 4, 			//The size of the colored circles of each blob
 	 opacityCircles: 0.1, 	//The opacity of the circles of each blob
 	 strokeWidth: 2, 		//The width of the stroke around each blob
 	 roundStrokes: false,	//If true the area and stroke will follow a round path (cardinal-closed)
@@ -158,7 +158,7 @@ const RadarChart = function RadarChart(parent_selector, data, options) {
 		.enter()
 		.append("g")
 		.attr("class", "axis");
-	//Append the lines
+	//Append the lines（中心から伸びる放射状*のライン）
 	axis.append("line")
 		.attr("x1", 0)
 		.attr("y1", 0)
@@ -262,7 +262,9 @@ const RadarChart = function RadarChart(parent_selector, data, options) {
 		.attr("r", cfg.dotRadius * 1.5)
 		.attr("cx", (d,i) => rScale(d.value) * cos(angleSlice*i - HALF_PI))
 		.attr("cy", (d,i) => rScale(d.value) * sin(angleSlice*i - HALF_PI))
-		.style("fill", "none")
+		.style("fill", "white")			// okada add
+		.style("stroke", (d,i) => cfg.color(i))			// okada add
+		.style("stroke-width", "2px")	// okada add
 		.style("pointer-events", "all")
 		.on("mouseover", function(d,i) {
 			tooltip
