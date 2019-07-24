@@ -1,6 +1,7 @@
 """銘柄のチャートをpngで取得します"""
 import time
 import urllib.request
+import datetime
 from bs4 import BeautifulSoup
 
 def scraping(mkt, symbol):
@@ -21,6 +22,10 @@ scraping('hcm', 'VNM')
 scraping('hcm', 'VHC')
 scraping('hcm', 'PHR')
 scraping('hcm', 'FMC')
+
+# log
+with open('result.log', mode='a') as f:
+    f.write('\n' + datetime.datetime.now().strftime("%Y/%m/%d %a %H:%M:%S ") + 'stock_chart.py')
 
 # Output
 print('Congrats!')

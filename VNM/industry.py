@@ -62,5 +62,9 @@ CUR.execute(SQL)
 DF.to_sql('vietnam_research_industry', CON, if_exists='append', index=None)
 pd.read_sql_query(sql='select * from vietnam_research_industry', con=CON)
 
+# log
+with open('result.log', mode='a') as f:
+    f.write('\n' + datetime.datetime.now().strftime("%Y/%m/%d %a %H:%M:%S ") + 'industry.py')
+
 # finish
 print('Congrats!')
