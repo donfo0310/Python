@@ -1,8 +1,10 @@
 """業種情報を取得します"""
-import os
 import re
 import urllib.request
+import sqlite3
+import datetime
 from bs4 import BeautifulSoup
+import numpy as np
 import pandas as pd
 
 MKT_CODE = []
@@ -11,11 +13,6 @@ COMPANY_NAME = []
 INDUSTRY1 = []
 INDUSTRY2 = []
 MARKET_CAP = []
-
-# data フォルダがなかったら作成
-OUT_FOLDER = os.path.dirname(r'./data/')
-if not os.path.exists(OUT_FOLDER):
-    os.makedirs(OUT_FOLDER)
 
 def scraping(url, mkt):
     """ Market_code, Symbol, Company_name, industry1, industry2 """
@@ -46,14 +43,24 @@ scraping('https://www.viet-kabu.com/stock/hcm.html', 'HOSE')
 print('HNX')
 scraping('https://www.viet-kabu.com/stock/hn.html', 'HNX')
 
-# Output
 DF = pd.DataFrame({
     'Market_code':MKT_CODE,
     'Symbol':SYMBOL_CODE,
     'Company_name':COMPANY_NAME,
     'industry1':INDUSTRY1,
     'industry2':INDUSTRY2,
-    'marketcap':MARKET_CAP})
+    'marketcap':MARKET_CAP,
+    'marketcap_percentage':MARKET_CAP / np.sum(MARKET_CAP),
+    'pub_date':datetime.datetime.now().strftime("%Y-%m-%d")})
 
-DF.to_csv('data/industry.csv', index=False)
+# sqlite3
+CON = sqlite3.connect('mysite/db.sqlite3')
+CUR = CON.cursor()
+SQL = '''delete from vietnam_research_industry
+        where strftime("%Y%m", pub_date) = strftime("%Y%m", "now")'''
+CUR.execute(SQL)
+DF.to_sql('vietnam_research_industry', CON, if_exists='append', index=None)
+pd.read_sql_query(sql='select * from vietnam_research_industry', con=CON)
+
+# finish
 print('Congrats!')

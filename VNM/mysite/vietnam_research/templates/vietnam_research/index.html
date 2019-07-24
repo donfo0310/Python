@@ -46,15 +46,86 @@
         document.write("<BR>JavaScriptを使って出力しました。<BR>");
     </script>
 
-    <h2>業種別割合分析</h2>
+    <h2>業種別マクロ分析</h2>
     <p>これで3年分ぐらいを重ねてみたい</p>
-    <div class="radarChart1" style="display: inline-flex;"><h2>企業数</h2></div>
-    <div class="radarChart2" style="display: inline-flex;"><h2>時価総額</h2></div>
+    <p>国の成長期に金融が稼げる理由は？</p>
+    <p>ベトナムの時系列apiデータはあるか？</p>
+    <p>
+        データ:<br>
+        証券コードから業種・会社名の取得<br>
+        同業株価上位グラフ5位横並べ<br>
+        セクター別リターン<br>
+        個社利率<br>
+        50万円で大口株主になれる先リスト<br>
+        センチメント分析<br>
+        配当性向<br>
+        ニュース・有報から上方修正先を抽出<br>
+        あと何株買えるの？の計算式（excelでやるやつ）をフォームで
+    </p>
+    <p>スクレイピング: 上場日</p>
+    <table>
+        <tbody>
+            <tr>
+                <th><p>国名</p></th>
+                <td><p>ベトナム社会主義共和国 Socialist Republic of Viet Nam</p></td>
+            </tr>
+            <tr>
+                <th><p>面積</p></th>
+                <td><p>33万1,690平方キロメートル（2018、出所：外務省）</p></td>
+            </tr>
+            <tr>
+                <th><p>人口</p></th>
+                <td><p>約9,370万人（2018、出所：外務省）</p></td>
+            </tr>
+            <tr>
+                <th><p>首都</p></th>
+                <td><p>ハノイ</p></td>
+            </tr>
+            <tr>
+                <th><p>言語</p></th>
+                <td><p>ベトナム語、ほかに少数民族語</p></td>
+            </tr>
+            <tr>
+                <th><p>宗教</p></th>
+                <td><p>仏教（約80％）、そのほかにカトリック、カオダイ教、ホアハオ教など</p></td>
+            </tr>
+            <tr>
+                <th><p>公用語</p></th>
+                <td><p>ベトナム語</p></td>
+            </tr>
+            <tr>
+                <th><p>通貨</p></th>
+                <td><p>ドン</p></td>
+            </tr>
+            <tr>
+                <th><p>主要産業<br>
+                （2017年平均　越統計総局より引用）</p></th>
+                <td><p>農林水産業，鉱業，工業</p></td>
+            </tr>
+            <tr>
+                <th><p>GDP<br>
+                （2017年平均 越統計総局より引用）</p></th>
+                <td><p>約2,235億米ドル</p></td>
+            </tr>
+            <tr>
+                <th><p>経済成長率<br>
+                （2017年平均、越統計総局より引用）</p></th>
+                <td><p>6.81%</p></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="https://www.jetro.go.jp/world/asia/vn/stat_01.html">基礎的経済指標（日本貿易振興機構 jetro.go.jp）</a>
+    <p>※IMFデータをもとにSBI証券が作成を参考に</p>
+    <p>ベトナム経済は人口ボーナス期の真っ最中</p>
+
+    <div class="radarChart1" style="display: inline-flex;"></div>
+    <div class="radarChart2" style="display: inline-flex;"></div>
     <script>
         var margin = { top: 50, right: 130, bottom: 50, left: 80 };
         var data1 = [
             {   
-                name: 'cnt',
+                name: '企業数',
                 axes: [
                         {axis: industry1_name[0], value: cnt_agg_by_industry[0]},
                         {axis: industry1_name[1], value: cnt_agg_by_industry[1]},
@@ -73,7 +144,7 @@
         // data1.axes.push({axis: industry1_name, value: cnt_agg_by_industry});
 
         var data2 = [
-            {   name: 'cap',
+            {   name: '時価総額',
                 axes: [
                         {axis: industry1_name[0], value: cap_agg_by_industry[0]},
                         {axis: industry1_name[1], value: cap_agg_by_industry[1]},
@@ -99,7 +170,7 @@
             color: d3.scaleOrdinal().range(["#ff5900"]), // orange
             dotRadius: 3,
             format: '.2f',
-            legend: { title: 'Agg by Ind', translateX: 150, translateY: 40 },
+            legend: { title: '業種別集計', translateX: 150, translateY: 40 },
             unit: '%'
         };
         RadarChart(".radarChart1", data1, radarChartOptions);
