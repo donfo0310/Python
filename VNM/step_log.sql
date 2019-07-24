@@ -6,12 +6,13 @@
 .schema vietnam_research_industry
 
 -- SQLite3を実行する位置
-VNM\mysite> sqlite3 db.sqlite3
+VNM> sqlite3 mysite/db.sqlite3
 
 -- Djangoでテーブルを作成するとidが勝手につくため、idがないcsvデータではSQLiteでimportできない
 -- そこでいったん「temp_import_industry」という一時テーブルを作り、そこからinsertを発行する
-
 delete from vietnam_research_industry;
+
+delete from vietnam_research_industry where strftime('%Y%m', pub_date) = strftime('%Y%m', 'now');
 
 -- SQLite3でのCSVファイルのインポート https://qiita.com/Kunikata/items/61b5ee2c6a715f610493
 .mode csv
@@ -47,5 +48,6 @@ drop table temp_import_industry;
 select * from vietnam_research_industry;
 
 -- グループ集計
+select COUNT(1) from vietnam_research_industry;
 select industry1, COUNT(1) from vietnam_research_industry group by industry1;
 select industry1, SUM(marketcap), SUM(marketcap_percentage) from vietnam_research_industry group by industry1;
