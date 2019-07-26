@@ -1,6 +1,6 @@
 """子供のurls.pyがこの処理を呼び出します"""
 from django.shortcuts import render
-from django.db.models import Count, Sum
+from django.db.models import Sum
 from .models import Industry
 
 def index(request):
