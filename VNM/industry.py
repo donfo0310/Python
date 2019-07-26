@@ -44,14 +44,15 @@ print('HNX')
 scraping('https://www.viet-kabu.com/stock/hn.html', 'HNX')
 
 DF = pd.DataFrame({
-    'Market_code':MKT_CODE,
-    'Symbol':SYMBOL_CODE,
-    'Company_name':COMPANY_NAME,
-    'industry1':INDUSTRY1,
-    'industry2':INDUSTRY2,
-    'marketcap':MARKET_CAP,
-    'marketcap_percentage':MARKET_CAP / np.sum(MARKET_CAP),
-    'pub_date':datetime.datetime.now().strftime("%Y-%m-%d")})
+    'Market_code': MKT_CODE,
+    'Symbol': SYMBOL_CODE,
+    'Company_name': COMPANY_NAME,
+    'industry1': INDUSTRY1,
+    'industry2': INDUSTRY2,
+    'count_per': 1/len(INDUSTRY1),
+    'marketcap': MARKET_CAP,
+    'marketcap_per': MARKET_CAP/np.sum(MARKET_CAP),
+    'pub_date': datetime.datetime.now().strftime("%Y-%m-%d")})
 
 # sqlite3
 CON = sqlite3.connect('mysite/db.sqlite3')
@@ -60,7 +61,6 @@ SQL = '''delete from vietnam_research_industry
         where strftime("%Y%m", pub_date) = strftime("%Y%m", "now")'''
 CUR.execute(SQL)
 DF.to_sql('vietnam_research_industry', CON, if_exists='append', index=None)
-pd.read_sql_query(sql='select * from vietnam_research_industry', con=CON)
 
 # log
 with open('result.log', mode='a') as f:

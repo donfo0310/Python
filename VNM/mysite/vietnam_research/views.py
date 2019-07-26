@@ -6,11 +6,9 @@ from .models import Industry
 def index(request):
     """いわばhtmlのページ単位の構成物です"""
     # industry1を集計する
-    cnt_agg = Industry.objects.values('industry1').annotate(cnt=Count('industry1'))
-    cnt_total = Industry.objects.all().count()
-    cap_agg = Industry.objects.values('industry1').annotate(cap_per=Sum('marketcap_percentage'))
+    cnt_agg = Industry.objects.values('industry1').annotate(cnt_per=Sum('count_per'))
+    cap_agg = Industry.objects.values('industry1').annotate(cap_per=Sum('marketcap_per'))
     context = {
-        'cnt_total': cnt_total,
         'industry': cnt_agg,
         'marketcap': cap_agg
         }

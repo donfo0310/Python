@@ -28,23 +28,15 @@
     </script>
     {% for i in industry %}
         <script>
-            industry1_name.push("{{ i.industry1 }}")
-            cnt_agg_by_industry.push(Math.round(parseFloat("{{ i.cnt }}") / parseFloat("{{ cnt_total }}") *100) /100);
+            industry1_name.push("{{ i.industry1 }}");
+            cnt_agg_by_industry.push("{{ i.cnt_per }}");
         </script>
     {% endfor %}
     {% for i in marketcap %}
         <script>
-            cap_agg_by_industry.push(Math.round(parseFloat("{{ i.cap_per }}") *100) /100);
+            cap_agg_by_industry.push("{{ i.cap_per }}");
         </script>
     {% endfor %}
-    <script>
-        document.write("JavaScriptを使って出力しています。<BR>");
-        document.write("{{ cnt_total }}"+"<BR>");
-        document.write(industry1_name+"<BR>");
-        document.write(cnt_agg_by_industry+"<BR>");
-        document.write(cap_agg_by_industry);
-        document.write("<BR>JavaScriptを使って出力しました。<BR>");
-    </script>
 
     <h2>業種別マクロ分析</h2>
     <p>これで3年分ぐらいを重ねてみたい</p>
