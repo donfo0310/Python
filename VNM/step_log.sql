@@ -46,8 +46,11 @@ INSERT INTO vietnam_research_industryclassification VALUES (9, '運輸・物流�
 INSERT INTO vietnam_research_industryclassification VALUES (10, '金融業', 3);
 INSERT INTO vietnam_research_industryclassification VALUES (11, '電気・ガス業', 3);
 -- 確認
-SELECT c.industry_class || '|' || i.industry1
+SELECT
+      c.industry_class || '|' || i.industry1 AS ind_name
+    , ROUND(SUM(count_per),2) AS cnt_per
+    , ROUND(SUM(marketcap_per),2) AS cap_per
 FROM vietnam_research_industry i INNER JOIN vietnam_research_industryclassification c
 ON i.industry1 = c.industry1
 GROUP BY i.industry1, c.industry_class
-ORDER BY c.industry_class, i.industry1;
+ORDER BY ind_name;

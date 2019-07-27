@@ -28,13 +28,9 @@
     </script>
     {% for i in industry %}
         <script>
-            industry1_name.push("{{ i.industry1 }}");
-            cnt_agg_by_industry.push("{{ i.cnt_per }}");
-        </script>
-    {% endfor %}
-    {% for i in marketcap %}
-        <script>
-            cap_agg_by_industry.push("{{ i.cap_per }}");
+            industry1_name.push("{{ i.0 }}");
+            cnt_agg_by_industry.push("{{ i.1 }}");
+            cap_agg_by_industry.push("{{ i.2 }}");
         </script>
     {% endfor %}
 
