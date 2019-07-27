@@ -36,17 +36,17 @@ SELECT industry1, COUNT(1) FROM vietnam_research_industry GROUP BY industry1;
 SELECT industry1, SUM(marketcap), SUM(marketcap_per) FROM vietnam_research_industry GROUP BY industry1;
 
 -- Industryclassification マスタ
-INSERT INTO vietnam_research_industryclassification VALUES (1, '農林水産業', 1);
-INSERT INTO vietnam_research_industryclassification VALUES (2, '建設業', 2);
-INSERT INTO vietnam_research_industryclassification VALUES (3, '製造業', 2);
-INSERT INTO vietnam_research_industryclassification VALUES (4, '鉱業', 2);
-INSERT INTO vietnam_research_industryclassification VALUES (5, 'サービス業', 3);
-INSERT INTO vietnam_research_industryclassification VALUES (6, '不動産業', 3);
-INSERT INTO vietnam_research_industryclassification VALUES (7, '商業', 3);
-INSERT INTO vietnam_research_industryclassification VALUES (8, '情報通信業', 3);
-INSERT INTO vietnam_research_industryclassification VALUES (9, '運輸・物流業', 3);
-INSERT INTO vietnam_research_industryclassification VALUES (10, '金融業', 3);
-INSERT INTO vietnam_research_industryclassification VALUES (11, '電気・ガス業', 3);
+INSERT INTO vietnam_research_industryclassification (industry1, industry_class) VALUES ('農林水産業', 1);
+INSERT INTO vietnam_research_industryclassification (industry1, industry_class) VALUES ('建設業', 2);
+INSERT INTO vietnam_research_industryclassification (industry1, industry_class) VALUES ('製造業', 2);
+INSERT INTO vietnam_research_industryclassification (industry1, industry_class) VALUES ('鉱業', 2);
+INSERT INTO vietnam_research_industryclassification (industry1, industry_class) VALUES ('サービス業', 3);
+INSERT INTO vietnam_research_industryclassification (industry1, industry_class) VALUES ('不動産業', 3);
+INSERT INTO vietnam_research_industryclassification (industry1, industry_class) VALUES ('商業', 3);
+INSERT INTO vietnam_research_industryclassification (industry1, industry_class) VALUES ('情報通信業', 3);
+INSERT INTO vietnam_research_industryclassification (industry1, industry_class) VALUES ('運輸・物流業', 3);
+INSERT INTO vietnam_research_industryclassification (industry1, industry_class) VALUES ('金融業', 3);
+INSERT INTO vietnam_research_industryclassification (industry1, industry_class) VALUES ('電気・ガス業', 3);
 -- 確認
 SELECT
       c.industry_class || '|' || i.industry1 AS ind_name
