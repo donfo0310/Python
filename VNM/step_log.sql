@@ -29,7 +29,6 @@ DROP TABLE temp_import_industry;
 
 -- 確認
 SELECT * FROM vietnam_research_industry LIMIT 30;
-
 -- グループ集計
 SELECT COUNT(1) FROM vietnam_research_industry;
 SELECT industry1, COUNT(1) FROM vietnam_research_industry GROUP BY industry1;

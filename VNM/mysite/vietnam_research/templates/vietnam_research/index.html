@@ -18,21 +18,25 @@
 </head>
 <body>
     
-    <h1>ここは非表示</h1>
+    <h1>h1タイトルは非表示</h1>
 
     <!-- Django to Javascript -->
     <script>
-        var industry1_name = [];
-        var cnt_agg_by_industry = [];
-        var cap_agg_by_industry = [];
+        var data1 = [{name: '企業数'}];
+        var data1_inner = [];
+        var data2 = [{name: '時価総額'}];
+        var data2_inner = [];
     </script>
     {% for i in industry %}
         <script>
-            industry1_name.push("{{ i.0 }}");
-            cnt_agg_by_industry.push("{{ i.1 }}");
-            cap_agg_by_industry.push("{{ i.2 }}");
+            data1_inner.push({axis: "{{ i.0 }}", value: "{{ i.1 }}"})
+            data2_inner.push({axis: "{{ i.0 }}", value: "{{ i.2 }}"})
         </script>
     {% endfor %}
+    <script>
+        data1[0]['axes'] = data1_inner;
+        data2[0]['axes'] = data2_inner;
+    </script>
 
     <h2>Todo</h2>
     <p>国の成長期に金融が稼げる理由は？</p>
@@ -119,44 +123,6 @@
     <div class="radarChart2" style="display: inline-flex;"></div>
     <script>
         var margin = { top: 50, right: 130, bottom: 50, left: 80 };
-        var data1 = [
-            {   
-                name: '企業数',
-                axes: [
-                        {axis: industry1_name[0], value: cnt_agg_by_industry[0]},
-                        {axis: industry1_name[1], value: cnt_agg_by_industry[1]},
-                        {axis: industry1_name[2], value: cnt_agg_by_industry[2]},
-                        {axis: industry1_name[3], value: cnt_agg_by_industry[3]},
-                        {axis: industry1_name[4], value: cnt_agg_by_industry[4]},
-                        {axis: industry1_name[5], value: cnt_agg_by_industry[5]},
-                        {axis: industry1_name[6], value: cnt_agg_by_industry[6]},
-                        {axis: industry1_name[7], value: cnt_agg_by_industry[7]},
-                        {axis: industry1_name[8], value: cnt_agg_by_industry[8]},
-                        {axis: industry1_name[9], value: cnt_agg_by_industry[9]},
-                        {axis: industry1_name[10], value: cnt_agg_by_industry[10]}
-                    ]
-            }
-        ];
-        // data1.axes.push({axis: industry1_name, value: cnt_agg_by_industry});
-
-        var data2 = [
-            {   name: '時価総額',
-                axes: [
-                        {axis: industry1_name[0], value: cap_agg_by_industry[0]},
-                        {axis: industry1_name[1], value: cap_agg_by_industry[1]},
-                        {axis: industry1_name[2], value: cap_agg_by_industry[2]},
-                        {axis: industry1_name[3], value: cap_agg_by_industry[3]},
-                        {axis: industry1_name[4], value: cap_agg_by_industry[4]},
-                        {axis: industry1_name[5], value: cap_agg_by_industry[5]},
-                        {axis: industry1_name[6], value: cap_agg_by_industry[6]},
-                        {axis: industry1_name[7], value: cap_agg_by_industry[7]},
-                        {axis: industry1_name[8], value: cap_agg_by_industry[8]},
-                        {axis: industry1_name[9], value: cap_agg_by_industry[9]},
-                        {axis: industry1_name[10], value: cap_agg_by_industry[10]}
-                    ]
-            }
-        ];
-
         var radarChartOptions = {
             w: 290,
             h: 350,
@@ -171,7 +137,6 @@
         };
         RadarChart(".radarChart1", data1, radarChartOptions);
         RadarChart(".radarChart2", data2, radarChartOptions);
-
     </script>
 
     <!-- 同業比較したいから、昇順keyつけてdbから出力 -->
