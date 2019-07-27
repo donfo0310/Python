@@ -2,8 +2,10 @@
 -- https://qiita.com/riz666/items/59352c336398e0321fc2
 
 -- SQLite3 チートシート https://qiita.com/sotetsuk/items/cd2aeae4ba7e72faad47
--- 設定を表示する
+-- 設定を表示する（ .separator で区切り文字を変更）
 .show
+.separator ,
+
 -- テーブル一覧を表示する
 .table
 .schema vietnam_research_industry
