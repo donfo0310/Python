@@ -14,7 +14,7 @@
     <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
     <script src="https://d3js.org/d3-path.v1.min.js" charset="utf-8"></script>
     <script src="{% static 'vietnam_research/js/radarChart.js' %}" charset="utf-8"></script>
-
+    <script src="{% static 'vietnam_research/js/lineChart.js' %}" charset="utf-8"></script>
 </head>
 <body>
     
@@ -138,6 +138,7 @@
         };
         RadarChart(".radarChart1", data1, radarChartOptions);
         RadarChart(".radarChart2", data2, radarChartOptions);
+        LineChart([2,0,0,0,0,0,0,0,1,1]);
     </script>
 
     <!-- 同業比較したいから、昇順keyつけてdbから出力 -->

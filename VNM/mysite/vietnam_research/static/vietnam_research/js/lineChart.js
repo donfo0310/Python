@@ -1,4 +1,4 @@
-const lineChart = function (data) {
+const LineChart = function (dataset) {
 
   // 50x50のsvg領域を作る
   var w = 50;
@@ -15,14 +15,18 @@ const lineChart = function (data) {
   var  pathinfo = [];
   var b_x = w / dataset.length;
   for (var i=0; i<dataset.length; i++) {
-    pathinfo.push({x:b_x*i+2, y:((h-2) - dataset[i]*10) });
+    pathinfo.push(
+      {
+        x: b_x * i + 2, 
+        y: ((h - 2) - dataset[i] * 10) 
+      });
   }
 
   // 座標データから折れ線グラフ用のコマンドを作るための関数を用意
-  var d3line = d3.svg.line()
+  var d3line = d3.line()
     .x(function(d){return d.x;})
     .y(function(d){return d.y;})
-    .interpolate("linear"); // エッジがシャープな折れ線を指定。
+    .curve(d3.curveLinear); // エッジがシャープな折れ線を指定。
   // 参考 https://www.dashingd3js.com/svg-paths-and-d3js
 
   // 実際に線を引く。
