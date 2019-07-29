@@ -1,0 +1,28 @@
+h1 {
+    display: none;
+}
+
+h2 {
+    padding: 0.5em;/*文字周りの余白*/
+    color: #494949;/*文字色*/
+    background: #fffaf4;/*背景色*/
+    border-left: solid 5px #ffaf58;/*左線（実線 太さ 色）*/
+  }
+
+  table{
+    width: 100%;
+    border-spacing: 0;
+  }
+  
+  table tr{
+    font-size: 50%;
+  }
+  table th{
+    border-bottom: solid 2px #fb5144;
+    padding: 10px 0;
+  }
+  table td{
+    border-bottom: solid 2px #ddd;
+    text-align: center;
+    padding: 10px 0;
+  }

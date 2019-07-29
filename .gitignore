@@ -1,5 +1,6 @@
 __pycache__/
 __init__.py
+db.sqlite3
 migrations/
 result.log
 Analyze_stocks/api_setting
