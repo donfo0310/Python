@@ -55,3 +55,13 @@ FROM vietnam_research_industry i INNER JOIN vietnam_research_industryclassificat
 ON i.industry1 = c.industry1
 GROUP BY i.industry1, c.industry_class
 ORDER BY ind_name;
+
+-- vnindex
+SELECT COUNT(1) FROM vietnam_research_vnindex;
+SELECT * FROM vietnam_research_vnindex LIMIT 30;
+SELECT
+    M
+  , SUM(CASE WHEN Y = '2009' THEN closing_price END) AS Y2009
+  , SUM(CASE WHEN Y = '2018' THEN closing_price END) AS Y2018
+FROM vietnam_research_vnindex
+GROUP BY M;

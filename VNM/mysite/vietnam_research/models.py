@@ -17,3 +17,10 @@ class IndustryClassification(models.Model):
     """viet-kabuの産業名を産業区分1-3に"""
     industry1 = models.CharField(max_length=10)
     industry_class = models.IntegerField()
+
+class VnIndex(models.Model):
+    """https://jp.investing.com/indices/vn-historical-data"""
+    Y = models.CharField(max_length=4)
+    M = models.CharField(max_length=2)
+    closing_price = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    pub_date = models.DateTimeField('date published')
