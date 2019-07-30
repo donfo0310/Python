@@ -31,9 +31,9 @@ const LineChart = function (dataset) {
 
   // 実際に線を引く。
   svg.append("path")
-    .attr("d", d3line(pathinfo)) // さきほどの関数に座標の配列を引数で渡す
-    .style("stroke-width", 2) // 線の太さを決める
-    .style("stroke", "steelblue") // 色を決める
+    .attr("d", d3line(pathinfo))  // さきほどの関数に座標の配列を引数で渡す
+    .style("stroke-width", 2)     // 線の太さを決める
+    .style("stroke", "#ff5900")   // 色を決める
     .style("fill", "none");
 
 }
