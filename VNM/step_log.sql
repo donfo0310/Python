@@ -58,10 +58,5 @@ ORDER BY ind_name;
 
 -- vnindex
 SELECT COUNT(1) FROM vietnam_research_vnindex;
-SELECT * FROM vietnam_research_vnindex LIMIT 30;
-SELECT
-    M
-  , SUM(CASE WHEN Y = '2009' THEN closing_price END) AS Y2009
-  , SUM(CASE WHEN Y = '2018' THEN closing_price END) AS Y2018
-FROM vietnam_research_vnindex
-GROUP BY M;
+-- pivotはsqliteにはないのでpandasでやってください
+SELECT Y, M, closing_price FROM vietnam_research_vnindex
