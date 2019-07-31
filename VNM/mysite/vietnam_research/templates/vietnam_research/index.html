@@ -145,11 +145,17 @@
         var vnidx = [];
         var vnidx_inner = [];
     </script>
+    {% for i, col in vnindex.iteritems %}
+        <script>
+            document.write("M{{ col.name }}");
+        </script>
+    {% endfor %}
+    <script>document.write("<BR>")</script>
     {% for i, row in vnindex.iterrows %}
         <script>
-            document.write("{{ row.name }}年");
+            document.write("Y{{ row.name }} / ");
         </script>
-        {% for j, col in row.iteritems %}
+        {% for col in row %}
             <script>
                 document.write("{{ col }}");
             </script>
