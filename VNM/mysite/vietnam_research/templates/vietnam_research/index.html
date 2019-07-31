@@ -140,16 +140,16 @@
         RadarChart(".radarChart2", data2, radarChartOptions);
     </script>
 
-    <h2>GDP</h2>
+    <h2>VN-Index</h2>
     <script>
         var vnidx = [];
         var vnidx_inner = [];
     </script>
-    {% for idx, row in vnindex.iterrows %}
+    {% for i, row in vnindex.iterrows %}
         <script>
-            document.write("{{ row.name }}月");
+            document.write("{{ row.name }}年");
         </script>
-        {% for col in row %}
+        {% for j, col in row.iteritems %}
             <script>
                 document.write("{{ col }}");
             </script>

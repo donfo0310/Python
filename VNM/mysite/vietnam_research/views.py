@@ -29,7 +29,7 @@ def index(request):
         FROM vietnam_research_vnindex
         ORDER BY Y, M;
         '''
-        , con).pivot('M', 'Y', 'closing_price').fillna(0)
+        , con).pivot('Y', 'M', 'closing_price').fillna(0)
     print(vnindex)
 
     context = {
