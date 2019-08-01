@@ -146,8 +146,15 @@
     <script>
         var vnidx = JSON.parse(document.getElementById('vnindex-json').textContent);
         for (let i in vnidx) {
-            document.write(vnidx[i]);
+            document.write(vnidx[i]['01']);
         }
+        
+        // Object.keys(vnidx).forEach(function(key) {
+        //     console.log(vnidx[key]);
+        // })
+        // for (var item in vnidx) {
+        //     console.log(vnidx[item])
+        // }
         // LineChart(vnidx);
     </script>
 
