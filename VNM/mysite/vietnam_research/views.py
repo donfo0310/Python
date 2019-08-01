@@ -34,7 +34,7 @@ def index(request):
 
     context = {
         'industry': industry,
-        'vnindex': vnindex
+        'vnindex': vnindex.to_json(orient='index')
     }
 
     # htmlとして返却します

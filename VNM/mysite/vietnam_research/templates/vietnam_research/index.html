@@ -141,32 +141,14 @@
     </script>
 
     <h2>VN-Index</h2>
+    {{ vnindex|json_script:"vnindex-json" }}
+    <div id="columns"></div>
     <script>
-        var vnidx = [];
-        var vnidx_inner = [];
-    </script>
-    {% for i, col in vnindex.iteritems %}
-        <script>
-            document.write("M{{ col.name }}");
-        </script>
-    {% endfor %}
-    <script>document.write("<BR>")</script>
-    {% for i, row in vnindex.iterrows %}
-        <script>
-            document.write("Y{{ row.name }} / ");
-        </script>
-        {% for col in row %}
-            <script>
-                document.write("{{ col }}");
-            </script>
-        {% endfor %}
-        <script>
-            document.write("<BR>");
-        </script>
-    {% endfor %}
-    <script>
-        document.write(vnidx.join(',')+"<BR>");
-        LineChart(vnidx);
+        var vnidx = JSON.parse(document.getElementById('vnindex-json').textContent);
+        for (let i in vnidx) {
+            document.write(vnidx[i]);
+        }
+        // LineChart(vnidx);
     </script>
 
     <h2>ドンから日本円へ</h2>
