@@ -20,7 +20,6 @@ def index(request):
         ORDER BY ind_name;
         '''
         , con)
-    print(industry)
 
     # vnindex の月次ミルフィーユ
     vnindex = pd.read_sql(
@@ -30,7 +29,6 @@ def index(request):
         ORDER BY Y, M;
         '''
         , con).pivot('Y', 'M', 'closing_price').fillna(0)
-    print(vnindex)
 
     context = {
         'industry': industry,
