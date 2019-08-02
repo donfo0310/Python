@@ -32,7 +32,11 @@ SELECT * FROM vietnam_research_industry LIMIT 30;
 -- グループ集計
 SELECT COUNT(1) FROM vietnam_research_industry;
 SELECT industry1, COUNT(1) FROM vietnam_research_industry GROUP BY industry1;
+SELECT industry1, pub_date, COUNT(1) FROM vietnam_research_industry GROUP BY industry1, pub_date;
 SELECT industry1, SUM(marketcap), SUM(marketcap_per) FROM vietnam_research_industry GROUP BY industry1;
+-- debug（前月に書き直して '消えないか' をチェック） OK
+update vietnam_research_industry set pub_date = '2019-07-31' where symbol = 'AAA';
+SELECT * FROM vietnam_research_industry WHERE strftime('%Y%m', pub_date) = strftime('%Y%m', 'now');
 
 -- Industryclassification マスタ
 INSERT INTO vietnam_research_industryclassification (industry1, industry_class) VALUES ('農林水産業', 1);

@@ -1,5 +1,6 @@
 __pycache__/
 import/
+images/
 __init__.py
 db.sqlite3
 migrations/
