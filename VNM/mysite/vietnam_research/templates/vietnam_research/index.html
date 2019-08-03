@@ -10,11 +10,14 @@
     <!-- css -->
     <link rel="stylesheet" href="{% static 'vietnam_research/css/style.css' %}"> 
 
+    <!-- chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="{% static 'vietnam_research/js/lineChart.js' %}" charset="utf-8"></script>
+
     <!-- D3.js -->
     <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
     <script src="https://d3js.org/d3-path.v1.min.js" charset="utf-8"></script>
     <script src="{% static 'vietnam_research/js/radarChart.js' %}" charset="utf-8"></script>
-    <script src="{% static 'vietnam_research/js/lineChart.js' %}" charset="utf-8"></script>
 </head>
 <body>
     
@@ -22,9 +25,9 @@
 
     <!-- Django to Javascript -->
     <script>
-        var data1 = [{name: '企業数'}];
+        var data1 = [];
         var data1_inner = [];
-        var data2 = [{name: '時価総額'}];
+        var data2 = [];
         var data2_inner = [];
     </script>
     {% for idx, row in industry.iterrows %}
@@ -35,8 +38,8 @@
     {% endfor %}
     <script>
         // 数字のidxを変えて代入すると時点を変えたグラフを一緒に表示できる
-        data1[0].axes = data1_inner;
-        data2[0].axes = data2_inner;
+        data1.push({name: '企業数', axes: data1_inner});
+        data2.push({name: '時価総額', axes: data2_inner});
     </script>
 
     <h2>Todo</h2>
@@ -73,7 +76,7 @@
             margin: margin,
             levels: 5,
             roundStrokes: true,
-            color: d3.scaleOrdinal().range(["#ff5900"]), // orange
+            color: d3.scaleOrdinal().range(['rgb(255,89,0)']), // orange"#ff5900"
             dotRadius: 3,
             format: '.2f',
             legend: { title: '業種別集計', translateX: 150, translateY: 40 },
@@ -83,22 +86,56 @@
         RadarChart(".radarChart2", data2, radarChartOptions);
     </script>
 
-    <h2>VN-Index</h2>
+    <h2>VN-Index（時系列）</h2>
     {{ vnindex|json_script:"vnindex-json" }}
-    <div id="columns"></div>
+    <canvas id="vnChart"></canvas>
+    <h2>VN-Index（年単位ミルフィーユ）</h2>
+    <canvas id="vnChart_layer"></canvas>
     <script>
+        var labelset = [];
+        var dataset = [];
+        var labelset_layer = [];
+        var dataset_layer = [];
+        var labelset_layer_inner = [];
+        var dataset_layer_inner = [];
+        var alpha = 0.1;
         var vnidx = JSON.parse(document.getElementById('vnindex-json').textContent);
-        for (let i in vnidx) {
-            document.write(vnidx[i]['01']);
+        var mm
+        // time-line
+        for (yyyy in vnidx) {
+            for (let m = 1;  m <= 12;  m++) {
+                mm = ('0' + m).slice(-2);
+                labelset.push(yyyy + mm);
+                dataset.push(vnidx[yyyy][mm]);
+            }
         }
-        
-        // Object.keys(vnidx).forEach(function(key) {
-        //     console.log(vnidx[key]);
-        // })
-        // for (var item in vnidx) {
-        //     console.log(vnidx[item])
-        // }
-        // LineChart(vnidx);
+        LineChart('vnChart', labelset, [{
+            label: 'VN-Index', 
+            backgroundColor: 'rgba(255,89,0,0.3)', 
+            borderColor: 'rgb(255,89,0)', 
+            data: dataset
+        }]);
+
+        // time-line_layer
+        for (yyyy in vnidx) {
+            labelset_layer_inner = [];
+            dataset_layer_inner = [];
+            alpha += 1/Object.keys(vnidx).length;
+            for (let m = 1;  m <= 12;  m++) {
+                mm = ('0' + m).slice(-2);
+                labelset_layer_inner.push(mm);
+                dataset_layer_inner.push(vnidx[yyyy][mm]);
+            }
+            labelset_layer = labelset_layer_inner;
+            dataset_layer.push({
+                label: yyyy, 
+                borderColor: 'rgba(255,89,0,' + alpha + ')', 
+                fill: false, 
+                data: dataset_layer_inner
+            });
+        }
+        LineChart('vnChart_layer', labelset_layer, dataset_layer);
+
     </script>
 
     <h2>ドンから日本円へ</h2>
