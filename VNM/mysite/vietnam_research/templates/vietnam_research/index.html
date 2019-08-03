@@ -86,11 +86,11 @@
         RadarChart(".radarChart2", data2, radarChartOptions);
     </script>
 
-    <h2>VN-Index（時系列）</h2>
     {{ vnindex|json_script:"vnindex-json" }}
-    <canvas id="vnChart"></canvas>
+    <h2>VN-Index（時系列）</h2>
+    <canvas id="vnChart" style="height:300px; width:1000px"></canvas>
     <h2>VN-Index（年単位ミルフィーユ）</h2>
-    <canvas id="vnChart_layer"></canvas>
+    <canvas id="vnChart_layer" style="height:300px; width:1000px"></canvas>
     <script>
         var labelset = [];
         var dataset = [];
