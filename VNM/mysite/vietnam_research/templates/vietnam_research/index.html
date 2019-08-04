@@ -86,20 +86,15 @@
         RadarChart(".radarChart2", data2, radarChartOptions);
     </script>
 
-    {{ vnindex|json_script:"vnindex-json" }}
     <h2>VN-Index（時系列）</h2>
     <canvas id="vnChart" style="height:300px; width:1000px"></canvas>
     <h2>VN-Index（年単位ミルフィーユ）</h2>
     <canvas id="vnChart_layer" style="height:300px; width:1000px"></canvas>
+    {{ vnindex|json_script:"vnindex-json" }}
     <script>
+        var vnidx = JSON.parse(document.getElementById('vnindex-json').textContent);
         var labelset = [];
         var dataset = [];
-        var labelset_layer = [];
-        var dataset_layer = [];
-        var labelset_layer_inner = [];
-        var dataset_layer_inner = [];
-        var alpha = 0.1;
-        var vnidx = JSON.parse(document.getElementById('vnindex-json').textContent);
         var mm
         // time-line
         for (yyyy in vnidx) {
@@ -117,6 +112,11 @@
         }]);
 
         // time-line_layer
+        var labelset_layer = [];
+        var dataset_layer = [];
+        var labelset_layer_inner = [];
+        var dataset_layer_inner = [];
+        var alpha = 0.1;
         for (yyyy in vnidx) {
             labelset_layer_inner = [];
             dataset_layer_inner = [];
