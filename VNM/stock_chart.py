@@ -22,6 +22,9 @@ scraping('hcm', 'VNM')
 scraping('hcm', 'VHC')
 scraping('hcm', 'PHR')
 scraping('hcm', 'FMC')
+scraping('hcm', 'VHM')
+scraping('hcm', 'VRE')
+
 
 # log
 with open('result.log', mode='a') as f:
