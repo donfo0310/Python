@@ -141,24 +141,14 @@
     <h2>ドンから日本円へ</h2>
     ドンを200で割ると、ざっくり日本円になります。
     1,000don -> 5円
+
     <!-- 同業比較したいから、昇順keyつけてdbから出力 -->
     <!-- 上場日・主な事業・業種・ -->
-    <h2>SABサイゴンビール</h2>
-    <p>2019/07/16 21:20 当日注文 150株 287,000don（@1,435円 x 150株 = 215,250円）</p>
-    <img src="{% static 'vietnam_research/chart/SAB.png' %}" alt="SAB">
-    <h2>PHRフオックホア ゴム</h2>
-    <p>2019/07/19 08:43 当日注文 680株 65,000don（@325円 x 680株 = 221,000円）</p>
-    <img src="{% static 'vietnam_research/chart/PHR.png' %}" alt="PHR">
-    <h2>GASペトロベトナムガス</h2>
-    <img src="{% static 'vietnam_research/chart/GAS.png' %}" alt="GAS">
-    <h2>PPCファーライ火力発電</h2>
-    <img src="{% static 'vietnam_research/chart/PPC.png' %}" alt="PPC">
-    <h2>FMCサオタ食品</h2>
-    <img src="{% static 'vietnam_research/chart/FMC.png' %}" alt="FMC">
-    <h2>VHCビンホアン（水産）</h2>
-    <img src="{% static 'vietnam_research/chart/VHC.png' %}" alt="VHC">
-    <h2>VNMビナミルク</h2>
-    <img src="{% static 'vietnam_research/chart/VNM.png' %}" alt="VNM">
+    {% for idx, row in watchlist.iterrows %}
+        <h2>{{ row.symbol }}</h2>
+        <p>{{ row.bought_day }}, {{ row.stocks_price }}VND, {{ row.stocks_count }}株, {{ row.bikou }}</p>
+        <img src="{% static 'vietnam_research/chart/' %}{{ row.symbol }}.png" alt="{{ row.symbol }}">
+    {% endfor %}
 
     <h2>PERとは</h2>
     <img src="{% static 'vietnam_research/images/PER.png' %}" alt="PER">

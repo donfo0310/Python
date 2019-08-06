@@ -64,3 +64,14 @@ ORDER BY ind_name;
 SELECT COUNT(1) FROM vietnam_research_vnindex;
 -- pivotはsqliteにはないのでpandasでやってください
 SELECT Y, M, closing_price FROM vietnam_research_vnindex
+
+-- WatchList テーブル
+INSERT INTO vietnam_research_watchlist (symbol, already_has, bought_day, stocks_price, stocks_count, bikou) VALUES ('SAB', True, '2019-07-16', 287000, 150, '（@1,435円 x 150株 = 215,250円）');
+INSERT INTO vietnam_research_watchlist (symbol, already_has, stocks_price, stocks_count, bikou) VALUES ('GAS', False, 0, 0, '');
+INSERT INTO vietnam_research_watchlist (symbol, already_has, stocks_price, stocks_count, bikou) VALUES ('PPC', False, 0, 0, '');
+INSERT INTO vietnam_research_watchlist (symbol, already_has, stocks_price, stocks_count, bikou) VALUES ('VNM', False, 0, 0, '');
+INSERT INTO vietnam_research_watchlist (symbol, already_has, stocks_price, stocks_count, bikou) VALUES ('VHC', False, 0, 0, '');
+INSERT INTO vietnam_research_watchlist (symbol, already_has, bought_day, stocks_price, stocks_count, bikou) VALUES ('PHR', True, '2019-07-19', 65000, 680, '（@325円 x 680株 = 221,000円）');
+INSERT INTO vietnam_research_watchlist (symbol, already_has, stocks_price, stocks_count, bikou) VALUES ('FMC', False, 0, 0, '');
+INSERT INTO vietnam_research_watchlist (symbol, already_has, stocks_price, stocks_count, bikou) VALUES ('VHM', False, 0, 0, '');
+INSERT INTO vietnam_research_watchlist (symbol, already_has, stocks_price, stocks_count, bikou) VALUES ('VRE', False, 0, 0, '');

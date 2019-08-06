@@ -13,7 +13,7 @@ def scraping(mkt, symbol):
         path = 'mysite/vietnam_research/static/vietnam_research/chart/{0}.png'.format(symbol)
         urllib.request.urlretrieve(tag_img['src'], path)
         print(symbol)
-    time.sleep(2)
+    time.sleep(4)
 
 scraping('hcm', 'SAB')
 scraping('hcm', 'GAS')

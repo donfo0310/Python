@@ -24,3 +24,12 @@ class VnIndex(models.Model):
     M = models.CharField(max_length=2)
     closing_price = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
     pub_date = models.DateTimeField('date published')
+
+class WatchList(models.Model):
+    """ウォッチリスト"""
+    symbol = models.CharField(max_length=10, primary_key=True)
+    already_has = models.BooleanField(default=False)
+    bought_day = models.DateTimeField(blank=True, null=True)
+    stocks_price = models.PositiveIntegerField(default=0)
+    stocks_count = models.IntegerField(default=0)
+    bikou = models.TextField()

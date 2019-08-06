@@ -30,9 +30,19 @@ def index(request):
         '''
         , con).pivot('Y', 'M', 'closing_price').fillna(0)
 
+    # watchlist
+    watchelist = pd.read_sql(
+        '''
+        SELECT * 
+        FROM vietnam_research_watchlist
+        ORDER BY already_has DESC;
+        '''
+        , con)
+
     context = {
         'industry': industry,
-        'vnindex': vnindex.to_dict(orient='index')
+        'vnindex': vnindex.to_dict(orient='index'),
+        'watchlist': watchelist
     }
 
     # htmlとして返却します
