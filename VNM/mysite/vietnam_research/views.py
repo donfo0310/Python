@@ -35,7 +35,7 @@ def index(request):
         '''
         SELECT
               w.symbol
-            , w.symbol || ': ' || i.company_name || '(' || i.industry1 || ')' AS company_name
+            , '(' || i.industry1 || ')' || w.symbol || ' ' || i.company_name AS company_name
             , w.bought_day
             , w.stocks_price
             , w.stocks_count
@@ -46,10 +46,22 @@ def index(request):
         '''
         , con)
 
+    # basicinfo
+    basicinfo = pd.read_sql(
+        '''
+        SELECT
+              b.item
+            , b.description
+        FROM vietnam_research_basicinformation b
+        ORDER BY b.id;
+        '''
+        , con)
+
     context = {
         'industry': industry,
         'vnindex': vnindex.to_dict(orient='index'),
-        'watchlist': watchelist
+        'watchlist': watchelist,
+        'basicinfo': basicinfo
     }
 
     # htmlとして返却します

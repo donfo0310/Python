@@ -75,3 +75,16 @@ INSERT INTO vietnam_research_watchlist (symbol, already_has, bought_day, stocks_
 INSERT INTO vietnam_research_watchlist (symbol, already_has, stocks_price, stocks_count, bikou) VALUES ('FMC', False, 0, 0, '');
 INSERT INTO vietnam_research_watchlist (symbol, already_has, stocks_price, stocks_count, bikou) VALUES ('VHM', False, 0, 0, '');
 INSERT INTO vietnam_research_watchlist (symbol, already_has, stocks_price, stocks_count, bikou) VALUES ('VRE', False, 0, 0, '');
+
+-- BasicInformation テーブル
+INSERT INTO vietnam_research_basicinformation (item, description) VALUES ('国名', 'ベトナム社会主義共和国 Socialist Republic of Viet Nam');
+INSERT INTO vietnam_research_basicinformation (item, description) VALUES ('面積', '33万1,690平方キロメートル（2018、出所：外務省）');
+INSERT INTO vietnam_research_basicinformation (item, description) VALUES ('人口', '約9,370万人（2018、出所：外務省）');
+INSERT INTO vietnam_research_basicinformation (item, description) VALUES ('首都', 'ハノイ');
+INSERT INTO vietnam_research_basicinformation (item, description) VALUES ('言語', 'ベトナム語、ほかに少数民族語');
+INSERT INTO vietnam_research_basicinformation (item, description) VALUES ('宗教', '仏教（約80％）、そのほかにカトリック、カオダイ教、ホアハオ教など');
+INSERT INTO vietnam_research_basicinformation (item, description) VALUES ('公用語', 'ベトナム語');
+INSERT INTO vietnam_research_basicinformation (item, description) VALUES ('通貨', 'ドン');
+INSERT INTO vietnam_research_basicinformation (item, description) VALUES ('主要産業', '農林水産業，鉱業，工業');
+INSERT INTO vietnam_research_basicinformation (item, description) VALUES ('GDP', '約2,235億米ドル（2017年平均 越統計総局より引用）');
+INSERT INTO vietnam_research_basicinformation (item, description) VALUES ('経済成長率', '6.81%（2017年平均、越統計総局より引用）');

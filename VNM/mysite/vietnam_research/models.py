@@ -28,8 +28,14 @@ class VnIndex(models.Model):
 class WatchList(models.Model):
     """ウォッチリスト"""
     symbol = models.CharField(max_length=10, primary_key=True)
-    already_has = models.BooleanField(default=False)
+    already_has = models.BooleanField(blank=True, null=True, default=False)
     bought_day = models.DateTimeField(blank=True, null=True)
-    stocks_price = models.PositiveIntegerField(default=0)
-    stocks_count = models.IntegerField(default=0)
-    bikou = models.TextField()
+    stocks_price = models.PositiveIntegerField(blank=True, null=True, default=0)
+    stocks_count = models.IntegerField(blank=True, null=True, default=0)
+    bikou = models.TextField(blank=True, null=True)
+
+class BasicInformation(models.Model):
+    """基本情報"""
+    item = models.TextField()
+    description = models.TextField(blank=True, null=True)
+    

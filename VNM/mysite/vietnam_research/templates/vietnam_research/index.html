@@ -87,8 +87,10 @@
     </script>
 
     <h2>VN-Index（時系列）</h2>
+    <p>底堅く上昇トレンド</p>
     <canvas id="vnChart" style="height:300px; width:1000px"></canvas>
     <h2>VN-Index（年単位ミルフィーユ）</h2>
+    <p>季節要因は特に感じられない</p>
     <canvas id="vnChart_layer" style="height:300px; width:1000px"></canvas>
     {{ vnindex|json_script:"vnindex-json" }}
     <script>
@@ -154,57 +156,14 @@
     <img src="{% static 'vietnam_research/images/PER.png' %}" alt="PER">
 
     <h2>ベトナム基本情報</h2>
-    <table>
-        <tbody>
-            <tr>
-                <th><p>国名</p></th>
-                <td><p>ベトナム社会主義共和国 Socialist Republic of Viet Nam</p></td>
-            </tr>
-            <tr>
-                <th><p>面積</p></th>
-                <td><p>33万1,690平方キロメートル（2018、出所：外務省）</p></td>
-            </tr>
-            <tr>
-                <th><p>人口</p></th>
-                <td><p>約9,370万人（2018、出所：外務省）</p></td>
-            </tr>
-            <tr>
-                <th><p>首都</p></th>
-                <td><p>ハノイ</p></td>
-            </tr>
-            <tr>
-                <th><p>言語</p></th>
-                <td><p>ベトナム語、ほかに少数民族語</p></td>
-            </tr>
-            <tr>
-                <th><p>宗教</p></th>
-                <td><p>仏教（約80％）、そのほかにカトリック、カオダイ教、ホアハオ教など</p></td>
-            </tr>
-            <tr>
-                <th><p>公用語</p></th>
-                <td><p>ベトナム語</p></td>
-            </tr>
-            <tr>
-                <th><p>通貨</p></th>
-                <td><p>ドン</p></td>
-            </tr>
-            <tr>
-                <th><p>主要産業<br>
-                （2017年平均　越統計総局より引用）</p></th>
-                <td><p>農林水産業，鉱業，工業</p></td>
-            </tr>
-            <tr>
-                <th><p>GDP<br>
-                （2017年平均 越統計総局より引用）</p></th>
-                <td><p>約2,235億米ドル</p></td>
-            </tr>
-            <tr>
-                <th><p>経済成長率<br>
-                （2017年平均、越統計総局より引用）</p></th>
-                <td><p>6.81%</p></td>
-            </tr>
-        </tbody>
-    </table>
+    {% for idx, row in basicinfo.iterrows %}
+    <table><tbody>
+        <tr>
+            <th><p>{{ row.item }}</p></th>
+            <td><p>{{ row.description }}</p></td>
+        </tr>
+    </tbody></table>
+    {% endfor %}
 
     <a href="https://www.jetro.go.jp/world/asia/vn/stat_01.html">基礎的経済指標（日本貿易振興機構 jetro.go.jp）</a>
     <p>※IMFデータをもとにSBI証券が作成を参考に</p>
