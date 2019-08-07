@@ -145,7 +145,7 @@
     <!-- 同業比較したいから、昇順keyつけてdbから出力 -->
     <!-- 上場日・主な事業・業種・ -->
     {% for idx, row in watchlist.iterrows %}
-        <h2>{{ row.symbol }}</h2>
+        <h2>{{ row.company_name }}</h2>
         <p>{{ row.bought_day }}, {{ row.stocks_price }}VND, {{ row.stocks_count }}株, {{ row.bikou }}</p>
         <img src="{% static 'vietnam_research/chart/' %}{{ row.symbol }}.png" alt="{{ row.symbol }}">
     {% endfor %}

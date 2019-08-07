@@ -11,7 +11,7 @@ def index(request):
     industry = pd.read_sql(
         '''
         SELECT
-            c.industry_class || '|' || i.industry1 AS ind_name
+              c.industry_class || '|' || i.industry1 AS ind_name
             , ROUND(SUM(count_per),2) AS cnt_per
             , ROUND(SUM(marketcap_per),2) AS cap_per
         FROM vietnam_research_industry i INNER JOIN vietnam_research_industryclassification c
@@ -33,9 +33,16 @@ def index(request):
     # watchlist
     watchelist = pd.read_sql(
         '''
-        SELECT * 
-        FROM vietnam_research_watchlist
-        ORDER BY already_has DESC;
+        SELECT
+              w.symbol
+            , w.symbol || ': ' || i.company_name || '(' || i.industry1 || ')' AS company_name
+            , w.bought_day
+            , w.stocks_price
+            , w.stocks_count
+            , w.bikou
+        FROM vietnam_research_watchlist w INNER JOIN vietnam_research_industry i
+        ON w.symbol = i.symbol
+        ORDER BY already_has DESC, i.industry1;
         '''
         , con)
 
