@@ -156,6 +156,7 @@
     <img src="{% static 'vietnam_research/images/PER.png' %}" alt="PER">
 
     <h2>ベトナム基本情報</h2>
+    <div class="basicinfo">
     {% for idx, row in basicinfo.iterrows %}
     <table><tbody>
         <tr>
@@ -164,6 +165,7 @@
         </tr>
     </tbody></table>
     {% endfor %}
+    </div>
 
     <a href="https://www.jetro.go.jp/world/asia/vn/stat_01.html">基礎的経済指標（日本貿易振興機構 jetro.go.jp）</a>
     <p>※IMFデータをもとにSBI証券が作成を参考に</p>
