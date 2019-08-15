@@ -63,7 +63,7 @@ ORDER BY ind_name;
 -- vnindex
 SELECT COUNT(1) FROM vietnam_research_vnindex;
 -- pivotはsqliteにはないのでpandasでやってください
-SELECT Y, M, closing_price FROM vietnam_research_vnindex
+SELECT Y, M, closing_price FROM vietnam_research_vnindex;
 
 -- WatchList テーブル
 INSERT INTO vietnam_research_watchlist (symbol, already_has, bought_day, stocks_price, stocks_count, bikou) VALUES ('SAB', True, '2019-07-16', 287000, 150, '（@1,435円 x 150株 = 215,250円）');
@@ -88,3 +88,22 @@ INSERT INTO vietnam_research_basicinformation (item, description) VALUES ('通�
 INSERT INTO vietnam_research_basicinformation (item, description) VALUES ('主要産業', '農林水産業，鉱業，工業');
 INSERT INTO vietnam_research_basicinformation (item, description) VALUES ('GDP', '約2,235億米ドル（2017年平均 越統計総局より引用）');
 INSERT INTO vietnam_research_basicinformation (item, description) VALUES ('経済成長率', '6.81%（2017年平均、越統計総局より引用）');
+
+-- DailyData
+SELECT
+      d.market_code
+    , d.symbol
+    , i.company_name
+    , i.industry1
+    , d.closing_price
+    , d.volume
+    , d.marketcap
+    , d.per
+    , d.pub_date
+FROM vietnam_research_dailydata d
+INNER JOIN vietnam_research_industry i
+ON d.symbol = i.symbol
+WHERE d.per >0 AND d.per <15;
+
+DELETE FROM vietnam_research_dailydata;
+SELECT pub_date, COUNT(1) FROM vietnam_research_dailydata GROUP BY pub_date;
