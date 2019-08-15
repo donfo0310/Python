@@ -1,5 +1,5 @@
 __pycache__/
-import/
+csv/
 images/
 __init__.py
 db.sqlite3
@@ -13,7 +13,6 @@ basic_connect-api_estat/api_setting/appid.txt
 Twitter/api_setting
 Twitter/output.png
 Twitter/output.txt
-HousePrices20190410
 .ipynb_checkpoints
 Analyze_stocks/lib/__init__.py
 Analyze_finance/.Rhistory
