@@ -13,7 +13,7 @@ SQL = '''DELETE FROM bankdata_dailydata'''
 CUR.execute(SQL)
 
 # import
-FILES = os.listdir('csv')
+FILES = os.listdir('import/csv')
 for file in FILES:
 
     print(file)
@@ -24,7 +24,7 @@ for file in FILES:
         COLS_NEW = ['ymd', 'description', 'description_detail', 'amount_out', 'amount_in']
         COLS_DEL = ['description_detail', 'amount_out', 'amount_in']
         COLS_OUT = ['ymd', 'bank_name', 'description', 'amount']
-        CSV = pd.read_csv('csv/' + file, usecols=COLS, encoding="shift-jis")
+        CSV = pd.read_csv('import/csv/' + file, usecols=COLS, encoding="shift-jis")
         CSV = CSV.rename(columns=dict(zip(COLS, COLS_NEW)))
         CSV['ymd'] = [dt.strptime(row['ymd'], '%Y/%m/%d') for idx, row in CSV.iterrows()]
         CSV['ymd'] = [row['ymd'].strftime('%Y-%m-%d') for idx, row in CSV.iterrows()]
@@ -40,7 +40,6 @@ for file in FILES:
         CSV = CSV.drop(COLS_DEL, axis=1)
         CSV = CSV[COLS_OUT]
         CSV.to_sql('bankdata_dailydata', CON, if_exists='append', index=None)
-        CSV.to_csv('a.csv', mode='a')
 
     # MUFG - VISA
     # if file[:8] == 'MUFGVISA':
@@ -54,7 +53,7 @@ for file in FILES:
         COLS_OUT = ['ymd', 'bank_name', 'description', 'amount']
         Y = file[-10:-6]   # YYYY
         M = str(int(file[-6:-4])) # MM
-        CSV = pd.read_csv('csv/' + file, usecols=COLS, encoding="shift-jis")
+        CSV = pd.read_csv('import/csv/' + file, usecols=COLS, encoding="shift-jis")
         CSV = CSV.rename(columns=dict(zip(COLS, COLS_NEW)))
         CSV['ymd'] = [row['ymd'].split('月')[1].replace('日', '') for idx, row in CSV.iterrows()]
         CSV['ymd'] = [Y + '-' + M + '-' + row['ymd'] for idx, row in CSV.iterrows()]

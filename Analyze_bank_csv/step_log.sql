@@ -24,5 +24,5 @@ SELECT ymd, bank_name, SUM(amount) FROM bankdata_dailydata GROUP BY ymd, bank_na
 SELECT COUNT(1) FROM bankdata_dailydata;
 
 -- Categoryテーブル
-SELECT description FROM bankdata_dailydata GROUP BY description;
-INSERT INTO bankdata_dailydata_category (description, category1) VALUES ('xxxx', 'xxxx');
+SELECT description, category1, category2 FROM bankdata_category GROUP BY description;
+INSERT INTO bankdata_category (description, category1) VALUES ('xxxx', 'xxxx');
