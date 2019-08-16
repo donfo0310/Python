@@ -22,3 +22,7 @@ DELETE FROM bankdata_dailydata;
 SELECT ymd, bank_name, SUM(amount) FROM bankdata_dailydata GROUP BY ymd, bank_name ORDER BY date(ymd);
 -- グループ集計
 SELECT COUNT(1) FROM bankdata_dailydata;
+
+-- Categoryテーブル
+SELECT description FROM bankdata_dailydata GROUP BY description;
+INSERT INTO bankdata_dailydata_category (description, category1) VALUES ('xxxx', 'xxxx');
