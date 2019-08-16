@@ -19,7 +19,7 @@ for file in FILES:
     print(file)
 
     # MUFG
-    if file[:4] == 'MUFG':
+    if file[:7] == 'MUFGEco':
         COLS = ['日付', '摘要', '摘要内容', '支払い金額', '預かり金額']
         COLS_NEW = ['ymd', 'description', 'description_detail', 'amount_out', 'amount_in']
         COLS_DEL = ['description_detail', 'amount_out', 'amount_in']
@@ -31,6 +31,7 @@ for file in FILES:
         CSV['bank_name'] = 'MUFG'
         CSV['description'] = CSV['description'] + ' ' + CSV['description_detail'].fillna('')
         CSV['description'] = CSV['description'].str.strip().str.replace('　', '')
+        CSV['description'] = CSV['description'].str.replace('−', 'ー')
         CSV['amount_out'] = CSV['amount_out'].fillna(0)
         CSV['amount_out'] = CSV['amount_out'].astype(str).str.replace(',', '').astype(int) * -1
         CSV['amount_in'] = CSV['amount_in'].fillna(0)
@@ -39,6 +40,11 @@ for file in FILES:
         CSV = CSV.drop(COLS_DEL, axis=1)
         CSV = CSV[COLS_OUT]
         CSV.to_sql('bankdata_dailydata', CON, if_exists='append', index=None)
+        CSV.to_csv('a.csv', mode='a')
+
+    # MUFG - VISA
+    # if file[:8] == 'MUFGVISA':
+    #     print(file)
 
     # NAGAGIN
     if file[:4] == 'NAGA':
