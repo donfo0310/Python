@@ -14,15 +14,27 @@
 Analyze_bank_csv> sqlite3 mysite/db.sqlite3
 Analyze_bank_csv/mysite> sqlite3 db.sqlite3
 
+-- ●Dailydata
+-- 確認
+SELECT COUNT(1) FROM bankdata_dailydata;
+SELECT * FROM bankdata_dailydata;
 -- テーブル削除
 DROP TABLE bankdata_dailydata;
+-- データ削除
 DELETE FROM bankdata_dailydata;
 
+-- ●Categoryテーブル
 -- 確認
-SELECT ymd, bank_name, SUM(amount) FROM bankdata_dailydata GROUP BY ymd, bank_name ORDER BY date(ymd);
--- グループ集計
-SELECT COUNT(1) FROM bankdata_dailydata;
-
--- Categoryテーブル
 SELECT description, category1, category2 FROM bankdata_category GROUP BY description;
-INSERT INTO bankdata_category (description, category1) VALUES ('xxxx', 'xxxx');
+
+-- ●組み合わせ
+-- 確認
+SELECT 
+      SUBSTR(REPLACE(d.ymd, '-', ''), 1, 6) ym
+    , c.category1
+    , c.category2
+    , SUM(d.amount) amount
+FROM bankdata_dailydata d INNER JOIN bankdata_category c ON d.description = c.description 
+GROUP BY SUBSTR(REPLACE(d.ymd, '-', ''), 1, 6), c.category1, c.category2
+ORDER BY date(d.ymd), c.category1, c.category2;
+

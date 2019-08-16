@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>bankdataビューア</title>
+
+    <!-- css -->
+    <link rel="stylesheet" href="{% static 'bankdata/css/style.css' %}"> 
+
+    <!-- chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="{% static 'bankdata/js/lineChart.js' %}" charset="utf-8"></script>
+
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+    <script src="https://d3js.org/d3-path.v1.min.js" charset="utf-8"></script>
+    <script src="{% static 'bankdata/js/radarChart.js' %}" charset="utf-8"></script>
+</head>
+<body>
+    
+    <h1>h1タイトルは非表示</h1>
+
+    <!-- Django to Javascript -->
+    {{ dailydata|json_script:"dailydata-json" }}
+    <script>
+        var dailydata = JSON.parse(document.getElementById('dailydata-json').textContent);
+        for (category in dailydata) {
+            for (ym in dailydata[category]) {
+                document.write(category + '[' + ym + ']: ' + dailydata[category][ym] + '<BR>')
+            }
+        }
+    </script>
+
+</body>
+</html>
