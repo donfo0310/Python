@@ -1,12 +1,18 @@
 """csvを取り込みます"""
 import os
 import sqlite3
-import datetime
+from datetime import datetime as dt
 import pandas as pd
 
 # sqlite3
 CON = sqlite3.connect('mysite/db.sqlite3')
 
+# reset（本当は取り込み時の重複だけ排除したいが複合キーがないと...）
+CUR = CON.cursor()
+SQL = '''DELETE FROM bankdata_dailydata'''
+CUR.execute(SQL)
+
+# import
 FILES = os.listdir('csv')
 for file in FILES:
 
@@ -20,6 +26,8 @@ for file in FILES:
         COLS_OUT = ['ymd', 'bank_name', 'description', 'amount']
         CSV = pd.read_csv('csv/' + file, usecols=COLS, encoding="shift-jis")
         CSV = CSV.rename(columns=dict(zip(COLS, COLS_NEW)))
+        CSV['ymd'] = [dt.strptime(row['ymd'], '%Y/%m/%d') for idx, row in CSV.iterrows()]
+        CSV['ymd'] = [row['ymd'].strftime('%Y-%m-%d') for idx, row in CSV.iterrows()]
         CSV['bank_name'] = 'MUFG'
         CSV['description'] = CSV['description'] + ' ' + CSV['description_detail'].fillna('')
         CSV['description'] = CSV['description'].str.strip().str.replace('　', '')
@@ -43,7 +51,9 @@ for file in FILES:
         CSV = pd.read_csv('csv/' + file, usecols=COLS, encoding="shift-jis")
         CSV = CSV.rename(columns=dict(zip(COLS, COLS_NEW)))
         CSV['ymd'] = [row['ymd'].split('月')[1].replace('日', '') for idx, row in CSV.iterrows()]
-        CSV['ymd'] = [Y + '/' + M + '/' + row['ymd'] for idx, row in CSV.iterrows()]
+        CSV['ymd'] = [Y + '-' + M + '-' + row['ymd'] for idx, row in CSV.iterrows()]
+        CSV['ymd'] = [dt.strptime(row['ymd'], '%Y-%m-%d') for idx, row in CSV.iterrows()]
+        CSV['ymd'] = [row['ymd'].strftime('%Y-%m-%d') for idx, row in CSV.iterrows()]
         CSV['bank_name'] = 'NAGAGIN'
         CSV['amount_out'] = CSV['amount_out'].fillna(0).astype(str).str.replace(',', '')
         CSV['amount_out'] = CSV['amount_out'].str.replace('\\', '').astype(int) * -1
@@ -56,7 +66,7 @@ for file in FILES:
 
 # log
 with open('result.log', mode='a') as f:
-    f.write('\n' + datetime.datetime.now().strftime("%Y/%m/%d %a %H:%M:%S ") + 'import_bank_csv.py')
+    f.write('\n' + dt.now().strftime("%Y/%m/%d %a %H:%M:%S ") + 'import_bank_csv.py')
 
 # finish
 print('Congrats!')

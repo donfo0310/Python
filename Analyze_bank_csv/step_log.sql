@@ -19,6 +19,6 @@ DROP TABLE bankdata_dailydata;
 DELETE FROM bankdata_dailydata;
 
 -- 確認
-SELECT ymd, bank_name, SUM(amount) FROM bankdata_dailydata GROUP BY ymd, bank_name;
+SELECT ymd, bank_name, SUM(amount) FROM bankdata_dailydata GROUP BY ymd, bank_name ORDER BY date(ymd);
 -- グループ集計
 SELECT COUNT(1) FROM bankdata_dailydata;
