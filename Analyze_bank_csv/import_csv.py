@@ -33,9 +33,11 @@ for file in FILES:
         CSV['description'] = CSV['description'].str.strip().str.replace('　', '')
         CSV['description'] = CSV['description'].str.replace('−', 'ー')
         CSV['amount_out'] = CSV['amount_out'].fillna(0)
-        CSV['amount_out'] = CSV['amount_out'].astype(str).str.replace(',', '').astype(int) * -1
+        CSV['amount_out'] = CSV['amount_out'].astype(str).str.replace(',', '')
+        CSV['amount_out'] = CSV['amount_out'].astype(float).round(0).astype(int) * -1
         CSV['amount_in'] = CSV['amount_in'].fillna(0)
-        CSV['amount_in'] = CSV['amount_in'].astype(str).str.replace(',', '').astype(int)
+        CSV['amount_in'] = CSV['amount_in'].astype(str).str.replace(',', '')
+        CSV['amount_in'] = CSV['amount_in'].astype(float).round(0).astype(int)
         CSV['amount'] = CSV['amount_out'] + CSV['amount_in']
         CSV = CSV.drop(COLS_DEL, axis=1)
         CSV = CSV[COLS_OUT]
@@ -61,9 +63,11 @@ for file in FILES:
         CSV['ymd'] = [row['ymd'].strftime('%Y-%m-%d') for idx, row in CSV.iterrows()]
         CSV['bank_name'] = 'NAGAGIN'
         CSV['amount_out'] = CSV['amount_out'].fillna(0).astype(str).str.replace(',', '')
-        CSV['amount_out'] = CSV['amount_out'].str.replace('\\', '').astype(int) * -1
+        CSV['amount_out'] = CSV['amount_out'].str.replace('\\', '')
+        CSV['amount_out'] = CSV['amount_out'].astype(float).round(0).astype(int) * -1
         CSV['amount_in'] = CSV['amount_in'].fillna(0).astype(str).str.replace(',', '')
-        CSV['amount_in'] = CSV['amount_in'].str.replace('\\', '').astype(float).round(0).astype(int)
+        CSV['amount_in'] = CSV['amount_in'].str.replace('\\', '')
+        CSV['amount_in'] = CSV['amount_in'].astype(float).round(0).astype(int)
         CSV['amount'] = CSV['amount_out'] + CSV['amount_in']
         CSV = CSV.drop(COLS_DEL, axis=1)
         CSV = CSV[COLS_OUT]
