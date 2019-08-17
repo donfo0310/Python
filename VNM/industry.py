@@ -82,24 +82,6 @@ def scraping(url, mkt):
     cur.execute(sql)
     df_summary.to_sql('vietnam_research_industry', con, if_exists='append', index=None)
 
-    # data2 dailydata
-    df_dailydata = pd.DataFrame({
-        'market_code': mkt,
-        'symbol': symbol_code,
-        'closing_price': closing_price,
-        'volume': volume,
-        'marketcap': market_cap,
-        'per': per,
-        'pub_date': date
-    })
-    sql = '''
-            DELETE FROM vietnam_research_dailydata
-            WHERE market_code = {quote}{market_code}{quote} AND
-            DATE(pub_date) = {quote}{ymd}{quote}'''
-    sql = sql.format(market_code=mkt, quote='\'', ymd=ymdhms[:10])
-    cur.execute(sql)
-    df_dailydata.to_sql('vietnam_research_dailydata', con, if_exists='append', index=None)
-
 # ホーチミン証券取引所
 print('HOSE')
 scraping('https://www.viet-kabu.com/stock/hcm.html', 'HOSE')

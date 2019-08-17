@@ -5,7 +5,7 @@ import sqlite3
 import datetime
 import pandas as pd
 
-VN_INDEX = pd.read_csv('import/VN 過去データ.csv', usecols=['日付け', '終値'])
+VN_INDEX = pd.read_csv('import/csv/VN 過去データ.csv', usecols=['日付け', '終値'])
 VN_INDEX['Y'] = VN_INDEX['日付け'].str[-4:].astype(str)
 VN_INDEX['M'] = VN_INDEX['日付け'].str.split('月').str[0].astype(int).astype(str).str.zfill(2)
 VN_INDEX = VN_INDEX.drop(['日付け'], axis=1)
