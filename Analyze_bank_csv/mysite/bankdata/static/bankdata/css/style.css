@@ -3,10 +3,10 @@ h1 {
 }
 
 h2 {
-    padding: 0.5em;/*文字周りの余白*/
-    color: #494949;/*文字色*/
-    background: #fffaf4;/*背景色*/
-    border-left: solid 5px #ffaf58;/*左線（実線 太さ 色）*/
+    padding: 0.5em;
+    color: #494949;
+    background: #fffaf4;
+    border-left: solid 5px #ffaf58;
 }
 
 .pivot table {
@@ -19,7 +19,7 @@ h2 {
 }
 
 .pivot td {
-    border: solid 1px;              /* 枠線指定 */
+    border: solid 1px;
     border-color: rgb(185, 185, 185);
     padding: 10px;
 }

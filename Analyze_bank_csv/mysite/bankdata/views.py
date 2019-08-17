@@ -14,7 +14,7 @@ def index(request):
             SUBSTR(REPLACE(d.ymd, '-', ''), 1, 6) ym
             , c.category1 || c.category2 category
             , SUM(d.amount) amount
-        FROM bankdata_dailydata d INNER JOIN bankdata_category c ON d.description = c.description
+        FROM bankdata_dailydata d LEFT JOIN bankdata_category c ON d.description = c.description
         GROUP BY SUBSTR(REPLACE(d.ymd, '-', ''), 1, 6), c.category1, c.category2
         ORDER BY date(d.ymd), c.category1, c.category2;
         '''
