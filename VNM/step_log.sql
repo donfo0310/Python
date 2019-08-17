@@ -14,16 +14,6 @@
 VNM> sqlite3 mysite/db.sqlite3
 VNM/mysite> sqlite3 db.sqlite3
 
--- Djangoでテーブルを作成するとidが勝手につくため、idがないcsvデータではSQLiteでimportできない
--- そこでいったん「temp_import_industry」という一時テーブルを作り、そこからinsertを発行する
-DELETE FROM vietnam_research_industry;
-
-DELETE FROM vietnam_research_industry WHERE strftime('%Y%m', pub_date) = strftime('%Y%m', 'now');
-
--- SQLite3でのCSVファイルのインポート https://qiita.com/Kunikata/items/61b5ee2c6a715f610493
-.mode csv
-.import ../data/industry.csv temp_import_industry
-
 -- ●industry
 -- 確認
 SELECT * FROM vietnam_research_industry LIMIT 30;
@@ -48,9 +38,3 @@ ORDER BY ind_name;
 SELECT COUNT(1) FROM vietnam_research_vnindex;
 -- pivotはsqliteにはないのでpandasでやってください
 SELECT Y, M, closing_price FROM vietnam_research_vnindex;
-
--- ●DailyData
-DELETE FROM vietnam_research_dailydata;
-SELECT pub_date, COUNT(1) FROM vietnam_research_dailydata GROUP BY pub_date;
--- 重複チェック ホーチミンハノイ合わせて750が正解らしい
-SELECT pub_date, symbol, COUNT(symbol) FROM vietnam_research_dailydata GROUP BY pub_date, symbol LIMIT 5;
