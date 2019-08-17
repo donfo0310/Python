@@ -30,7 +30,7 @@ DROP TABLE temp_import_industry;
 -- 確認
 SELECT * FROM vietnam_research_industry LIMIT 30;
 -- グループ集計
-SELECT COUNT(1) FROM vietnam_research_industry;
+SELECT pub_date, COUNT(1) FROM vietnam_research_industry GROUP BY pub_date;
 SELECT industry1, COUNT(1) FROM vietnam_research_industry GROUP BY industry1;
 SELECT industry1, pub_date, COUNT(1) FROM vietnam_research_industry GROUP BY industry1, pub_date;
 SELECT industry1, SUM(marketcap), SUM(marketcap_per) FROM vietnam_research_industry GROUP BY industry1;
@@ -107,3 +107,5 @@ WHERE d.per >0 AND d.per <15;
 
 DELETE FROM vietnam_research_dailydata;
 SELECT pub_date, COUNT(1) FROM vietnam_research_dailydata GROUP BY pub_date;
+-- 重複チェック ホーチミンハノイ合わせて750が正解らしい
+SELECT pub_date, symbol, COUNT(symbol) FROM vietnam_research_dailydata GROUP BY pub_date, symbol LIMIT 5;
