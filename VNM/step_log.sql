@@ -27,6 +27,7 @@ DELETE FROM vietnam_research_industry WHERE strftime('%Y%m', pub_date) = strftim
 -- 一時テーブル削除
 DROP TABLE temp_import_industry;
 
+-- industry
 -- 確認
 SELECT * FROM vietnam_research_industry LIMIT 30;
 -- グループ集計

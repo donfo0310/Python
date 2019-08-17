@@ -26,37 +26,29 @@ def scraping(url, mkt):
     # date
     # e.g. 'ホーチミン証取株価（2019/08/16 15:00VNT）' => '2019-08-16 15:00:00'
     ymdhms = soup.find('th', class_='table_list_left').text.strip()
-    ymdhms = ymdhms.split('（')[1][:16] + ':00'.replace('/', '-')
+    ymdhms = ymdhms.split('（')[1][:16].replace('/', '-') + ':00'
 
-    # data1
-    for tag_td in soup.find_all('td', class_='table_list_center'):
-        # Market_code, Symbol, company_name
-        tag_a = tag_td.find('a')
-        if tag_a:
-            symbol_code.append(tag_a.text.strip())
-            company_name.append(tag_a.get('title'))
-            date.append(ymdhms)
-        # industry1, industry2
-        tag_img = tag_td.find('img')
-        if tag_img:
-            industry1.append(re.sub(r'\[(.+)\]', '', tag_img.get('title')))
-            industry2.append(re.search(r'\[(.+)\]', tag_img.get('title')).group(1))
-
-    # data2
+    # data
     for tag_tr in soup.find_all('tr', id=True):
-
+        # Symbol, company_name, date
+        temp = tag_tr.find_all('td', class_='table_list_center')[0]
+        symbol_code.append(temp.text.strip())       # AAA
+        company_name.append(temp.a.get('title'))    # アンファット・バイオプラスチック
+        date.append(ymdhms)                         # 2019-08-16 15:00:00
+        # industry1, industry2
+        temp = tag_tr.find_all('td', class_='table_list_center')[1]
+        industry1.append(re.sub(r'\[(.+)\]', '', temp.img.get('title')))
+        industry2.append(re.search(r'\[(.+)\]', temp.img.get('title')).group(1))
         # closing_price	終値
         temp = tag_tr.find_all('td', class_='table_list_right')[1].text
         closing_price.append(float(temp))
         # volume 出来高
         temp = tag_tr.find_all('td', class_='table_list_right')[7].text
-        temp = temp.replace(',', '')
-        temp = temp.replace('-', '0')
+        temp = temp.replace('-', '0').replace(',', '')
         volume.append(float(temp))
         # market_cap 時価総額（億円）
         temp = tag_tr.find_all('td', class_='table_list_right')[10].text
-        temp = temp.replace(',', '')
-        temp = temp.replace('-', '0')
+        temp = temp.replace('-', '0').replace(',', '')
         market_cap.append(float(temp))
         # per 15倍以下が割安
         temp = tag_tr.find_all('td', class_='table_list_right')[11].text
@@ -75,8 +67,11 @@ def scraping(url, mkt):
         'industry1': industry1,
         'industry2': industry2,
         'count_per': 1/len(industry1),
+        'closing_price': closing_price,
+        'volume': volume,
         'marketcap': market_cap,
         'marketcap_per': market_cap/np.sum(market_cap),
+        'per': per,
         'pub_date': date
     })
     sql = '''
