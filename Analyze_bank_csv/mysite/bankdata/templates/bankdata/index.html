@@ -27,30 +27,30 @@
     {{ dailydata|json_script:"dailydata-json" }}
     <script>var dailydata = JSON.parse(document.getElementById('dailydata-json').textContent);</script>
     <div class="pivot">
-    <table>
-    <thead>
-        <tr><td>Category</td>
-        <script>
-            var firstKey = Object.keys(dailydata)[0];
-            for (ym in dailydata[firstKey]) {
-                document.write('<td>' + ym + '</td>')
-            }
-        </script>
-        </tr>
-    </thead>
-    <tbody>
-        <script>
-            for (category in dailydata) {
-                document.write('<tr>')
-                document.write('<td>' + category + '</td>')
-                for (ym in dailydata[category]) {
-                    document.write('<td class="num">' + dailydata[category][ym].toLocaleString() + '</td>')
+        <table>
+        <thead>
+            <tr><td class="category">Category</td>
+            <script>
+                var firstKey = Object.keys(dailydata)[0];
+                for (ym in dailydata[firstKey]) {
+                    document.write('<td>' + ym + '</td>')
                 }
-                document.write('</tr>')
-            }
-        </script>
-    </tbody>
-    </table>
+            </script>
+            </tr>
+        </thead>
+        <tbody>
+            <script>
+                for (category in dailydata) {
+                    document.write('<tr>')
+                    document.write('<td>' + category + '</td>')
+                    for (ym in dailydata[category]) {
+                        document.write('<td class="num">' + dailydata[category][ym].toLocaleString() + '</td>')
+                    }
+                    document.write('</tr>')
+                }
+            </script>
+        </tbody>
+        </table>
     </div>
 
 </body>

@@ -18,6 +18,8 @@ Analyze_bank_csv/mysite> sqlite3 db.sqlite3
 -- 確認
 SELECT COUNT(1) FROM bankdata_dailydata;
 SELECT * FROM bankdata_dailydata;
+SELECT description, SUM(amount) FROM bankdata_dailydata GROUP BY description;
+SELECT ymd, description, amount FROM bankdata_dailydata WHERE description = '口座振替４ オリコ';
 -- テーブル削除
 DROP TABLE bankdata_dailydata;
 -- データ削除
