@@ -38,11 +38,11 @@
             </script>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="scrollbody">
             <script>
                 for (category in dailydata) {
                     document.write('<tr>')
-                    document.write('<td>' + category + '</td>')
+                    document.write('<td class="category">' + category + '</td>')
                     for (ym in dailydata[category]) {
                         document.write('<td class="num">' + dailydata[category][ym].toLocaleString() + '</td>')
                     }

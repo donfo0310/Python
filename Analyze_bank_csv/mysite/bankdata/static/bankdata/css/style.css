@@ -10,22 +10,22 @@ h2 {
 }
 
 .pivot table {
+    display: block;
+    overflow: auto;
     border-collapse:  collapse;
     table-layout: fixed;
-    width: 100%;
+    width: 7000px;
+    height: 500px;
 }
-
 .pivot thead {
     background-color: #ffaf58;
     text-align: center;
 }
-
 .pivot td {
     border: solid 1px;
     border-color: rgb(185, 185, 185);
     padding: 10px;
 }
-
 .pivot .category {
     width: 150px;
 }
