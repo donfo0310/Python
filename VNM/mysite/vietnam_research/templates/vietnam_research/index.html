@@ -18,10 +18,36 @@
     <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
     <script src="https://d3js.org/d3-path.v1.min.js" charset="utf-8"></script>
     <script src="{% static 'vietnam_research/js/radarChart.js' %}" charset="utf-8"></script>
+
+    <!-- font -->
+    <link href="https://fonts.googleapis.com/css?family=Sawarabi+Gothic" rel="stylesheet">
+    <!-- fontawesome -->
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+
+    <!-- jQuery for count -->
+    <!-- https://blog.yublog.com/entry/2017/10/17/202255 -->
+    <!-- https://yukimonkey.com/js-python/like-button/ -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+        function countup() {
+            var el = document.activeElement;
+            alert(el.textContent);
+            // $.post('counter.php', { id : itemid });
+        }
+    </script>
+    
 </head>
 <body>
     
-    <h1>h1タイトルは非表示</h1>
+    <h1></h1>
+    <div class="nav fixed">
+        <ul class="right_align">
+            <li class="usrname"><span><u>username</u></span></li>
+            <li class="pptx"><a href="#pptx">pptx資料</a></li>
+            <li class="xlsx"><a href="{% static 'vietnam_research/xlsx/sample.xlsx' %}" onclick='countup();'>xlsx資料</a></li>
+            <li class="logout"><a href="#logout">ログアウト</a></li>
+        </ul>
+    </div>
 
     <!-- Django to Javascript -->
     <script>

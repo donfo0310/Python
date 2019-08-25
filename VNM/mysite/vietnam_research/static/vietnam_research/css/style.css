@@ -1,12 +1,92 @@
+body {
+  color: #333;
+  margin: 0px;
+  margin-top: 72px; /* 56 + 16 */
+}
+
+/* link */
+a {
+  color: #333;
+  text-decoration: none;
+}
+a:hover {
+  color: #333;
+  font-weight: 700;
+}
+
+/* 見出し */
 h1 {
     display: none;
 }
-
 h2 {
-    padding: 0.5em;/*文字周りの余白*/
-    color: #494949;/*文字色*/
-    background: #fffaf4;/*背景色*/
-    border-left: solid 5px #ffaf58;/*左線（実線 太さ 色）*/
+  border-left: 5px solid #fa9786;
+  font-size: 20px;
+}
+h2::before {
+  font-family: "Font Awesome 5 Free";
+  content: '\f00c';
+  font-weight: 900;
+  padding: 10px;
+}
+h3 {
+  border-left: solid 3px #fa9786;
+  padding-left: 14px;
+  font-size: 16px;
+}
+
+.nav.fixed {
+  background-color: #f72b2b;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 10000;
+}
+.nav.fixed ul {
+  margin: 0;
+  padding: 0;
+}
+.nav.fixed .right_align {
+  text-align: right;
+}
+.nav.fixed li {
+  display: inline-block;
+  list-style: none;
+}
+.nav.fixed a, span {
+  /* Tips: 実質paddingで高さを作ってる */
+  display: block;
+  padding: 16px;
+  color: #fff;
+  text-decoration: none;
+  transition: background-color .2s linear;
+}
+.nav.fixed a:hover {
+  background-color: #f88282;
+}
+/* Tips: padding以外は必須です */
+.nav.fixed .usrname span::before {
+  font-family: "Font Awesome 5 Free";
+  content: '\f4fc';
+  font-weight: 900;
+  padding: 10px;
+}
+.nav.fixed .pptx a::before {
+  font-family: "Font Awesome 5 Free";
+  content: '\f1c4';
+  font-weight: 900;
+  padding: 10px;
+}
+.nav.fixed .xlsx a::before {
+  font-family: "Font Awesome 5 Free";
+  content: '\f1c3';
+  font-weight: 900;
+  padding: 10px;
+}
+.nav.fixed .logout a::before {
+  font-family: "Font Awesome 5 Free";
+  content: '\f2f5';
+  font-weight: 900;
+  padding: 10px;
 }
 
 .basicinfo table {
