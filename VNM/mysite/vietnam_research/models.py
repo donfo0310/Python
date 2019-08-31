@@ -37,6 +37,14 @@ class WatchList(models.Model):
     stocks_count = models.IntegerField(blank=True, null=True, default=0)
     bikou = models.TextField(blank=True, null=True)
 
+class DailyTop5(models.Model):
+    """日次Top5"""
+    ind_name = models.CharField(max_length=10)
+    market_code = models.CharField(max_length=4)
+    symbol = models.CharField(max_length=10)
+    marketcap = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    per = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+
 class BasicInformation(models.Model):
     """基本情報"""
     item = models.TextField()

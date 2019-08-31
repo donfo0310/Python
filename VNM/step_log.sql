@@ -7,7 +7,7 @@
 .separator ,
 
 -- テーブル一覧を表示する
-.table
+.tables
 .schema vietnam_research_industry
 
 -- SQLite3を実行する位置
@@ -33,6 +33,20 @@ FROM vietnam_research_industry i INNER JOIN vietnam_research_industryclassificat
 ON i.industry1 = c.industry1
 GROUP BY i.industry1, c.industry_class
 ORDER BY ind_name;
+
+--業種別TOP5
+-- 確認
+SELECT * FROM vietnam_research_dailytop5;
+-- 業種別シンボル別集計（今回は 平均 and 集計後per >1 とする）
+SELECT
+      c.industry_class || '|' || i.industry1 AS ind_name
+    , i.symbol
+    , AVG(i.closing_price * volume) AS marketcap
+    , AVG(i.per) AS per
+FROM vietnam_research_industry i INNER JOIN vietnam_research_industryclassification c
+ON i.industry1 = c.industry1
+GROUP BY ind_name, i.symbol
+HAVING per >1;
 
 -- ●vnindex
 SELECT COUNT(1) FROM vietnam_research_vnindex;

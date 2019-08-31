@@ -20,6 +20,8 @@ h1 {
 }
 h2 {
   border-left: 5px solid #fa9786;
+  background-color: #f8e8e5;
+  padding: 10px;
   font-size: 20px;
 }
 h2::before {
@@ -35,7 +37,7 @@ h3 {
 }
 
 .nav.fixed {
-  background-color: #f72b2b;
+  background-color: #fa9786;
   position: fixed;
   width: 100%;
   top: 0;
@@ -61,7 +63,7 @@ h3 {
   transition: background-color .2s linear;
 }
 .nav.fixed a:hover {
-  background-color: #f88282;
+  background-color: #fcac9e;
 }
 /* Tips: padding以外は必須です */
 .nav.fixed .usrname span::before {
