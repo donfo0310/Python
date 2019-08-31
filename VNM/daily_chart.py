@@ -23,12 +23,14 @@ def scraping(mkt, symbol):
         print(symbol)
     time.sleep(4)
 
+# specified
+print('specified list')
 SYMBOLS = ['SAB', 'GAS', 'PPC', 'VNM', 'VHC', 'PHR', 'FMC', 'VHM', 'VRE']
 for i in SYMBOLS:
     scraping('HOSE', i)
 
 # top5
-print('top5')
+print('\n' + 'top5')
 CON = sqlite3.connect('mysite/db.sqlite3')
 SQL = '''DELETE FROM vietnam_research_dailytop5'''
 CUR = CON.cursor()

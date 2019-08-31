@@ -17,6 +17,7 @@ def scraping(url, mkt):
     market_cap = []
     closing_price = []
     volume = []
+    trade_price_of_a_day = []
     per = []
     date = []
 
@@ -46,6 +47,10 @@ def scraping(url, mkt):
         temp = tag_tr.find_all('td', class_='table_list_right')[7].text
         temp = temp.replace('-', '0').replace(',', '')
         volume.append(float(temp))
+        # trade_price_of_a_day 売買代金
+        temp = tag_tr.find_all('td', class_='table_list_right')[8].text
+        temp = temp.replace('-', '0').replace(',', '')
+        trade_price_of_a_day.append(float(temp))
         # market_cap 時価総額（億円）
         temp = tag_tr.find_all('td', class_='table_list_right')[10].text
         temp = temp.replace('-', '0').replace(',', '')
@@ -69,6 +74,7 @@ def scraping(url, mkt):
         'count_per': 1/len(industry1),
         'closing_price': closing_price,
         'volume': volume,
+        'trade_price_of_a_day': trade_price_of_a_day,
         'marketcap': market_cap,
         'marketcap_per': market_cap/np.sum(market_cap),
         'per': per,
@@ -77,8 +83,8 @@ def scraping(url, mkt):
     sql = '''
             DELETE FROM vietnam_research_industry
             WHERE market_code = {quote}{market_code}{quote} AND
-            SUBSTR(pub_date, 1, 7) = {quote}{ym}{quote}'''
-    sql = sql.format(market_code=mkt, quote='\'', ym=ymdhms[:7])
+            SUBSTR(pub_date, 1, 10) = {quote}{ymd}{quote}'''
+    sql = sql.format(market_code=mkt, quote='\'', ymd=ymdhms[:10])
     cur.execute(sql)
     df_summary.to_sql('vietnam_research_industry', con, if_exists='append', index=None)
 

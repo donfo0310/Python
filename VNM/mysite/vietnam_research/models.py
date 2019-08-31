@@ -2,7 +2,13 @@
 from django.db import models
 
 class Industry(models.Model):
-    """viet-kabuで取得できる業種つき個社情報"""
+    """
+    viet-kabuで取得できる業種つき個社情報
+    closing_price: 終値（ドン）
+    volume: 出来高（株）
+    trade_price_of_a_day: 売買代金（千ドン）
+    marketcap: 時価総額（億円）
+    """
     market_code = models.CharField(max_length=4)
     symbol = models.CharField(max_length=10)
     company_name = models.CharField(max_length=50)
@@ -11,18 +17,24 @@ class Industry(models.Model):
     count_per = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
     closing_price = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
     volume = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    trade_price_of_a_day = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
     marketcap = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
     marketcap_per = models.DecimalField(max_digits=4, decimal_places=1, default=0.0)
     per = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
     pub_date = models.DateTimeField('date published')
 
 class IndustryClassification(models.Model):
-    """viet-kabuの産業名を産業区分1-3に"""
+    """
+    viet-kabuの産業名を産業区分1-3に
+    """
     industry1 = models.CharField(max_length=10)
     industry_class = models.IntegerField()
 
 class VnIndex(models.Model):
-    """https://jp.investing.com/indices/vn-historical-data"""
+    """
+    データ元:
+    https://jp.investing.com/indices/vn-historical-data
+    """
     Y = models.CharField(max_length=4)
     M = models.CharField(max_length=2)
     closing_price = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
@@ -42,7 +54,7 @@ class DailyTop5(models.Model):
     ind_name = models.CharField(max_length=10)
     market_code = models.CharField(max_length=4)
     symbol = models.CharField(max_length=10)
-    marketcap = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    trade_price_of_a_day = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
     per = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
 
 class BasicInformation(models.Model):
