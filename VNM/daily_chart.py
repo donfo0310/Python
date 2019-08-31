@@ -23,9 +23,9 @@ def scraping(mkt, symbol):
         print(symbol)
     time.sleep(4)
 
-symbols = ['SAB', 'GAS', 'PPC', 'VNM', 'VHC', 'PHR', 'FMC', 'VHM', 'VRE']
-for symbol in symbols:
-    scraping('HOSE', symbol)
+SYMBOLS = ['SAB', 'GAS', 'PPC', 'VNM', 'VHC', 'PHR', 'FMC', 'VHM', 'VRE']
+for i in SYMBOLS:
+    scraping('HOSE', i)
 
 # top5
 print('top5')
