@@ -170,6 +170,14 @@
     ドンを200で割ると、ざっくり日本円になります。
     1,000don -> 5円
 
+    <!-- top5 -->
+    {% for idx, row in top5list.iterrows %}
+        {%if forloop.counter0|divisibleby:"5" %}
+            <h2>{{ row.ind_name }}</h2>
+        {% endif %}
+        <img src="{% static 'vietnam_research/chart/' %}{{ row.symbol }}.png" alt="{{ row.symbol }}">
+    {% endfor %}
+
     <!-- 同業比較したいから、昇順keyつけてdbから出力 -->
     <!-- 上場日・主な事業・業種・ -->
     {% for idx, row in watchlist.iterrows %}
