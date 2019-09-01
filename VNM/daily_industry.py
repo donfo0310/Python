@@ -40,14 +40,14 @@ def scraping(url, mkt):
         temp = tag_tr.find_all('td', class_='table_list_center')[1]
         industry1.append(re.sub(r'\[(.+)\]', '', temp.img.get('title')))
         industry2.append(re.search(r'\[(.+)\]', temp.img.get('title')).group(1))
-        # closing_price	終値
+        # closing_price	終値（千ドン）
         temp = tag_tr.find_all('td', class_='table_list_right')[1].text
         closing_price.append(float(temp))
-        # volume 出来高
+        # volume 出来高（株）
         temp = tag_tr.find_all('td', class_='table_list_right')[7].text
         temp = temp.replace('-', '0').replace(',', '')
         volume.append(float(temp))
-        # trade_price_of_a_day 売買代金
+        # trade_price_of_a_day 売買代金（千ドン）
         temp = tag_tr.find_all('td', class_='table_list_right')[8].text
         temp = temp.replace('-', '0').replace(',', '')
         trade_price_of_a_day.append(float(temp))

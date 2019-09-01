@@ -4,7 +4,7 @@ from django.db import models
 class Industry(models.Model):
     """
     viet-kabuで取得できる業種つき個社情報
-    closing_price: 終値（ドン）
+    closing_price: 終値（千ドン）
     volume: 出来高（株）
     trade_price_of_a_day: 売買代金（千ドン）
     marketcap: 時価総額（億円）
