@@ -33,7 +33,7 @@ def index(request):
     # watchlist
     watchelist = pd.read_sql(
         '''
-        SELECT
+        SELECT DISTINCT
               w.symbol
             , '(' || i.industry1 || ')' || w.symbol || ' ' || i.company_name AS company_name
             , w.bought_day
