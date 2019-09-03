@@ -16,7 +16,7 @@ VNM/mysite> sqlite3 db.sqlite3
 
 -- ●industry
 -- 確認
-SELECT * FROM vietnam_research_industry LIMIT 30;
+SELECT pub_date, COUNT(pub_date) AS CNT FROM vietnam_research_industry GROUP BY pub_date;
 -- グループ集計
 SELECT pub_date, COUNT(1) FROM vietnam_research_industry GROUP BY pub_date;
 SELECT industry1, COUNT(1) FROM vietnam_research_industry GROUP BY industry1;

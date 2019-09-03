@@ -4,26 +4,16 @@ body {
   margin-top: 72px; /* 56 + 16 */
 }
 
-/* link */
-a {
-  color: #333;
-  text-decoration: none;
-}
-a:hover {
-  color: #333;
-  font-weight: 700;
-}
-
 /* 見出し */
 h1 {
     display: none;
 }
 h2 {
   border-left: 5px solid #ff5900;
-  background-color: #fd8e52;
+  background-color: #fdece3;
   padding: 10px;
   font-size: 20px;
-  color: white;
+  color: gray;
 }
 h2::before {
   font-family: "Font Awesome 5 Free";
@@ -62,6 +52,9 @@ h3 {
   color: #fff;
   text-decoration: none;
   transition: background-color .2s linear;
+}
+.nav.fixed a {
+  text-decoration: none;
 }
 .nav.fixed a:hover {
   background-color: #fd8e52;
