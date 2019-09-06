@@ -1,5 +1,6 @@
 """子供のurls.pyがこの処理を呼び出します"""
 import sqlite3
+import json
 from django.shortcuts import render
 import pandas as pd
 
@@ -20,6 +21,29 @@ def index(request):
         ORDER BY ind_name;
         '''
         , con)
+
+    # 日次積み上げグラフ
+    temp = pd.read_sql(
+        '''
+        SELECT
+              STRFTIME('%m/%d', DATE(pub_date)) AS pub_date
+            , industry1
+            , SUM(trade_price_of_a_day) AS trade_price_of_a_day
+        FROM vietnam_research_industry
+        GROUP BY pub_date, industry1
+        ORDER BY pub_date, industry1;
+        '''
+        , con)
+    industry_pivot = temp.pivot('pub_date', 'industry1', 'trade_price_of_a_day')
+    industry_stack = {"labels": industry_pivot.index.to_list(), "datasets": []}
+    colors = ['#7b9ad0', '#f8e352', '#c8d627', '#d5848b', '#e5ab47']
+    colors.extend(['#e1cea3', '#51a1a2', '#b1d7e4', '#66b7ec', '#c08e47', '#ae8dbc'])
+    for i, ele in enumerate(temp.groupby('industry1').groups.keys()):
+        industry_stack["datasets"].append({"label": ele, "backgroundColor": colors[i]})
+        value = temp.groupby('industry1').get_group(ele)['trade_price_of_a_day'].to_list()
+        industry_stack["datasets"][i]["data"] = value
+    print('\n【data from】\n', industry_pivot)
+    print('\n【data to】\n', industry_stack, '\n')
 
     # vnindex の月次ミルフィーユ
     vnindex = pd.read_sql(
@@ -66,6 +90,7 @@ def index(request):
     # context
     context = {
         'industry': industry,
+        'industry_stack': json.dumps(industry_stack, ensure_ascii=False),
         'vnindex': vnindex.to_dict(orient='index'),
         'watchlist': watchelist,
         'basicinfo': basicinfo,

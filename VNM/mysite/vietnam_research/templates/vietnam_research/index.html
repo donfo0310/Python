@@ -13,6 +13,7 @@
     <!-- chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
     <script src="{% static 'vietnam_research/js/lineChart.js' %}" charset="utf-8"></script>
+    <script src="{% static 'vietnam_research/js/barChart.js' %}" charset="utf-8"></script>
 
     <!-- D3.js -->
     <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
@@ -113,9 +114,18 @@
         RadarChart(".radarChart2", data2, radarChartOptions);
     </script>
 
+    <h2>業種別売買代金（千ドン）</h2>
+    <div class = "graph">
+        <canvas id="barChart1" width="1000px" height="400px"></canvas>
+    </div>
+    <script>
+        BarChart_stack("barChart1", JSON.parse('{{ industry_stack|safe }}'));
+    </script>
+
     <h2>VN-Index（時系列）</h2>
     <p>底堅く上昇トレンド</p>
     <canvas id="vnChart" style="height:300px; width:1000px"></canvas>
+
     <h2>VN-Index（年単位ミルフィーユ）</h2>
     <p>季節要因は特に感じられない</p>
     <canvas id="vnChart_layer" style="height:300px; width:1000px"></canvas>
@@ -186,6 +196,16 @@
         <p>{{ row.bought_day }}, {{ row.stocks_price }}VND, {{ row.stocks_count }}株, {{ row.bikou }}</p>
         <img src="{% static 'vietnam_research/chart/' %}{{ row.symbol }}.png" alt="{{ row.symbol }}">
     {% endfor %}
+    <div class="registration">
+        <form action="{% url 'index' %}" method="POST">
+            {% csrf_token %}
+            <input type="date" name="buy_today" id="today" required>
+            <input type="number" name="buy_price" required>
+            <input type="number" name="buy_stocks" required>
+            <input type="number" name="buy_text">
+            <input type="submit" value="登録">
+        </form>
+    </div>
 
     <h2>PERとは</h2>
     <img src="{% static 'vietnam_research/images/PER.png' %}" alt="PER">

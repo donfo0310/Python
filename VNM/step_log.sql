@@ -17,6 +17,7 @@ VNM/mysite> sqlite3 db.sqlite3
 -- ●industry
 -- 確認
 SELECT pub_date, COUNT(pub_date) AS CNT FROM vietnam_research_industry GROUP BY pub_date;
+SELECT DATE(pub_date) AS pub_date, industry1, SUM(trade_price_of_a_day) FROM vietnam_research_industry GROUP BY pub_date, industry1;
 -- グループ集計
 SELECT pub_date, COUNT(1) FROM vietnam_research_industry GROUP BY pub_date;
 SELECT industry1, COUNT(1) FROM vietnam_research_industry GROUP BY industry1;
