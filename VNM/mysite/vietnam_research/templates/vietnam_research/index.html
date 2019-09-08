@@ -43,6 +43,7 @@
 </head>
 <body>
     
+    <!-- nav -->
     <h1></h1>
     <div class="nav fixed">
         <ul class="right_align">
@@ -52,6 +53,94 @@
             <li class="logout"><a href="#logout">ログアウト</a></li>
         </ul>
     </div>
+
+    <!-- todo -->
+    <h2>Todo</h2>
+    <p>国の成長期に金融が稼げる理由は？</p>
+    <p>
+        データ:<br>
+        セクター別リターン<br>
+        個社利率<br>
+        配当性向<br>
+        50万円で大口株主になれる先リスト<br>
+        センチメント分析<br>
+        ニュース・有報から上方修正先を抽出<br>
+        あと何株買えるの？の計算式（excelでやるやつ）をフォームで
+    </p>
+    <p>スクレイピング: 上場日</p>
+
+    <!-- macro by industry -->
+    <h2>業種別マクロ分析</h2>
+    <p>これで3年分ぐらいを重ねてみたい</p>
+    <p>足元の鉱業の不調は、かつてベトナムの主力輸出品であった原油の生産量が原油価格低迷に伴い減少したことが主因と見られる。
+        他方、足元で製造業の伸び率が加速している点については、ベトナムに進出した外資系企業による鉄鋼や電機製品などの生産が
+        拡大したことに影響されたと見られる。中国やタイに比べて低いとされてきたベトナムの賃金は、近年、上昇が続いており、
+        ベトナムに進出した日系企業にとって悩みの種となっている。<BR>
+        <a href="https://www.murc.jp/wp-content/uploads/2018/03/report_180316.pdf">MURCベトナム経済の現状と今後の展望(20180316)</a>
+    </p>
+    <div class="radarChart1" style="display: inline-flex;"></div>
+    <div class="radarChart2" style="display: inline-flex;"></div>
+
+    <!-- trading price by industry -->
+    <h2>業種別売買代金（千ドン）</h2>
+    <canvas id="barChart1" width="1000px" height="400px"></canvas>
+
+    <!-- vn-index -->
+    <h2>VN-Index（時系列）</h2>
+    <p>底堅く上昇トレンド</p>
+    <canvas id="vnChart" style="height:300px; width:1000px"></canvas>
+
+    <!-- vn-index layer -->
+    <h2>VN-Index（年単位ミルフィーユ）</h2>
+    <p>季節要因は特に感じられない</p>
+    <canvas id="vnChart_layer" style="height:300px; width:1000px"></canvas>
+
+    <!-- exchange -->
+    <h2>ドンから日本円へ</h2>
+    ドンを200で割ると、ざっくり日本円になります。
+    1,000don -> 5円
+
+    <!-- top5 -->
+    {% for idx, row in top5list.iterrows %}
+        {%if forloop.counter0|divisibleby:"5" %}
+            <h2>{{ row.ind_name }}</h2>
+        {% endif %}
+        <img src="{% static 'vietnam_research/chart/' %}{{ row.symbol }}.png" alt="{{ row.symbol }}">
+    {% endfor %}
+
+    <!-- watchlist -->
+    {% for idx, row in watchlist.iterrows %}
+        <h2>{{ row.company_name }}</h2>
+        <p>{{ row.bought_day }}, {{ row.stocks_price }}VND, {{ row.stocks_count }}株, {{ row.bikou }}</p>
+        <img src="{% static 'vietnam_research/chart/' %}{{ row.symbol }}.png" alt="{{ row.symbol }}">
+    {% endfor %}
+    <!-- regist to watchlist -->
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="registration">
+            <ul>{{ form.as_ul }} <li><input type="submit" value="登録"></li></ul>
+        </div>
+    </form>
+
+    <!-- what is PER? -->
+    <h2>PERとは</h2>
+    <img src="{% static 'vietnam_research/images/PER.png' %}" alt="PER">
+
+    <!-- basicinfo -->
+    <h2>ベトナム基本情報</h2>
+    <div class="basicinfo">
+    {% for idx, row in basicinfo.iterrows %}
+    <table><tbody>
+        <tr>
+            <th><p>{{ row.item }}</p></th>
+            <td><p>{{ row.description }}</p></td>
+        </tr>
+    </tbody></table>
+    {% endfor %}
+    </div>
+    <a href="https://www.jetro.go.jp/world/asia/vn/stat_01.html">基礎的経済指標（日本貿易振興機構 jetro.go.jp）</a>
+    <p>※IMFデータをもとにSBI証券が作成を参考に</p>
+    <p>ベトナム経済は人口ボーナス期の真っ最中</p>
 
     <!-- Django to Javascript -->
     <script>
@@ -71,31 +160,6 @@
         data1.push({name: '企業数', axes: data1_inner});
         data2.push({name: '時価総額', axes: data2_inner});
     </script>
-
-    <h2>Todo</h2>
-    <p>国の成長期に金融が稼げる理由は？</p>
-    <p>
-        データ:<br>
-        セクター別リターン<br>
-        個社利率<br>
-        配当性向<br>
-        50万円で大口株主になれる先リスト<br>
-        センチメント分析<br>
-        ニュース・有報から上方修正先を抽出<br>
-        あと何株買えるの？の計算式（excelでやるやつ）をフォームで
-    </p>
-    <p>スクレイピング: 上場日</p>
-
-    <h2>業種別マクロ分析</h2>
-    <p>これで3年分ぐらいを重ねてみたい</p>
-    <p>足元の鉱業の不調は、かつてベトナムの主力輸出品であった原油の生産量が原油価格低迷に伴い減少したことが主因と見られる。
-        他方、足元で製造業の伸び率が加速している点については、ベトナムに進出した外資系企業による鉄鋼や電機製品などの生産が
-        拡大したことに影響されたと見られる。中国やタイに比べて低いとされてきたベトナムの賃金は、近年、上昇が続いており、
-        ベトナムに進出した日系企業にとって悩みの種となっている。<BR>
-        <a href="https://www.murc.jp/wp-content/uploads/2018/03/report_180316.pdf">MURCベトナム経済の現状と今後の展望(20180316)</a>
-    </p>
-    <div class="radarChart1" style="display: inline-flex;"></div>
-    <div class="radarChart2" style="display: inline-flex;"></div>
     <script>
         var margin = { top: 50, right: 130, bottom: 50, left: 80 };
         var radarChartOptions = {
@@ -110,25 +174,8 @@
             legend: { title: '業種別集計', translateX: 150, translateY: 40 },
             unit: '%'
         };
-        RadarChart(".radarChart1", data1, radarChartOptions);
-        RadarChart(".radarChart2", data2, radarChartOptions);
     </script>
-
-    <h2>業種別売買代金（千ドン）</h2>
-    <div class = "graph">
-        <canvas id="barChart1" width="1000px" height="400px"></canvas>
-    </div>
-    <script>
-        BarChart_stack("barChart1", JSON.parse('{{ industry_stack|safe }}'));
-    </script>
-
-    <h2>VN-Index（時系列）</h2>
-    <p>底堅く上昇トレンド</p>
-    <canvas id="vnChart" style="height:300px; width:1000px"></canvas>
-
-    <h2>VN-Index（年単位ミルフィーユ）</h2>
-    <p>季節要因は特に感じられない</p>
-    <canvas id="vnChart_layer" style="height:300px; width:1000px"></canvas>
+    <!-- TODO: python側でJSON構造体を作って引き渡すことで LineChart だけにできる -->
     {{ vnindex|json_script:"vnindex-json" }}
     <script>
         var vnidx = JSON.parse(document.getElementById('vnindex-json').textContent);
@@ -143,13 +190,6 @@
                 dataset.push(vnidx[yyyy][mm]);
             }
         }
-        LineChart('vnChart', labelset, [{
-            label: 'VN-Index', 
-            backgroundColor: 'rgba(255,89,0,0.3)', 
-            borderColor: 'rgb(255,89,0)', 
-            data: dataset
-        }]);
-
         // time-line_layer
         var labelset_layer = [];
         var dataset_layer = [];
@@ -173,58 +213,20 @@
                 data: dataset_layer_inner
             });
         }
-        LineChart('vnChart_layer', labelset_layer, dataset_layer);
-
     </script>
-
-    <h2>ドンから日本円へ</h2>
-    ドンを200で割ると、ざっくり日本円になります。
-    1,000don -> 5円
-
-    <!-- top5 -->
-    {% for idx, row in top5list.iterrows %}
-        {%if forloop.counter0|divisibleby:"5" %}
-            <h2>{{ row.ind_name }}</h2>
-        {% endif %}
-        <img src="{% static 'vietnam_research/chart/' %}{{ row.symbol }}.png" alt="{{ row.symbol }}">
-    {% endfor %}
-
-    <!-- 同業比較したいから、昇順keyつけてdbから出力 -->
-    <!-- 上場日・主な事業・業種・ -->
-    {% for idx, row in watchlist.iterrows %}
-        <h2>{{ row.company_name }}</h2>
-        <p>{{ row.bought_day }}, {{ row.stocks_price }}VND, {{ row.stocks_count }}株, {{ row.bikou }}</p>
-        <img src="{% static 'vietnam_research/chart/' %}{{ row.symbol }}.png" alt="{{ row.symbol }}">
-    {% endfor %}
-    <div class="registration">
-        <form action="{% url 'index' %}" method="POST">
-            {% csrf_token %}
-            <input type="date" name="buy_today" id="today" required>
-            <input type="number" name="buy_price" required>
-            <input type="number" name="buy_stocks" required>
-            <input type="number" name="buy_text">
-            <input type="submit" value="登録">
-        </form>
-    </div>
-
-    <h2>PERとは</h2>
-    <img src="{% static 'vietnam_research/images/PER.png' %}" alt="PER">
-
-    <h2>ベトナム基本情報</h2>
-    <div class="basicinfo">
-    {% for idx, row in basicinfo.iterrows %}
-    <table><tbody>
-        <tr>
-            <th><p>{{ row.item }}</p></th>
-            <td><p>{{ row.description }}</p></td>
-        </tr>
-    </tbody></table>
-    {% endfor %}
-    </div>
-
-    <a href="https://www.jetro.go.jp/world/asia/vn/stat_01.html">基礎的経済指標（日本貿易振興機構 jetro.go.jp）</a>
-    <p>※IMFデータをもとにSBI証券が作成を参考に</p>
-    <p>ベトナム経済は人口ボーナス期の真っ最中</p>
+    
+    <script>
+        RadarChart(".radarChart1", data1, radarChartOptions);
+        RadarChart(".radarChart2", data2, radarChartOptions);
+        BarChart_stack("barChart1", JSON.parse('{{ industry_stack|safe }}'));
+        LineChart('vnChart', labelset, [{
+            label: 'VN-Index', 
+            backgroundColor: 'rgba(255,89,0,0.3)', 
+            borderColor: 'rgb(255,89,0)', 
+            data: dataset
+        }]);
+        LineChart('vnChart_layer', labelset_layer, dataset_layer);
+    </script>
 
 </body>
 </html>

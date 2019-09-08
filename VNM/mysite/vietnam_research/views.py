@@ -1,11 +1,40 @@
 """子供のurls.pyがこの処理を呼び出します"""
 import sqlite3
 import json
-from django.shortcuts import render
+from datetime import datetime
+from django.shortcuts import render, redirect
 import pandas as pd
+
+from .forms import WatchelistForm
+from .models import WatchList
 
 def index(request):
     """いわばhtmlのページ単位の構成物です"""
+    if request.method == 'POST':
+        form = WatchelistForm(request.POST)
+        print('i am post.')
+        if form.is_valid():
+            print('i am valid.')
+            # form data
+            buy_symbol = form.cleaned_data['buy_symbol']
+            buy_date = form.cleaned_data['buy_date']
+            buy_cost = form.cleaned_data['buy_cost']
+            buy_stocks = form.cleaned_data['buy_stocks']
+            buy_bikou = form.cleaned_data['buy_bikou']
+            # db regist
+            watchlist = WatchList()
+            watchlist.symbol = buy_symbol
+            watchlist.already_has = True
+            watchlist.bought_day = buy_date
+            watchlist.stocks_price = buy_cost
+            watchlist.stocks_count = buy_stocks
+            watchlist.bikou = buy_bikou
+            watchlist.save()
+            # redirect
+            return redirect('vnm:index')
+    else:
+        form = WatchelistForm()
+        form.buy_date = datetime.today().strftime("%Y/%m/%d")
 
     # 業種別個社数、業種別時価総額
     con = sqlite3.connect('db.sqlite3')
@@ -94,7 +123,8 @@ def index(request):
         'vnindex': vnindex.to_dict(orient='index'),
         'watchlist': watchelist,
         'basicinfo': basicinfo,
-        'top5list': top5
+        'top5list': top5,
+        'form': form
     }
 
     # htmlとして返却します

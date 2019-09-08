@@ -104,7 +104,7 @@ h3 {
 }
 
 .registration {
-  padding: 20px;
+  padding: 20px 0px 20px 0px;
   background-image: linear-gradient(
       -45deg,
     #f5eeed 25%,
@@ -117,4 +117,11 @@ h3 {
   );
   background-size: 30px 30px;
   background-attachment: fixed;
+}
+.registration ul {
+  padding-left: 0px;
+}
+.registration li {
+  display: inline;
+  padding: 0px 0px 0px 20px;
 }

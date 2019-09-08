@@ -53,3 +53,7 @@ HAVING per >1;
 SELECT COUNT(1) FROM vietnam_research_vnindex;
 -- pivotはsqliteにはないのでpandasでやってください
 SELECT Y, M, closing_price FROM vietnam_research_vnindex;
+
+-- ●watchlist
+SELECT * FROM vietnam_research_watchlist;
+DELETE FROM vietnam_research_watchlist WHERE symbol = 'XXX'
