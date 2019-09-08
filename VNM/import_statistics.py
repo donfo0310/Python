@@ -42,6 +42,7 @@ STAT = STAT.rename(columns=dict(zip(COLS, COLS_NEW)))
 STAT['Year'] = STAT['Year'].str[-4:].astype(int)
 STAT['Exports_usd_1M'] = STAT['Exports_usd_1M'].replace('..', 0).astype(float)
 STAT = STAT[COLS_NEW]
+STAT = STAT.pivot('Country', 'Year', 'Exports_usd_1M')
 print(STAT)
 
 # E08.12.csv: 輸出用の主な商品
