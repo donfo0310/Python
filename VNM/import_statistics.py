@@ -42,6 +42,7 @@ STAT = STAT.rename(columns=dict(zip(COLS, COLS_NEW)))
 STAT['Year'] = STAT['Year'].str[-4:].astype(int)
 STAT['Exports_usd_1M'] = STAT['Exports_usd_1M'].replace('..', 0).astype(float)
 STAT = STAT[COLS_NEW]
+# (db登録はこのタイミング)
 STAT = STAT.pivot('Country', 'Year', 'Exports_usd_1M')
 print(STAT)
 
@@ -53,6 +54,7 @@ STAT = STAT.rename(columns=dict(zip(COLS, COLS_NEW)))
 STAT['Year'] = STAT['Year'].str[-4:].astype(int)
 STAT['amount'] = STAT['amount'].replace('..', 0).astype(float)
 STAT = STAT[COLS_NEW]
+# (db登録はこのタイミング)
 STAT = STAT.pivot('goods', 'Year', 'amount')
 print(STAT)
 

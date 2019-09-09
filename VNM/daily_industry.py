@@ -33,7 +33,7 @@ def scraping(url, mkt):
     for tag_tr in soup.find_all('tr', id=True):
         # Symbol, company_name, date
         temp = tag_tr.find_all('td', class_='table_list_center')[0]
-        symbol_code.append(temp.text.strip())       # AAA
+        symbol_code.append(re.sub("＊", '', temp.text.strip()))       # AAA
         company_name.append(temp.a.get('title'))    # アンファット・バイオプラスチック
         date.append(ymdhms)                         # 2019-08-16 15:00:00
         # industry1, industry2

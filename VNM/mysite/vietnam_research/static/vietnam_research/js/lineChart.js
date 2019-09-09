@@ -1,4 +1,4 @@
-const LineChart = function (chart_id, labelset, dataset) {
+const LineChart = function (chart_id, data) {
 
   var ctx = document.getElementById(chart_id).getContext('2d');
 
@@ -7,10 +7,7 @@ const LineChart = function (chart_id, labelset, dataset) {
       type: 'line',
 
       // The data for our dataset
-      data: {
-          labels: labelset,
-          datasets: dataset
-      },
+      data: data,
 
       // Configuration options go here
       options: {

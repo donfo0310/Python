@@ -36,7 +36,7 @@ def index(request):
         form = WatchelistForm()
         form.buy_date = datetime.today().strftime("%Y/%m/%d")
 
-    # 業種別個社数、業種別時価総額
+    # count by industry, marketcap by industry
     con = sqlite3.connect('db.sqlite3')
     industry = pd.read_sql(
         '''
@@ -51,7 +51,7 @@ def index(request):
         '''
         , con)
 
-    # 日次積み上げグラフ
+    # daily chart stack
     temp = pd.read_sql(
         '''
         SELECT
@@ -71,17 +71,28 @@ def index(request):
         industry_stack["datasets"].append({"label": ele, "backgroundColor": colors[i]})
         value = temp.groupby('industry1').get_group(ele)['trade_price_of_a_day'].to_list()
         industry_stack["datasets"][i]["data"] = value
-    print('\n【data from】\n', industry_pivot)
-    print('\n【data to】\n', industry_stack, '\n')
+    # print('\n【data from】\n', industry_pivot)
+    # print('\n【data to】\n', industry_stack, '\n')
 
-    # vnindex の月次ミルフィーユ
-    vnindex = pd.read_sql(
+    # vnindex
+    temp = pd.read_sql(
         '''
         SELECT Y, M, closing_price
         FROM vietnam_research_vnindex
         ORDER BY Y, M;
         '''
-        , con).pivot('Y', 'M', 'closing_price').fillna(0)
+        , con)
+    # vnindex: simple timeline
+    vnindex_timeline = {"labels": (temp['Y'] + temp['M']).to_list(), "datasets": []}
+    inner = {"label": 'VN-Index', "data": temp['closing_price'].to_list()}
+    vnindex_timeline["datasets"].append(inner)
+    # vnindex: annual layer
+    vnindex_pivot = temp.pivot('Y', 'M', 'closing_price').fillna(0)
+    vnindex_layers = {"labels": list(vnindex_pivot.columns.values), "datasets": []}
+    for i, yyyy in enumerate(vnindex_pivot.iterrows()):
+        inner = {"label": yyyy[0], "data": list(yyyy[1])}
+        vnindex_layers["datasets"].append(inner)
+    # print('vnindex_pivot: ', vnindex_pivot)
 
     # watchlist
     watchelist = pd.read_sql(
@@ -120,7 +131,8 @@ def index(request):
     context = {
         'industry': industry,
         'industry_stack': json.dumps(industry_stack, ensure_ascii=False),
-        'vnindex': vnindex.to_dict(orient='index'),
+        'vnindex_timeline': json.dumps(vnindex_timeline, ensure_ascii=False),
+        'vnindex_layers': json.dumps(vnindex_layers, ensure_ascii=False),
         'watchlist': watchelist,
         'basicinfo': basicinfo,
         'top5list': top5,
