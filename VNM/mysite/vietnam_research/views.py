@@ -38,18 +38,31 @@ def index(request):
 
     # count by industry, marketcap by industry
     con = sqlite3.connect('db.sqlite3')
-    industry = pd.read_sql(
+    temp = pd.read_sql(
         '''
         SELECT
-              c.industry_class || '|' || i.industry1 AS ind_name
+            c.industry_class || '|' || i.industry1 AS ind_name
             , ROUND(SUM(count_per),2) AS cnt_per
             , ROUND(SUM(marketcap_per),2) AS cap_per
-        FROM vietnam_research_industry i INNER JOIN vietnam_research_industryclassification c
-        ON i.industry1 = c.industry1
+        FROM ((vietnam_research_industry i
+        INNER JOIN vietnam_research_industryclassification c
+            ON i.industry1 = c.industry1)
+        INNER JOIN (SELECT MAX(pub_date) AS pub_date FROM vietnam_research_industry) X
+            ON i.pub_date = X.pub_date )
         GROUP BY i.industry1, c.industry_class
         ORDER BY ind_name;
         '''
         , con)
+    industry_count = []
+    industry_cap = []
+    inner = []
+    for row in temp.iterrows():
+        inner.append({"axis": row[1]["ind_name"], "value": row[1]["cnt_per"]})
+    industry_count.append({"name": '企業数', "axes": inner})
+    inner = []
+    for row in temp.iterrows():
+        inner.append({"axis": row[1]["ind_name"], "value": row[1]["cap_per"]})
+    industry_cap.append({"name": '時価総額', "axes": inner})
 
     # daily chart stack
     temp = pd.read_sql(
@@ -129,7 +142,8 @@ def index(request):
 
     # context
     context = {
-        'industry': industry,
+        'industry_count': json.dumps(industry_count, ensure_ascii=False),
+        'industry_cap': json.dumps(industry_cap, ensure_ascii=False),
         'industry_stack': json.dumps(industry_stack, ensure_ascii=False),
         'vnindex_timeline': json.dumps(vnindex_timeline, ensure_ascii=False),
         'vnindex_layers': json.dumps(vnindex_layers, ensure_ascii=False),

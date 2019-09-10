@@ -142,30 +142,11 @@
     <p>※IMFデータをもとにSBI証券が作成を参考に</p>
     <p>ベトナム経済は人口ボーナス期の真っ最中</p>
 
-    <!-- Django to Javascript -->
     <script>
-        var data1 = [];
-        var data1_inner = [];
-        var data2 = [];
-        var data2_inner = [];
-    </script>
-    {% for idx, row in industry.iterrows %}
-        <script>
-            data1_inner.push({axis: "{{ row.ind_name }}", value: "{{ row.cnt_per }}"})
-            data2_inner.push({axis: "{{ row.ind_name }}", value: "{{ row.cap_per }}"})
-        </script>
-    {% endfor %}
-    <script>
-        // 数字のidxを変えて代入すると時点を変えたグラフを一緒に表示できる
-        data1.push({name: '企業数', axes: data1_inner});
-        data2.push({name: '時価総額', axes: data2_inner});
-    </script>
-    <script>
-        var margin = { top: 50, right: 130, bottom: 50, left: 80 };
         var radarChartOptions = {
             w: 290,
             h: 350,
-            margin: margin,
+            margin: { top: 50, right: 130, bottom: 50, left: 80 },
             levels: 5,
             roundStrokes: true,
             color: d3.scaleOrdinal().range(['rgb(255,89,0)']), // orange"#ff5900"
@@ -175,8 +156,8 @@
             unit: '%'
         };
 
-        RadarChart(".radarChart1", data1, radarChartOptions); // d3
-        RadarChart(".radarChart2", data2, radarChartOptions); // d3
+        RadarChart(".radarChart1", JSON.parse('{{ industry_count|safe }}'), radarChartOptions);
+        RadarChart(".radarChart2", JSON.parse('{{ industry_cap|safe }}'), radarChartOptions);
         BarChart_stack("barChart1", JSON.parse('{{ industry_stack|safe }}'));
         LineChart("vnChart", JSON.parse('{{ vnindex_timeline|safe }}'));
         LineChart("vnChart_layer", JSON.parse('{{ vnindex_layers|safe }}'));

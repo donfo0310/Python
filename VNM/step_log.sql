@@ -30,8 +30,11 @@ SELECT
       c.industry_class || '|' || i.industry1 AS ind_name
     , ROUND(SUM(count_per),2) AS cnt_per
     , ROUND(SUM(marketcap_per),2) AS cap_per
-FROM vietnam_research_industry i INNER JOIN vietnam_research_industryclassification c
-ON i.industry1 = c.industry1
+FROM ((vietnam_research_industry i
+INNER JOIN vietnam_research_industryclassification c
+  ON i.industry1 = c.industry1)
+INNER JOIN (SELECT MAX(pub_date) AS pub_date FROM vietnam_research_industry) X
+  ON i.pub_date = X.pub_date )
 GROUP BY i.industry1, c.industry_class
 ORDER BY ind_name;
 
