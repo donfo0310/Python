@@ -1,8 +1,8 @@
 """vn-indexを取り込みます（終値を取り込みます。基本的にappendでスタック）
 https://jp.investing.com/indices/vn-historical-data
 """
-import sqlite3
 import datetime
+from sqlalchemy import create_engine
 import pandas as pd
 
 VN_INDEX = pd.read_csv('import/csv/VN 過去データ.csv', usecols=['日付け', '終値'])
@@ -13,11 +13,10 @@ VN_INDEX['終値'] = VN_INDEX['終値'].str.replace(',', '').astype(float)
 VN_INDEX = VN_INDEX.rename(columns={'終値': 'closing_price'})
 VN_INDEX['pub_date'] = datetime.datetime.now().strftime("%Y-%m-%d")
 
-# sqlite3
-CON = sqlite3.connect('mysite/db.sqlite3')
-CUR = CON.cursor()
-SQL = '''DELETE FROM vietnam_research_vnindex'''
-CUR.execute(SQL)
+# mysql
+CON_STR = 'mysql+mysqldb://root:mysql0214@localhost/pythondb?charset=utf8&use_unicode=1'
+CON = create_engine(CON_STR, echo=False).connect()
+CON.execute('DELETE FROM vietnam_research_vnindex')
 VN_INDEX.to_sql('vietnam_research_vnindex', CON, if_exists='append', index=None)
 
 # log
