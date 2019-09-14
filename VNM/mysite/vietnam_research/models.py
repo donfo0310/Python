@@ -14,13 +14,13 @@ class Industry(models.Model):
     company_name = models.CharField(max_length=50)
     industry1 = models.CharField(max_length=10)
     industry2 = models.CharField(max_length=20)
-    count_per = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
-    closing_price = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
-    volume = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
-    trade_price_of_a_day = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
-    marketcap = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
-    marketcap_per = models.DecimalField(max_digits=4, decimal_places=1, default=0.0)
-    per = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    count_per = models.FloatField(default=0.00)
+    closing_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    volume = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    trade_price_of_a_day = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
+    marketcap = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    marketcap_per = models.FloatField(default=0.0)
+    per = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     pub_date = models.DateTimeField('date published')
 
 class IndustryClassification(models.Model):
@@ -37,7 +37,7 @@ class VnIndex(models.Model):
     """
     Y = models.CharField(max_length=4)
     M = models.CharField(max_length=2)
-    closing_price = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    closing_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     pub_date = models.DateTimeField('date published')
 
 class WatchList(models.Model):
@@ -54,8 +54,8 @@ class DailyTop5(models.Model):
     ind_name = models.CharField(max_length=10)
     market_code = models.CharField(max_length=4)
     symbol = models.CharField(max_length=10)
-    trade_price_of_a_day = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
-    per = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
+    trade_price_of_a_day = models.FloatField(default=0.00)
+    per = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
 class BasicInformation(models.Model):
     """基本情報"""
