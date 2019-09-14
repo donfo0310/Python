@@ -18,7 +18,7 @@ improvement(top5):
 import time
 import urllib.request
 import datetime
-import sqlite3
+from sqlalchemy import create_engine
 from bs4 import BeautifulSoup
 import pandas as pd
 
@@ -45,17 +45,17 @@ for i in SYMBOLS:
 
 # chart2: top 5 by industry
 print('\n' + 'top 5')
-CON = sqlite3.connect('mysite/db.sqlite3')
-SQL = '''DELETE FROM vietnam_research_dailytop5'''
-CUR = CON.cursor()
-CUR.execute(SQL)
-AGG = pd.read_sql(
+# mysql
+CON_STR = 'mysql+mysqldb://root:mysql0214@localhost/pythondb?charset=utf8&use_unicode=1'
+CON = create_engine(CON_STR, echo=False).connect()
+CON.execute('DELETE FROM vietnam_research_dailytop5')
+AGG = pd.read_sql_query(
     '''
     SELECT
-          c.industry_class || '|' || i.industry1 AS ind_name
+          CONCAT(c.industry_class, '|', i.industry1) AS ind_name
         , i.market_code
         , i.symbol
-        , AVG(trade_price_of_a_day) AS trade_price_of_a_day
+        , AVG(i.trade_price_of_a_day) AS trade_price_of_a_day
         , AVG(i.per) AS per
     FROM vietnam_research_industry i INNER JOIN vietnam_research_industryclassification c
     ON i.industry1 = c.industry1
