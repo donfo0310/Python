@@ -1,18 +1,10 @@
 -- DjangoでDBを消去して再migrationする
 -- https://qiita.com/riz666/items/59352c336398e0321fc2
 
--- SQLite3 チートシート https://qiita.com/sotetsuk/items/cd2aeae4ba7e72faad47
--- 設定を表示する（ .separator で区切り文字を変更）
-.show
-.separator ,
-
--- テーブル一覧を表示する
-.tables
-.schema vietnam_research_industry
-
--- SQLite3を実行する位置
-VNM> sqlite3 mysite/db.sqlite3
-VNM/mysite> sqlite3 db.sqlite3
+-- MySQL チートシート http://shiningcureseven.hatenablog.com/entry/2018/08/03/122221
+vscode> mysql --local_infile=1 -u root -p
+mysql> use pythondb;
+mysql> load data local infile "D:/OneDrive/ドキュメント/Project/Python/VNM/import/csv/bk/vietnam_research_industry.csv" into table vietnam_research_industry fields terminated by ',' optionally enclosed by '"';
 
 -- ●industry
 -- 確認
