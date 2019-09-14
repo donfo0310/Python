@@ -1,8 +1,8 @@
 """ベトナム統計を取り込みます
 https://www.gso.gov.vn/Default_en.aspx?tabid=766
 """
-import sqlite3
 import datetime
+from sqlalchemy import create_engine
 import pandas as pd
 
 # E08.01.csv: 商品およびサービス(小売)のカテゴリー別売上高（単位: 10億ドン）
@@ -58,11 +58,10 @@ STAT = STAT[COLS_NEW]
 STAT = STAT.pivot('goods', 'Year', 'amount')
 print(STAT)
 
-# # sqlite3
-# CON = sqlite3.connect('mysite/db.sqlite3')
-# CUR = CON.cursor()
-# SQL = '''DELETE FROM vietnam_research_vnindex'''
-# CUR.execute(SQL)
+# mysql
+# CON_STR = 'mysql+mysqldb://root:mysql0214@localhost/pythondb?charset=utf8&use_unicode=1'
+# CON = create_engine(CON_STR, echo=False).connect()
+# CON.execute('DELETE FROM vietnam_research_vnindex')
 # STAT.to_sql('vietnam_research_vnindex', CON, if_exists='append', index=None)
 
 # # log
