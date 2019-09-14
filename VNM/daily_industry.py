@@ -1,8 +1,8 @@
 """業種情報を取得します"""
 import re
 import urllib.request
-import sqlite3
 import datetime
+from sqlalchemy import create_engine
 from bs4 import BeautifulSoup
 import numpy as np
 import pandas as pd
@@ -60,9 +60,9 @@ def scraping(url, mkt):
         temp = temp.replace('-', '0')
         per.append(float(temp))
 
-    # sqlite3
-    con = sqlite3.connect('mysite/db.sqlite3')
-    cur = con.cursor()
+    # mysql
+    con_str = 'mysql+mysqldb://root:mysql0214@localhost/pythondb?charset=utf8&use_unicode=1'
+    con = create_engine(con_str, echo=False).connect()
 
     # data1 summary data（毎月末のデータが蓄積する）
     df_summary = pd.DataFrame({
@@ -85,7 +85,7 @@ def scraping(url, mkt):
             WHERE market_code = {quote}{market_code}{quote} AND
             SUBSTR(pub_date, 1, 10) = {quote}{ymd}{quote}'''
     sql = sql.format(market_code=mkt, quote='\'', ymd=ymdhms[:10])
-    cur.execute(sql)
+    con.execute(sql)
     df_summary.to_sql('vietnam_research_industry', con, if_exists='append', index=None)
 
 # ホーチミン証券取引所
