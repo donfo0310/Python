@@ -1,7 +1,7 @@
 """子供のurls.pyがこの処理を呼び出します"""
-import sqlite3
 import json
 from datetime import datetime
+from sqlalchemy import create_engine
 from django.shortcuts import render, redirect
 import pandas as pd
 
@@ -12,9 +12,7 @@ def index(request):
     """いわばhtmlのページ単位の構成物です"""
     if request.method == 'POST':
         form = WatchelistForm(request.POST)
-        print('i am post.')
         if form.is_valid():
-            print('i am valid.')
             # form data
             buy_symbol = form.cleaned_data['buy_symbol']
             buy_date = form.cleaned_data['buy_date']
@@ -37,22 +35,33 @@ def index(request):
         form.buy_date = datetime.today().strftime("%Y/%m/%d")
 
     # count by industry, marketcap by industry
-    con = sqlite3.connect('db.sqlite3')
-    temp = pd.read_sql(
+    # mysql
+    con_str = 'mysql+mysqldb://root:mysql0214@localhost/pythondb?charset=utf8&use_unicode=1'
+    con = create_engine(con_str, echo=False).connect()
+    temp = pd.read_sql_query(
         '''
         SELECT
-            c.industry_class || '|' || i.industry1 AS ind_name
-            , ROUND(SUM(count_per),2) AS cnt_per
-            , ROUND(SUM(marketcap_per),2) AS cap_per
-        FROM ((vietnam_research_industry i
-        INNER JOIN vietnam_research_industryclassification c
-            ON i.industry1 = c.industry1)
-        INNER JOIN (SELECT MAX(pub_date) AS pub_date FROM vietnam_research_industry) X
-            ON i.pub_date = X.pub_date )
+            CONCAT(c.industry_class, '|', i.industry1) AS ind_name
+            , ROUND(COUNT(i.industry1),2) AS cnt_per
+            , ROUND(SUM(i.marketcap),2) AS cap_per
+        FROM pythondb.vietnam_research_industry i
+        INNER JOIN vietnam_research_industryclassification c ON i.industry1 = c.industry1
+        WHERE DATE(pub_date) = (
+            SELECT
+                DATE(MAX(pub_date)) pub_date
+            FROM pythondb.vietnam_research_industry
+            )
         GROUP BY i.industry1, c.industry_class
         ORDER BY ind_name;
         '''
         , con)
+
+    # TODO:当日のみのSQLを考える
+    # Option think 1
+    # pre-SQLを事前に実行してスカラを出して、pythonで置換したSQLを実行
+    # Option think 2
+    # 当日明細だけ取得して、合計出しは numpy, 集計はpandas で？
+
     industry_count = []
     industry_cap = []
     inner = []
@@ -65,10 +74,10 @@ def index(request):
     industry_cap.append({"name": '時価総額', "axes": inner})
 
     # daily chart stack
-    temp = pd.read_sql(
+    temp = pd.read_sql_query(
         '''
         SELECT
-              STRFTIME('%m/%d', DATE(pub_date)) AS pub_date
+              DATE_FORMAT(pub_date,'%%Y%%m%%d') pub_date
             , industry1
             , SUM(trade_price_of_a_day) AS trade_price_of_a_day
         FROM vietnam_research_industry
@@ -76,7 +85,8 @@ def index(request):
         ORDER BY pub_date, industry1;
         '''
         , con)
-    industry_pivot = temp.pivot('pub_date', 'industry1', 'trade_price_of_a_day')
+    temp = temp[temp.notna()] # TODO:NAキモチワル
+    industry_pivot = pd.pivot_table(temp, index='pub_date', columns='industry1', values='trade_price_of_a_day', aggfunc='sum')
     industry_stack = {"labels": industry_pivot.index.to_list(), "datasets": []}
     colors = ['#7b9ad0', '#f8e352', '#c8d627', '#d5848b', '#e5ab47']
     colors.extend(['#e1cea3', '#51a1a2', '#b1d7e4', '#66b7ec', '#c08e47', '#ae8dbc'])
@@ -84,11 +94,11 @@ def index(request):
         industry_stack["datasets"].append({"label": ele, "backgroundColor": colors[i]})
         value = temp.groupby('industry1').get_group(ele)['trade_price_of_a_day'].to_list()
         industry_stack["datasets"][i]["data"] = value
-    # print('\n【data from】\n', industry_pivot)
-    # print('\n【data to】\n', industry_stack, '\n')
+    print('\n【data from】\n', industry_pivot)
+    print('\n【data to】\n', industry_stack, '\n')
 
     # vnindex
-    temp = pd.read_sql(
+    temp = pd.read_sql_query(
         '''
         SELECT Y, M, closing_price
         FROM vietnam_research_vnindex
@@ -105,14 +115,14 @@ def index(request):
     for i, yyyy in enumerate(vnindex_pivot.iterrows()):
         inner = {"label": yyyy[0], "data": list(yyyy[1])}
         vnindex_layers["datasets"].append(inner)
-    # print('vnindex_pivot: ', vnindex_pivot)
+    print('vnindex_pivot: ', vnindex_pivot)
 
     # watchlist
-    watchelist = pd.read_sql(
+    watchelist = pd.read_sql_query(
         '''
         SELECT DISTINCT
               w.symbol
-            , '(' || i.industry1 || ')' || w.symbol || ' ' || i.company_name AS company_name
+            , CONCAT('(', i.industry1, ')', w.symbol, ' ', i.company_name) AS company_name
             , w.bought_day
             , w.stocks_price
             , w.stocks_count
@@ -124,7 +134,7 @@ def index(request):
         , con)
 
     # basicinfo
-    basicinfo = pd.read_sql(
+    basicinfo = pd.read_sql_query(
         '''
         SELECT
               b.item
@@ -135,7 +145,7 @@ def index(request):
         , con)
 
     # top5
-    top5 = pd.read_sql('SELECT * FROM vietnam_research_dailytop5;', con)
+    top5 = pd.read_sql_query('SELECT * FROM vietnam_research_dailytop5;', con)
     sort_criteria = ['ind_name', 'marketcap', 'per']
     order_criteria = [True, False, False]
     top5 = top5.sort_values(by=sort_criteria[0], ascending=order_criteria[0])
