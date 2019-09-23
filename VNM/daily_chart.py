@@ -46,7 +46,7 @@ for i in SYMBOLS:
 # chart2: top 5 by industry
 print('\n' + 'top 5')
 # mysql
-CON_STR = 'mysql+mysqldb://root:mysql0214@localhost/pythondb?charset=utf8&use_unicode=1'
+CON_STR = 'mysql+mysqldb://python:python123@127.0.0.1/pythondb?charset=utf8&use_unicode=1'
 CON = create_engine(CON_STR, echo=False).connect()
 CON.execute('DELETE FROM vietnam_research_dailytop5')
 AGG = pd.read_sql_query(
