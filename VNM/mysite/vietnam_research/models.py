@@ -14,14 +14,12 @@ class Industry(models.Model):
     company_name = models.CharField(max_length=50)
     industry1 = models.CharField(max_length=10)
     industry2 = models.CharField(max_length=20)
-    count_per = models.FloatField(default=0.00)
     closing_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     volume = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     trade_price_of_a_day = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
     marketcap = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    marketcap_per = models.FloatField(default=0.0)
     per = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    pub_date = models.DateTimeField('date published')
+    pub_date = models.DateTimeField()
 
 class IndustryClassification(models.Model):
     """
@@ -38,7 +36,7 @@ class VnIndex(models.Model):
     Y = models.CharField(max_length=4)
     M = models.CharField(max_length=2)
     closing_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    pub_date = models.DateTimeField('date published')
+    pub_date = models.DateTimeField()
 
 class WatchList(models.Model):
     """ウォッチリスト"""
