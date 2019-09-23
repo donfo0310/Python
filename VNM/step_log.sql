@@ -5,6 +5,10 @@
 vscode> mysql --local_infile=1 -u root -p
 mysql> use pythondb;
 mysql> load data local infile "D:/OneDrive/ドキュメント/Project/Python/VNM/import/csv/bk/vietnam_research_industry.csv" into table vietnam_research_industry fields terminated by ',' optionally enclosed by '"';
+-- Notation
+-- 1. id列の全行に0を入れるとautoincrementが働く
+-- 2. pub_date の yyyy-mm-dd hh:mm:ss データをCSVインポートしようとすると桁が足りない？とかいう
+-- 3. mysqlの%表記をdjangoが勘違いしてDATE_FORMATが使えない
 
 -- ●industry
 -- 確認

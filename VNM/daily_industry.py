@@ -61,7 +61,7 @@ def scraping(url, mkt):
         per.append(float(temp))
 
     # mysql
-    con_str = 'mysql+mysqldb://root:mysql0214@localhost/pythondb?charset=utf8&use_unicode=1'
+    con_str = 'mysql+mysqldb://python:python123@127.0.0.1/pythondb?charset=utf8&use_unicode=1'
     con = create_engine(con_str, echo=False).connect()
 
     # data1 summary data（毎月末のデータが蓄積する）
