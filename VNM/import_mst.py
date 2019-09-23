@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 import pandas as pd
 
 # mysql
-CON_STR = 'mysql+mysqldb://root:mysql0214@localhost/pythondb?charset=utf8&use_unicode=1'
+CON_STR = 'mysql+mysqldb://python:python123@127.0.0.1/pythondb?charset=utf8&use_unicode=1'
 CON = create_engine(CON_STR, echo=False).connect()
 
 # reset
