@@ -71,12 +71,10 @@ def scraping(url, mkt):
         'company_name': company_name,
         'industry1': industry1,
         'industry2': industry2,
-        'count_per': 1/len(industry1),
         'closing_price': closing_price,
         'volume': volume,
         'trade_price_of_a_day': trade_price_of_a_day,
         'marketcap': market_cap,
-        'marketcap_per': market_cap/np.sum(market_cap),
         'per': per,
         'pub_date': date
     })
