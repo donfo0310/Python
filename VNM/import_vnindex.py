@@ -14,7 +14,7 @@ VN_INDEX = VN_INDEX.rename(columns={'終値': 'closing_price'})
 VN_INDEX['pub_date'] = datetime.datetime.now().strftime("%Y-%m-%d")
 
 # mysql
-CON_STR = 'mysql+mysqldb://root:mysql0214@localhost/pythondb?charset=utf8&use_unicode=1'
+CON_STR = 'mysql+mysqldb://python:python123@127.0.0.1/pythondb?charset=utf8&use_unicode=1'
 CON = create_engine(CON_STR, echo=False).connect()
 CON.execute('DELETE FROM vietnam_research_vnindex')
 VN_INDEX.to_sql('vietnam_research_vnindex', CON, if_exists='append', index=None)
