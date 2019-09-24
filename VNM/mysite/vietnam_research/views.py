@@ -36,7 +36,7 @@ def index(request):
 
     # count by industry, marketcap by industry
     # mysql
-    con_str = 'mysql+mysqldb://root:mysql0214@localhost/pythondb?charset=utf8&use_unicode=1'
+    con_str = 'mysql+mysqldb://python:python123@127.0.0.1/pythondb?charset=utf8&use_unicode=1'
     con = create_engine(con_str, echo=False).connect()
     temp = pd.read_sql_query(
         '''
