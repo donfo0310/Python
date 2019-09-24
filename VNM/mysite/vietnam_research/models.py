@@ -53,7 +53,7 @@ class DailyTop5(models.Model):
     market_code = models.CharField(max_length=4)
     symbol = models.CharField(max_length=10)
     trade_price_of_a_day = models.FloatField(default=0.00)
-    per = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    per = models.FloatField(default=0.00)
 
 class BasicInformation(models.Model):
     """基本情報"""
