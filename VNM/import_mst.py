@@ -13,15 +13,16 @@ CON.execute('DELETE FROM vietnam_research_watchlist')
 CON.execute('DELETE FROM vietnam_research_basicinformation')
 
 # insert
-SH = ['IndClass', 'WatchList', 'BasicInfo']
 TABLE = []
 TABLE.append('vietnam_research_industryclassification')
 TABLE.append('vietnam_research_watchlist')
 TABLE.append('vietnam_research_basicinformation')
-DF = pd.read_excel('import/xlsx/mst.xlsx', sheet_name=SH)
-DF[SH[0]].to_sql(TABLE[0], CON, if_exists='append', index=None)
-DF[SH[1]].to_sql(TABLE[1], CON, if_exists='append', index=None)
-DF[SH[2]].to_sql(TABLE[2], CON, if_exists='append', index=None)
+DF = pd.read_csv('import/csv/mst_IndClass.csv', sep=',')
+DF.to_sql(TABLE[0], CON, if_exists='append', index=None)
+DF = pd.read_csv('import/csv/mst_WatchList.csv', sep=',')
+DF.to_sql(TABLE[1], CON, if_exists='append', index=None)
+DF = pd.read_csv('import/csv/mst_BasicInfo.csv', sep=',')
+DF.to_sql(TABLE[2], CON, if_exists='append', index=None)
 
 # log
 with open('result.log', mode='a') as f:
