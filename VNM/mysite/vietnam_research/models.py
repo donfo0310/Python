@@ -59,8 +59,6 @@ class Sbi(models.Model):
     """SBI証券取り扱い銘柄"""
     market_code = models.CharField(max_length=4)
     symbol = models.CharField(max_length=10)
-    company_name = models.CharField(max_length=50)
-    bikou = models.TextField(blank=True, null=True)
 
 class BasicInformation(models.Model):
     """基本情報"""

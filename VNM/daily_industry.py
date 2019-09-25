@@ -4,7 +4,6 @@ import urllib.request
 import datetime
 from sqlalchemy import create_engine
 from bs4 import BeautifulSoup
-import numpy as np
 import pandas as pd
 
 def scraping(url, mkt):
