@@ -36,7 +36,7 @@ scraping()
 
 # log
 with open('result.log', mode='a') as f:
-    f.write('\n' + datetime.datetime.now().strftime("%Y/%m/%d %a %H:%M:%S ") + 'stock_chart.py')
+    f.write('\n' + datetime.datetime.now().strftime("%Y/%m/%d %a %H:%M:%S ") + 'sbi.py')
 
 # Output
 print('Congrats!')
