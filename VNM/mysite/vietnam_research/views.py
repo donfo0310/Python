@@ -85,17 +85,17 @@ def index(request):
         ORDER BY pub_date, industry1;
         '''
         , con)
-    temp = temp[temp.notna()] # TODO:NAキモチワル
-    industry_pivot = pd.pivot_table(temp, index='pub_date', columns='industry1', values='trade_price_of_a_day', aggfunc='sum')
-    industry_stack = {"labels": industry_pivot.index.to_list(), "datasets": []}
+    industry_pivot = pd.pivot_table(temp, index='pub_date', \
+        columns='industry1', values='trade_price_of_a_day', aggfunc='sum')
+    industry_stack = {"labels": list(industry_pivot.index), "datasets": []}
     colors = ['#7b9ad0', '#f8e352', '#c8d627', '#d5848b', '#e5ab47']
     colors.extend(['#e1cea3', '#51a1a2', '#b1d7e4', '#66b7ec', '#c08e47', '#ae8dbc'])
     for i, ele in enumerate(temp.groupby('industry1').groups.keys()):
         industry_stack["datasets"].append({"label": ele, "backgroundColor": colors[i]})
-        value = temp.groupby('industry1').get_group(ele)['trade_price_of_a_day'].to_list()
+        value = list(temp.groupby('industry1').get_group(ele)['trade_price_of_a_day'])
         industry_stack["datasets"][i]["data"] = value
-    print('\n【data from】\n', industry_pivot)
-    print('\n【data to】\n', industry_stack, '\n')
+    # print('\n【data from】\n', industry_pivot)
+    # print('\n【data to】\n', industry_stack, '\n')
 
     # vnindex
     temp = pd.read_sql_query(
@@ -106,8 +106,8 @@ def index(request):
         '''
         , con)
     # vnindex: simple timeline
-    vnindex_timeline = {"labels": (temp['Y'] + temp['M']).to_list(), "datasets": []}
-    inner = {"label": 'VN-Index', "data": temp['closing_price'].to_list()}
+    vnindex_timeline = {"labels": list(temp['Y'] + temp['M']), "datasets": []}
+    inner = {"label": 'VN-Index', "data": list(temp['closing_price'])}
     vnindex_timeline["datasets"].append(inner)
     # vnindex: annual layer
     vnindex_pivot = temp.pivot('Y', 'M', 'closing_price').fillna(0)
@@ -115,7 +115,7 @@ def index(request):
     for i, yyyy in enumerate(vnindex_pivot.iterrows()):
         inner = {"label": yyyy[0], "data": list(yyyy[1])}
         vnindex_layers["datasets"].append(inner)
-    print('vnindex_pivot: ', vnindex_pivot)
+    # print('vnindex_pivot: ', vnindex_pivot)
 
     # watchlist
     watchelist = pd.read_sql_query(
@@ -127,8 +127,11 @@ def index(request):
             , w.stocks_price
             , w.stocks_count
             , w.bikou
+            , already_has
+            , i.industry1
         FROM vietnam_research_watchlist w INNER JOIN vietnam_research_industry i
-        ON w.symbol = i.symbol
+            ON w.symbol = i.symbol
+        WHERE already_has = 1
         ORDER BY already_has DESC, i.industry1;
         '''
         , con)
