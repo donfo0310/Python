@@ -20,14 +20,14 @@ SELECT industry1, COUNT(1) FROM vietnam_research_industry GROUP BY industry1;
 SELECT industry1, pub_date, COUNT(1) FROM vietnam_research_industry GROUP BY industry1, pub_date;
 SELECT industry1, SUM(marketcap), SUM(marketcap_per) FROM vietnam_research_industry GROUP BY industry1;
 
--- ●Industryclassification マスタ
+-- ●IndClass マスタ
 -- 確認
 SELECT
       c.industry_class || '|' || i.industry1 AS ind_name
     , ROUND(SUM(count_per),2) AS cnt_per
     , ROUND(SUM(marketcap_per),2) AS cap_per
 FROM ((vietnam_research_industry i
-INNER JOIN vietnam_research_industryclassification c
+INNER JOIN vietnam_research_indclass c
   ON i.industry1 = c.industry1)
 INNER JOIN (SELECT MAX(pub_date) AS pub_date FROM vietnam_research_industry) X
   ON i.pub_date = X.pub_date )
@@ -43,7 +43,7 @@ SELECT
     , i.symbol
     , AVG(i.closing_price * volume) AS marketcap
     , AVG(i.per) AS per
-FROM vietnam_research_industry i INNER JOIN vietnam_research_industryclassification c
+FROM vietnam_research_industry i INNER JOIN vietnam_research_indclass c
 ON i.industry1 = c.industry1
 GROUP BY ind_name, i.symbol
 HAVING per >1;

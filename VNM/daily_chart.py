@@ -57,7 +57,7 @@ AGG = pd.read_sql_query(
         , i.symbol
         , AVG(i.trade_price_of_a_day) AS trade_price_of_a_day
         , AVG(i.per) AS per
-    FROM (vietnam_research_industry i INNER JOIN vietnam_research_industryclassification c
+    FROM (vietnam_research_industry i INNER JOIN vietnam_research_indclass c
         ON i.industry1 = c.industry1) INNER JOIN vietnam_research_sbi s
         ON i.market_code = s.market_code AND i.symbol = s.symbol
     GROUP BY ind_name, i.market_code, i.symbol

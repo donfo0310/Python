@@ -8,13 +8,13 @@ CON_STR = 'mysql+mysqldb://python:python123@127.0.0.1/pythondb?charset=utf8&use_
 CON = create_engine(CON_STR, echo=False).connect()
 
 # reset
-CON.execute('DELETE FROM vietnam_research_industryclassification')
+CON.execute('DELETE FROM vietnam_research_indclass')
 CON.execute('DELETE FROM vietnam_research_watchlist')
 CON.execute('DELETE FROM vietnam_research_basicinformation')
 
 # insert
 TABLE = []
-TABLE.append('vietnam_research_industryclassification')
+TABLE.append('vietnam_research_indclass')
 TABLE.append('vietnam_research_watchlist')
 TABLE.append('vietnam_research_basicinformation')
 DF = pd.read_csv('import/csv/mst_IndClass.csv', sep=',')

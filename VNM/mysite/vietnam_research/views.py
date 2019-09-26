@@ -45,7 +45,7 @@ def index(request):
             , ROUND(COUNT(i.industry1),2) AS cnt_per
             , ROUND(SUM(i.marketcap),2) AS cap_per
         FROM pythondb.vietnam_research_industry i
-        INNER JOIN vietnam_research_industryclassification c ON i.industry1 = c.industry1
+        INNER JOIN vietnam_research_indclass c ON i.industry1 = c.industry1
         WHERE DATE(pub_date) = (
             SELECT
                 DATE(MAX(pub_date)) pub_date

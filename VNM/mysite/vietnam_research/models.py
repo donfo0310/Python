@@ -21,7 +21,7 @@ class Industry(models.Model):
     per = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     pub_date = models.DateTimeField()
 
-class IndustryClassification(models.Model):
+class IndClass(models.Model):
     """
     viet-kabuの産業名を産業区分1-3に
     """
