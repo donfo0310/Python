@@ -4,11 +4,13 @@
 -- MySQL チートシート http://shiningcureseven.hatenablog.com/entry/2018/08/03/122221
 vscode> mysql --local_infile=1 -u root -p
 mysql> use pythondb;
-mysql> load data local infile "D:/OneDrive/ドキュメント/Project/Python/VNM/import/csv/bk/vietnam_research_industry.csv" into table vietnam_research_industry fields terminated by ',' optionally enclosed by '"';
 -- Notation
 -- 1. id列の全行に0を入れるとautoincrementが働く
 -- 2. pub_date の yyyy-mm-dd hh:mm:ss データをCSVインポートしようとすると桁が足りない？とかいう
 -- 3. mysqlの%表記をdjangoが勘違いしてDATE_FORMATが使えない
+
+--dump
+vscode> mysqldump -u root -p -t pythondb --default-character-set=binary vietnam_research_industry > industry.dump;
 
 -- ●industry
 -- 確認
@@ -36,7 +38,7 @@ WHERE DATE(pub_date) = (
 GROUP BY i.industry1, c.industry_class
 ORDER BY ind_name;
 
---業種別TOP5
+-- 業種別TOP5
 -- 確認
 SELECT * FROM vietnam_research_dailytop5;
 -- 業種別シンボル別集計（今回は 平均 and 集計後per >1 とする）
@@ -57,4 +59,11 @@ SELECT Y, M, closing_price FROM vietnam_research_vnindex;
 
 -- ●watchlist
 SELECT * FROM vietnam_research_watchlist;
-DELETE FROM vietnam_research_watchlist WHERE symbol = 'XXX'
+
+-- 確認
+-- 本日データの明細数と時価総額合計
+SELECT
+      COUNT(1) AS today_detail_cnt
+    , SUM(i.marketcap) AS today_marketcap_sum
+FROM pythondb.vietnam_research_industry i INNER JOIN vietnam_research_indclass c ON i.industry1 = c.industry1
+WHERE DATE(pub_date) = (SELECT DATE(MAX(pub_date)) pub_date FROM pythondb.vietnam_research_industry);

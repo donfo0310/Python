@@ -38,39 +38,36 @@ def index(request):
     # mysql
     con_str = 'mysql+mysqldb://python:python123@127.0.0.1/pythondb?charset=utf8&use_unicode=1'
     con = create_engine(con_str, echo=False).connect()
+    # today's details
     temp = pd.read_sql_query(
         '''
         SELECT
-            CONCAT(c.industry_class, '|', i.industry1) AS ind_name
-            , ROUND(COUNT(i.industry1),2) AS cnt_per
-            , ROUND(SUM(i.marketcap),2) AS cap_per
-        FROM pythondb.vietnam_research_industry i
-        INNER JOIN vietnam_research_indclass c ON i.industry1 = c.industry1
+              CONCAT(c.industry_class, '|', i.industry1) AS ind_name
+            , i.marketcap
+        FROM vietnam_research_industry i INNER JOIN vietnam_research_indclass c ON
+            i.industry1 = c.industry1
         WHERE DATE(pub_date) = (
-            SELECT
-                DATE(MAX(pub_date)) pub_date
-            FROM pythondb.vietnam_research_industry
-            )
-        GROUP BY i.industry1, c.industry_class
-        ORDER BY ind_name;
+                SELECT DATE(MAX(pub_date)) pub_date
+                FROM vietnam_research_industry
+            );
         '''
         , con)
-
-    # TODO:当日のみのSQLを考える
-    # Option think 1
-    # pre-SQLを事前に実行してスカラを出して、pythonで置換したSQLを実行
-    # Option think 2
-    # 当日明細だけ取得して、合計出しは numpy, 集計はpandas で？
-
+    # aggregation today's details
     industry_count = []
     industry_cap = []
+    temp = pd.DataFrame({
+        'cnt_per': \
+            (temp.groupby('ind_name').count() / len(temp))['marketcap'].values.tolist(),
+        'cap_per': \
+            (temp.groupby('ind_name').sum() / temp['marketcap'].sum())['marketcap'].values.tolist()
+    }, index=list(temp.groupby('ind_name').groups.keys()))
     inner = []
     for row in temp.iterrows():
-        inner.append({"axis": row[1]["ind_name"], "value": row[1]["cnt_per"]})
+        inner.append({"axis": row[0], "value": row[1]["cnt_per"]})
     industry_count.append({"name": '企業数', "axes": inner})
     inner = []
     for row in temp.iterrows():
-        inner.append({"axis": row[1]["ind_name"], "value": row[1]["cap_per"]})
+        inner.append({"axis": row[0], "value": row[1]["cap_per"]})
     industry_cap.append({"name": '時価総額', "axes": inner})
 
     # daily chart stack
