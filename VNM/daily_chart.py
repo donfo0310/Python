@@ -34,7 +34,9 @@ def scraping(mkt, symbol):
     soup = BeautifulSoup(urllib.request.urlopen(url).read(), 'lxml')
     tag_img = soup.find(id='chart_search_left').find('img')
     if tag_img:
-        path = dirname(abspath(__file__)) + '/mysite/vietnam_research/static/vietnam_research/chart/{0}.png'.format(symbol)
+        path = dirname(abspath(__file__))
+        path = path + '/mysite/vietnam_research/static/vietnam_research/chart/{0}.png'
+        path = path.format(symbol)
         urllib.request.urlretrieve(tag_img['src'], path)
         print(symbol)
     time.sleep(4)
