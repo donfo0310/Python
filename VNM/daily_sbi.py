@@ -1,6 +1,7 @@
 """
 SBI証券ベトナム株式取扱銘柄一覧を取得します
 """
+from os import getcwd
 import urllib.request
 import datetime
 from sqlalchemy import create_engine
@@ -35,7 +36,7 @@ scraping()
 
 
 # log
-with open('result.log', mode='a') as f:
+with open(getcwd() + '/result.log', mode='a') as f:
     f.write('\n' + datetime.datetime.now().strftime("%Y/%m/%d %a %H:%M:%S ") + 'sbi.py')
 
 # Output

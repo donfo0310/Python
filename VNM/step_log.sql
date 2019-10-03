@@ -56,6 +56,7 @@ HAVING per >1;
 SELECT COUNT(1) FROM vietnam_research_vnindex;
 -- pivotはsqliteにはないのでpandasでやってください
 SELECT Y, M, closing_price FROM vietnam_research_vnindex;
+SELECT Y, SUM(closing_price) FROM vietnam_research_vnindex GROUP BY Y;
 
 -- ●watchlist
 SELECT * FROM vietnam_research_watchlist;
