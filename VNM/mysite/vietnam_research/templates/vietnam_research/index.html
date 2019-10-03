@@ -93,7 +93,9 @@
         {%if forloop.counter0|divisibleby:"5" %}
             <h2>{{ row.ind_name }}</h2>
         {% endif %}
-        <img src="{% static 'vietnam_research/chart/' %}{{ row.symbol }}.png" alt="{{ row.symbol }}">
+        <a href="https://www.viet-kabu.com/{{ row.mkt }}/{{ row.symbol }}.html" target="_blank">
+            <img src="{% static 'vietnam_research/chart/' %}{{ row.symbol }}.png" alt="{{ row.symbol }}">
+        </a>
     {% endfor %}
 
     <!-- watchlist -->

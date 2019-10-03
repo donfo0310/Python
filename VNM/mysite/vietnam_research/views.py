@@ -145,7 +145,17 @@ def index(request):
         , con)
 
     # top5
-    top5 = pd.read_sql_query('SELECT * FROM vietnam_research_dailytop5;', con)
+    top5 = pd.read_sql_query(
+        '''
+        SELECT
+            *
+            , CASE
+                WHEN market_code = "HOSE" THEN "hcm"
+                WHEN market_code = "HNX" THEN "hn"
+              END mkt
+        FROM vietnam_research_dailytop5;
+        '''
+        , con)
     sort_criteria = ['ind_name', 'marketcap', 'per']
     order_criteria = [True, False, False]
     top5 = top5.sort_values(by=sort_criteria[0], ascending=order_criteria[0])
