@@ -1,5 +1,6 @@
 """業種情報を取得します"""
-from os import getcwd
+from os.path import dirname
+from os.path import abspath
 import re
 import urllib.request
 import datetime
@@ -94,7 +95,7 @@ print('HNX')
 scraping('https://www.viet-kabu.com/stock/hn.html', 'HNX')
 
 # log
-with open(getcwd() + '/result.log', mode='a') as f:
+with open(dirname(abspath(__file__)) + '/result.log', mode='a') as f:
     f.write('\n' + datetime.datetime.now().strftime("%Y/%m/%d %a %H:%M:%S ") + 'industry.py')
 
 # finish

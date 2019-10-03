@@ -15,7 +15,8 @@ improvement(top5):
     https://qiita.com/iowanman/items/174d5cb3088fafc82962
     df.groupby(by=["symbol"]).mean().loc[lambda x: x["per"]> 1]
 """
-from os import getcwd
+from os.path import dirname
+from os.path import abspath
 import time
 import urllib.request
 import datetime
@@ -33,7 +34,7 @@ def scraping(mkt, symbol):
     soup = BeautifulSoup(urllib.request.urlopen(url).read(), 'lxml')
     tag_img = soup.find(id='chart_search_left').find('img')
     if tag_img:
-        path = getcwd() + '/mysite/vietnam_research/static/vietnam_research/chart/{0}.png'.format(symbol)
+        path = dirname(abspath(__file__)) + '/mysite/vietnam_research/static/vietnam_research/chart/{0}.png'.format(symbol)
         urllib.request.urlretrieve(tag_img['src'], path)
         print(symbol)
     time.sleep(4)
@@ -80,7 +81,7 @@ for i, row in AGG.iterrows():
     scraping(row['market_code'], row['symbol'])
 
 # log
-with open(getcwd() + '/result.log', mode='a') as f:
+with open(dirname(abspath(__file__)) + '/result.log', mode='a') as f:
     f.write('\n' + datetime.datetime.now().strftime("%Y/%m/%d %a %H:%M:%S ") + 'stock_chart.py')
 
 # Output
