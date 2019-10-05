@@ -89,9 +89,10 @@
     1,000don -> 5円
 
     <!-- top5 -->
+    <h2>業種別企業別「売買代金」全期間平均TOP5（SBI証券取り扱い銘柄のみ）</h2>
     {% for idx, row in top5list.iterrows %}
         {%if forloop.counter0|divisibleby:"5" %}
-            <h2>{{ row.ind_name }}</h2>
+            <h3>{{ row.ind_name }}</h3>
         {% endif %}
         <a href="https://www.viet-kabu.com/{{ row.mkt }}/{{ row.symbol }}.html" target="_blank">
             <img src="{% static 'vietnam_research/chart/' %}{{ row.symbol }}.png" alt="{{ row.symbol }}">
@@ -99,8 +100,9 @@
     {% endfor %}
 
     <!-- watchlist -->
+    <h2>ウォッチリスト</h2>
     {% for idx, row in watchlist.iterrows %}
-        <h2>{{ row.company_name }}</h2>
+        <h3>{{ row.company_name }}</h3>
         <p>{{ row.bought_day }}, {{ row.stocks_price }}VND, {{ row.stocks_count }}株, {{ row.bikou }}</p>
         <img src="{% static 'vietnam_research/chart/' %}{{ row.symbol }}.png" alt="{{ row.symbol }}">
     {% endfor %}
