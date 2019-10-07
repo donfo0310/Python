@@ -118,7 +118,11 @@ def index(request):
     watchelist = pd.read_sql_query(
         '''
         SELECT DISTINCT
-              w.symbol
+              CASE
+                WHEN market_code = "HOSE" THEN "hcm"
+                WHEN market_code = "HNX" THEN "hn"
+              END mkt
+            , w.symbol
             , CONCAT('(', i.industry1, ')', w.symbol, ' ', i.company_name) AS company_name
             , w.bought_day
             , w.stocks_price

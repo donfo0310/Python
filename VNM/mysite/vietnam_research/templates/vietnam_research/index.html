@@ -104,7 +104,9 @@
     {% for idx, row in watchlist.iterrows %}
         <h3>{{ row.company_name }}</h3>
         <p>{{ row.bought_day }}, {{ row.stocks_price }}VND, {{ row.stocks_count }}株, {{ row.bikou }}</p>
-        <img src="{% static 'vietnam_research/chart/' %}{{ row.symbol }}.png" alt="{{ row.symbol }}">
+        <a href="https://www.viet-kabu.com/{{ row.mkt }}/{{ row.symbol }}.html" target="_blank">
+            <img src="{% static 'vietnam_research/chart/' %}{{ row.symbol }}.png" alt="{{ row.symbol }}">
+        </a>
     {% endfor %}
     <!-- regist to watchlist -->
     <form method="POST" enctype="multipart/form-data">
