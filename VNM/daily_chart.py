@@ -41,17 +41,25 @@ def scraping(mkt, symbol):
         print(symbol)
     time.sleep(4)
 
-# chart1: specified
-print('specified list')
-SYMBOLS = ['SAB', 'GAS', 'PPC', 'VNM', 'VHC', 'PHR', 'FMC', 'VHM', 'VRE']
-for i in SYMBOLS:
-    scraping('HOSE', i)
-
-# chart2: top 5 by industry
-print('\n' + 'top 5')
 # mysql
 CON_STR = 'mysql+mysqldb://python:python123@127.0.0.1/pythondb?charset=utf8&use_unicode=1'
 CON = create_engine(CON_STR, echo=False).connect()
+
+# chart1: watchlist
+print('watch list')
+SYMBOLS = pd.read_sql_query(
+    '''
+    SELECT DISTINCT
+        i.market_code, w.symbol
+    FROM vietnam_research_industry i INNER JOIN vietnam_research_watchlist w
+    ON i.symbol = w.symbol;
+    '''
+    , CON)
+for i, row in SYMBOLS.iterrows():
+    scraping(row['market_code'], row['symbol'])
+
+# chart2: top 5 by industry
+print('\n' + 'top 5')
 CON.execute('DELETE FROM vietnam_research_dailytop5')
 AGG = pd.read_sql_query(
     '''
