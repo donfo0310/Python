@@ -19,7 +19,7 @@ class Industry(models.Model):
     trade_price_of_a_day = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
     marketcap = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     per = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    pub_date = models.DateTimeField()
+    pub_date = models.DateField()
 
 class IndClass(models.Model):
     """
