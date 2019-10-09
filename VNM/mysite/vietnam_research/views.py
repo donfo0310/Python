@@ -61,6 +61,8 @@ def index(request):
         'cap_per': \
             (temp.groupby('ind_name').sum() / temp['marketcap'].sum())['marketcap'].values.tolist()
     }, index=list(temp.groupby('ind_name').groups.keys()))
+    temp['cnt_per'] = (temp['cnt_per'] * 100).round(1)
+    temp['cap_per'] = (temp['cap_per'] * 100).round(1)
     inner = []
     for row in temp.iterrows():
         inner.append({"axis": row[0], "value": row[1]["cnt_per"]})
