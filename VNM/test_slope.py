@@ -10,6 +10,9 @@ improvement(top5):
     https://stackoverflow.com/questions/29907133/using-pandas-groupby-to-calculate-many-slopes
     どうも日付だったから（数字じゃないから）できなかったようだ？
 
+    最小二乗法で線形近似(python,numpy)
+    http://kenbo.hatenablog.com/entry/2018/11/30/091511
+
     having句の表現:
     https://qiita.com/iowanman/items/174d5cb3088fafc82962
     df.groupby(by=["symbol"]).mean().loc[lambda x: x["per"]> 1]
