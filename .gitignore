@@ -1,10 +1,12 @@
 __pycache__/
 import/
 images/
+output/
 migrations/
 api_setting/
 data/
 chart/
+chart_uptrend/
 __init__.py
 result.log
 db.sqlite3
@@ -17,3 +19,4 @@ Analyze_finance/.Rhistory
 Analyze_finance/xbrl
 Categoryマスタ.xlsx
 kageokuri/
+

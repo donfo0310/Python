@@ -3,17 +3,7 @@
 top5のチャートをpngで取得します
 step1: 1企業あたり毎日1明細しかないものを group集計する
 step2: pandasでtop5を抽出し、top5テーブルにinsertしたあとにスクレイピング
-
-improvement(top5):
-    trade_price_of_a_day が「平均値」として潰れてしまうため、本当は「傾斜」を出すのが良い
-
-    Using Pandas groupby to calculate many slopes:
-    https://stackoverflow.com/questions/29907133/using-pandas-groupby-to-calculate-many-slopes
-    どうも日付だったから（数字じゃないから）できなかったようだ？
-
-    having句の表現:
-    https://qiita.com/iowanman/items/174d5cb3088fafc82962
-    df.groupby(by=["symbol"]).mean().loc[lambda x: x["per"]> 1]
+step3: 傾斜を出して、uptrendを抽出
 """
 from os.path import dirname
 from os.path import abspath
@@ -22,23 +12,26 @@ import urllib.request
 import datetime
 from sqlalchemy import create_engine
 from bs4 import BeautifulSoup
+import numpy as np
+import matplotlib.pyplot as plt
 import pandas as pd
+from PIL import Image
 
-def scraping(mkt, symbol):
+def scraping(mkt, symbol_):
     """
     url先の <div id="chart_search_left"> の <img> を取得する。
     1つ処理するごとに4秒ほど休むのは、スクレイピングルールです。
     """
     dic = {"HOSE": 'hcm', "HNX": 'hn'}
-    url = 'https://www.viet-kabu.com/{0}/{1}.html'.format(dic[mkt], symbol)
+    url = 'https://www.viet-kabu.com/{0}/{1}.html'.format(dic[mkt], symbol_)
     soup = BeautifulSoup(urllib.request.urlopen(url).read(), 'lxml')
     tag_img = soup.find(id='chart_search_left').find('img')
     if tag_img:
         path = dirname(abspath(__file__))
         path = path + '/mysite/vietnam_research/static/vietnam_research/chart/{0}.png'
-        path = path.format(symbol)
+        path = path.format(symbol_)
         urllib.request.urlretrieve(tag_img['src'], path)
-        print(symbol)
+        print(symbol_)
     time.sleep(4)
 
 # mysql
@@ -89,6 +82,83 @@ AGG.to_sql('vietnam_research_dailytop5', CON, if_exists='append', index=None)
 # scraping from top 5 list
 for i, row in AGG.iterrows():
     scraping(row['market_code'], row['symbol'])
+
+# chart3: uptrend by industry
+print('\n' + 'uptrend')
+CON.execute('DELETE FROM vietnam_research_dailyuptrends')
+AGG = pd.read_sql_query(
+    '''
+    SELECT
+        CONCAT(c.industry_class, '|', i.industry1) AS ind_name
+        , i.symbol
+        , i.pub_date
+        , i.closing_price
+    FROM (vietnam_research_industry i INNER JOIN vietnam_research_indclass c
+        ON i.industry1 = c.industry1) INNER JOIN vietnam_research_sbi s
+        ON i.market_code = s.market_code AND i.symbol = s.symbol
+    ORDER BY ind_name, i.symbol, i.pub_date;
+    '''
+    , CON)
+SYMBOLS = []
+SLOPES = []
+SCORES = []
+for symbol, values in AGG.groupby('symbol'):
+    days = [-14, -7, -3]
+    # plot: closing_price
+    plt.clf()
+    plt.plot(range(len(values)), values['closing_price'], "ro")
+    plt.title(symbol)
+    plt.ylabel('closing_price')
+    plt.grid()
+    slope_inner = []
+    score = 0
+    for i in range(len(days)):
+        values_inner = values[days[i]:]
+        x_scale = range(len(values_inner))
+        A = np.array([x_scale, np.ones(len(x_scale))]).T
+        slope, intercept = np.linalg.lstsq(A, values_inner['closing_price'], rcond=-1)[0]
+        slope_inner.append(slope)
+        # scoring
+        if i == 0 and slope > 0:
+            score += 1
+        if i > 0 and slope - slope_prev > 0:
+            score += 1
+        slope_prev = slope
+        # plot: overwrite fitted line
+        plt.plot(x_scale, (slope * x_scale + intercept), "g--")
+    # save png: w640, h480
+    png_path = dirname(abspath(__file__))
+    png_path = png_path + '/mysite/vietnam_research/static/vietnam_research/chart_uptrend/{0}.png'
+    png_path = png_path.format(symbol)
+    plt.savefig(png_path)
+    # resize png: w250, h200
+    Image.open(png_path).resize((250, 200), Image.LANCZOS).save(png_path)
+    # stack param
+    SYMBOLS.append(symbol)
+    SLOPES.append(slope_inner)
+    SCORES.append(score)
+    print(symbol, slope_inner, score)
+UPTREND = pd.DataFrame({
+    'symbol': SYMBOLS,
+    'slopes': SLOPES,
+    'score': SCORES
+})
+UPTREND = UPTREND[UPTREND['score'] == len(days)]
+EDIT_SQL = '''
+    SELECT
+        CONCAT(c.industry_class, '|', i.industry1) AS ind_name
+        , i.market_code
+        , i.symbol
+    FROM (vietnam_research_industry i INNER JOIN vietnam_research_indclass c
+        ON i.industry1 = c.industry1) INNER JOIN vietnam_research_sbi s
+        ON i.market_code = s.market_code AND i.symbol = s.symbol
+    WHERE i.symbol IN ('{SYMBOLS}')
+    GROUP BY ind_name, i.market_code, i.symbol
+    ORDER BY ind_name, i.market_code, i.symbol;
+'''
+EDIT_SQL = EDIT_SQL.replace('{SYMBOLS}', "','".join(list(UPTREND['symbol'])))
+AGG = pd.read_sql_query(EDIT_SQL, CON)
+AGG.to_sql('vietnam_research_dailyuptrends', CON, if_exists='append', index=None)
 
 # log
 with open(dirname(abspath(__file__)) + '/result.log', mode='a') as f:

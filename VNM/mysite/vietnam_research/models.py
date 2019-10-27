@@ -55,6 +55,12 @@ class DailyTop5(models.Model):
     trade_price_of_a_day = models.FloatField(default=0.00)
     per = models.FloatField(default=0.00)
 
+class DailyUptrends(models.Model):
+    """日次Uptrends（傾き計算考慮）"""
+    ind_name = models.CharField(max_length=10)
+    market_code = models.CharField(max_length=4)
+    symbol = models.CharField(max_length=10)
+
 class Sbi(models.Model):
     """SBI証券取り扱い銘柄"""
     market_code = models.CharField(max_length=4)
