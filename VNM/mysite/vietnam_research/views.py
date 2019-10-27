@@ -169,15 +169,18 @@ def index(request):
     # uptrends
     uptrends = pd.read_sql_query(
         '''
-        SELECT
-              ind_name
-            , market_code
+        SELECT DISTINCT
+              u.ind_name
+            , u.market_code
             , CASE
-                WHEN market_code = "HOSE" THEN "hcm"
-                WHEN market_code = "HNX" THEN "hn"
+                WHEN u.market_code = "HOSE" THEN "hcm"
+                WHEN u.market_code = "HNX" THEN "hn"
               END mkt
-            , symbol
-        FROM vietnam_research_dailyuptrends;
+            , u.symbol
+            , CONCAT('(', i.industry1, ')', u.symbol, ' ', i.company_name) AS company_name
+        FROM vietnam_research_dailyuptrends u INNER JOIN vietnam_research_industry i
+            ON u.symbol = i.symbol
+        ORDER BY u.ind_name, u.market_code, u.symbol;
         '''
         , con)
     sort_criteria = ['ind_name', 'marketcap', 'per']
