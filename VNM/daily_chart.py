@@ -119,11 +119,8 @@ for symbol, values in AGG.groupby('symbol'):
         slope, intercept = np.linalg.lstsq(A, values_inner['closing_price'], rcond=-1)[0]
         slope_inner.append(slope)
         # scoring
-        if i == 0 and slope > 0:
+        if slope > 0:
             score += 1
-        if i > 0 and slope - slope_prev > 0:
-            score += 1
-        slope_prev = slope
         # plot: overwrite fitted line
         plt.plot(x_scale, (slope * x_scale + intercept), "g--")
     # save png: w640, h480
