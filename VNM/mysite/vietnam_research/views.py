@@ -166,6 +166,24 @@ def index(request):
     order_criteria = [True, False, False]
     top5 = top5.sort_values(by=sort_criteria[0], ascending=order_criteria[0])
 
+    # uptrends
+    uptrends = pd.read_sql_query(
+        '''
+        SELECT
+              ind_name
+            , market_code
+            , CASE
+                WHEN market_code = "HOSE" THEN "hcm"
+                WHEN market_code = "HNX" THEN "hn"
+              END mkt
+            , symbol
+        FROM vietnam_research_dailyuptrends;
+        '''
+        , con)
+    sort_criteria = ['ind_name', 'marketcap', 'per']
+    order_criteria = [True, False, False]
+    top5 = top5.sort_values(by=sort_criteria[0], ascending=order_criteria[0])
+
     # context
     context = {
         'industry_count': json.dumps(industry_count, ensure_ascii=False),
@@ -176,6 +194,7 @@ def index(request):
         'watchlist': watchelist,
         'basicinfo': basicinfo,
         'top5list': top5,
+        'uptrends': uptrends,
         'form': form
     }
 
