@@ -5,8 +5,8 @@ step1: 1企業あたり毎日1明細しかないものを group集計する
 step2: pandasでtop5を抽出し、top5テーブルにinsertしたあとにスクレイピング
 step3: 傾斜を出して、uptrendを抽出
 """
-from os.path import dirname
-from os.path import abspath
+import os
+import shutil
 import time
 import urllib.request
 import datetime
@@ -17,21 +17,18 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from PIL import Image
 
-def scraping(mkt, symbol_):
+def scraping(mkt, symbol, outfolder):
     """
     url先の <div id="chart_search_left"> の <img> を取得する。
     1つ処理するごとに4秒ほど休むのは、スクレイピングルールです。
     """
     dic = {"HOSE": 'hcm', "HNX": 'hn'}
-    url = 'https://www.viet-kabu.com/{0}/{1}.html'.format(dic[mkt], symbol_)
+    url = 'https://www.viet-kabu.com/{0}/{1}.html'.format(dic[mkt], symbol)
     soup = BeautifulSoup(urllib.request.urlopen(url).read(), 'lxml')
     tag_img = soup.find(id='chart_search_left').find('img')
     if tag_img:
-        path = dirname(abspath(__file__))
-        path = path + '/mysite/vietnam_research/static/vietnam_research/chart/{0}.png'
-        path = path.format(symbol_)
-        urllib.request.urlretrieve(tag_img['src'], path)
-        print(symbol_)
+        urllib.request.urlretrieve(tag_img['src'], outfolder + '/{0}.png'.format(symbol))
+        print(symbol)
     time.sleep(4)
 
 # mysql
@@ -40,6 +37,12 @@ CON = create_engine(CON_STR, echo=False).connect()
 
 # chart1: watchlist
 print('watch list')
+# delete old files
+OUTFOLDER = os.path.dirname(os.path.abspath(__file__))
+OUTFOLDER = OUTFOLDER + '/mysite/vietnam_research/static/vietnam_research/chart'
+shutil.rmtree(OUTFOLDER)
+os.mkdir(OUTFOLDER)
+# sql
 SYMBOLS = pd.read_sql_query(
     '''
     SELECT DISTINCT
@@ -49,10 +52,11 @@ SYMBOLS = pd.read_sql_query(
     '''
     , CON)
 for i, row in SYMBOLS.iterrows():
-    scraping(row['market_code'], row['symbol'])
+    scraping(row['market_code'], row['symbol'], OUTFOLDER)
 
 # chart2: top 5 by industry
 print('\n' + 'top 5')
+# sql
 CON.execute('DELETE FROM vietnam_research_dailytop5')
 AGG = pd.read_sql_query(
     '''
@@ -81,10 +85,16 @@ AGG = AGG.sort_values(by=CRITERIA[1]["by"], ascending=CRITERIA[1]["order"])
 AGG.to_sql('vietnam_research_dailytop5', CON, if_exists='append', index=None)
 # scraping from top 5 list
 for i, row in AGG.iterrows():
-    scraping(row['market_code'], row['symbol'])
+    scraping(row['market_code'], row['symbol'], OUTFOLDER)
 
 # chart3: uptrend by industry
 print('\n' + 'uptrend')
+# delete old files
+OUTFOLDER = os.path.dirname(os.path.abspath(__file__))
+OUTFOLDER = OUTFOLDER + '/mysite/vietnam_research/static/vietnam_research/chart_uptrend'
+shutil.rmtree(OUTFOLDER)
+os.mkdir(OUTFOLDER)
+# sql
 CON.execute('DELETE FROM vietnam_research_dailyuptrends')
 AGG = pd.read_sql_query(
     '''
@@ -102,18 +112,18 @@ AGG = pd.read_sql_query(
 SYMBOLS = []
 SLOPES = []
 SCORES = []
-for symbol, values in AGG.groupby('symbol'):
-    days = [-14, -7, -3]
+for key, values in AGG.groupby('symbol'):
+    days = [14, 7, 3]
     # plot: closing_price
     plt.clf()
     plt.plot(range(len(values)), values['closing_price'], "ro")
-    plt.title(symbol)
+    plt.title(key)
     plt.ylabel('closing_price')
     plt.grid()
     slope_inner = []
     score = 0
     for i in range(len(days)):
-        values_inner = values[days[i]:]
+        values_inner = values[-days[i]:]
         x_scale = range(len(values_inner))
         A = np.array([x_scale, np.ones(len(x_scale))]).T
         slope, intercept = np.linalg.lstsq(A, values_inner['closing_price'], rcond=-1)[0]
@@ -122,25 +132,25 @@ for symbol, values in AGG.groupby('symbol'):
         if slope > 0:
             score += 1
         # plot: overwrite fitted line
-        plt.plot(x_scale, (slope * x_scale + intercept), "g--")
-    # save png: w640, h480
-    png_path = dirname(abspath(__file__))
-    png_path = png_path + '/mysite/vietnam_research/static/vietnam_research/chart_uptrend/{0}.png'
-    png_path = png_path.format(symbol)
-    plt.savefig(png_path)
-    # resize png: w250, h200
-    Image.open(png_path).resize((250, 200), Image.LANCZOS).save(png_path)
-    # stack param
-    SYMBOLS.append(symbol)
-    SLOPES.append(slope_inner)
-    SCORES.append(score)
-    print(symbol, slope_inner, score)
+        x_offset = len(values) - days[i]
+        x_scale_shifted = range(x_offset, days[i] + x_offset)
+        plt.plot(x_scale_shifted, (slope * x_scale + intercept), "g--")
+    if score == len(days):
+        # save png: w640, h480
+        outpath = OUTFOLDER + '/{0}.png'.format(key)
+        plt.savefig(outpath)
+        # resize png: w250, h200
+        Image.open(outpath).resize((250, 200), Image.LANCZOS).save(outpath)
+        # stack param
+        SYMBOLS.append(key)
+        SLOPES.append(slope_inner)
+        SCORES.append(score)
+    print(key, slope_inner, score)
 UPTREND = pd.DataFrame({
     'symbol': SYMBOLS,
     'slopes': SLOPES,
     'score': SCORES
 })
-UPTREND = UPTREND[UPTREND['score'] == len(days)]
 EDIT_SQL = '''
     SELECT
         CONCAT(c.industry_class, '|', i.industry1) AS ind_name
@@ -158,7 +168,7 @@ AGG = pd.read_sql_query(EDIT_SQL, CON)
 AGG.to_sql('vietnam_research_dailyuptrends', CON, if_exists='append', index=None)
 
 # log
-with open(dirname(abspath(__file__)) + '/result.log', mode='a') as f:
+with open(os.path.dirname(os.path.abspath(__file__)) + '/result.log', mode='a') as f:
     f.write('\n' + datetime.datetime.now().strftime("%Y/%m/%d %a %H:%M:%S ") + 'stock_chart.py')
 
 # Output
