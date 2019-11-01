@@ -60,6 +60,9 @@ class DailyUptrends(models.Model):
     ind_name = models.CharField(max_length=10)
     market_code = models.CharField(max_length=4)
     symbol = models.CharField(max_length=10)
+    stocks_price_oldest = models.FloatField()
+    stocks_price_latest = models.FloatField()
+    stocks_price_delta = models.FloatField()
 
 class Sbi(models.Model):
     """SBI証券取り扱い銘柄"""

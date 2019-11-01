@@ -99,7 +99,8 @@ CON.execute('DELETE FROM vietnam_research_dailyuptrends')
 AGG = pd.read_sql_query(
     '''
     SELECT
-        CONCAT(c.industry_class, '|', i.industry1) AS ind_name
+          CONCAT(c.industry_class, '|', i.industry1) AS ind_name
+        , i.market_code
         , i.symbol
         , i.pub_date
         , i.closing_price
@@ -109,9 +110,12 @@ AGG = pd.read_sql_query(
     ORDER BY ind_name, i.symbol, i.pub_date;
     '''
     , CON)
+IND_NAMES = []
+MARKET_CODES = []
 SYMBOLS = []
-SLOPES = []
-SCORES = []
+PRICE_OLDESTS = []
+PRICE_LATESTS = []
+PRICE_DELTAS = []
 for key, values in AGG.groupby('symbol'):
     days = [14, 7, 3]
     # plot: closing_price
@@ -121,6 +125,7 @@ for key, values in AGG.groupby('symbol'):
     plt.ylabel('closing_price')
     plt.grid()
     slope_inner = []
+    price_inner = []
     score = 0
     for i in range(len(days)):
         values_inner = values[-days[i]:]
@@ -142,29 +147,26 @@ for key, values in AGG.groupby('symbol'):
         # resize png: w250, h200
         Image.open(outpath).resize((250, 200), Image.LANCZOS).save(outpath)
         # stack param
+        IND_NAMES.append(values['ind_name'].head(1).iloc[0])
+        MARKET_CODES.append(values['market_code'].head(1).iloc[0])
         SYMBOLS.append(key)
-        SLOPES.append(slope_inner)
-        SCORES.append(score)
-    print(key, slope_inner, score)
-UPTREND = pd.DataFrame({
+        price_inner.append(values.tail(max(days))['closing_price'].head(1).iloc[0])
+        price_inner.append(values.tail(max(days))['closing_price'].tail(1).iloc[0])
+        price_inner.append(round(price_inner[0] - price_inner[1], 2))
+        PRICE_OLDESTS.append(price_inner[0])
+        PRICE_LATESTS.append(price_inner[1])
+        PRICE_DELTAS.append(price_inner[2])
+    print(key, slope_inner, score, price_inner)
+
+AGG = pd.DataFrame({
+    'ind_name': IND_NAMES,
+    'market_code': MARKET_CODES,
     'symbol': SYMBOLS,
-    'slopes': SLOPES,
-    'score': SCORES
+    'stocks_price_oldest': PRICE_OLDESTS,
+    'stocks_price_latest': PRICE_LATESTS,
+    'stocks_price_delta': PRICE_DELTAS
 })
-EDIT_SQL = '''
-    SELECT
-        CONCAT(c.industry_class, '|', i.industry1) AS ind_name
-        , i.market_code
-        , i.symbol
-    FROM (vietnam_research_industry i INNER JOIN vietnam_research_indclass c
-        ON i.industry1 = c.industry1) INNER JOIN vietnam_research_sbi s
-        ON i.market_code = s.market_code AND i.symbol = s.symbol
-    WHERE i.symbol IN ('{SYMBOLS}')
-    GROUP BY ind_name, i.market_code, i.symbol
-    ORDER BY ind_name, i.market_code, i.symbol;
-'''
-EDIT_SQL = EDIT_SQL.replace('{SYMBOLS}', "','".join(list(UPTREND['symbol'])))
-AGG = pd.read_sql_query(EDIT_SQL, CON)
+AGG = AGG.sort_values(['ind_name', 'stocks_price_delta'], ascending=['True', 'False'])
 AGG.to_sql('vietnam_research_dailyuptrends', CON, if_exists='append', index=None)
 
 # log

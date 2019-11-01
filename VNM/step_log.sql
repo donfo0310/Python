@@ -55,16 +55,24 @@ HAVING per >1;
 -- uptrend
 -- 確認
 SELECT * FROM vietnam_research_dailyuptrends;
--- 業種別シンボル別集計（今回は 平均 and 集計後per >1 とする）
 SELECT
-      c.industry_class || '|' || i.industry1 AS ind_name
+    CONCAT(c.industry_class, '|', i.industry1) AS ind_name
+    , i.market_code
     , i.symbol
-    , AVG(i.closing_price * volume) AS marketcap
-    , AVG(i.per) AS per
-FROM vietnam_research_industry i INNER JOIN vietnam_research_indclass c
-ON i.industry1 = c.industry1
-GROUP BY ind_name, i.symbol
-HAVING per >1;
+    , i.pub_date
+    , i.closing_price
+FROM (vietnam_research_industry i INNER JOIN vietnam_research_indclass c
+    ON i.industry1 = c.industry1) INNER JOIN vietnam_research_sbi s
+    ON i.market_code = s.market_code AND i.symbol = s.symbol
+WHERE i.symbol IN ('VTS','VTO')
+ORDER BY ind_name, i.market_code, i.symbol, i.pub_date;
+
+SELECT
+    i.symbol
+  , MAX(i.pub_date) - INTERVAL 6 DAY AS pub_date_old
+  , MAX(i.pub_date) AS pub_date_latest
+FROM vietnam_research_industry i
+WHERE i.symbol IN ('SAB');
 
 -- ●vnindex
 SELECT COUNT(1) FROM vietnam_research_vnindex;
