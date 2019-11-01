@@ -121,7 +121,6 @@ for key, values in AGG.groupby('symbol'):
     # plot: closing_price
     plt.clf()
     plt.plot(range(len(values)), values['closing_price'], "ro")
-    plt.title(key)
     plt.ylabel('closing_price')
     plt.grid()
     slope_inner = []
@@ -152,7 +151,7 @@ for key, values in AGG.groupby('symbol'):
         SYMBOLS.append(key)
         price_inner.append(values.tail(max(days))['closing_price'].head(1).iloc[0])
         price_inner.append(values.tail(max(days))['closing_price'].tail(1).iloc[0])
-        price_inner.append(round(price_inner[0] - price_inner[1], 2))
+        price_inner.append(round(price_inner[1] - price_inner[0], 2))
         PRICE_OLDESTS.append(price_inner[0])
         PRICE_LATESTS.append(price_inner[1])
         PRICE_DELTAS.append(price_inner[2])

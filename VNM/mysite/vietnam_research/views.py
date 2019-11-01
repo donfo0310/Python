@@ -178,9 +178,12 @@ def index(request):
               END mkt
             , u.symbol
             , CONCAT('(', i.industry1, ')', u.symbol, ' ', i.company_name) AS company_name
-        FROM vietnam_research_dailyuptrends u INNER JOIN vietnam_research_industry i
+            , stocks_price_oldest
+            , stocks_price_latest
+            , stocks_price_delta
+            FROM vietnam_research_dailyuptrends u INNER JOIN vietnam_research_industry i
             ON u.symbol = i.symbol
-        ORDER BY u.ind_name, u.market_code, u.symbol;
+        ORDER BY u.ind_name, stocks_price_delta DESC;
         '''
         , con)
     sort_criteria = ['ind_name', 'marketcap', 'per']

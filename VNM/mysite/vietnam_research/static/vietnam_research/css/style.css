@@ -103,6 +103,22 @@ h3 {
   padding: 10px 0;
 }
 
+.uptrends {
+  position: relative;
+}
+.uptrends p {
+  position: absolute;
+  margin: 0px;
+  color: white;
+  background: skyblue;
+  font-weight: bold;
+  font-family :Kameron, sans-serif;
+  top: 0px;
+  left: 31px;
+  padding: 1px 10px;
+  font-size: 12px;
+}
+
 .registration {
   padding: 20px 0px 20px 0px;
   background-image: linear-gradient(-45deg, #f5eeed 25%, #f4e2de 25%, #f4e2de 50%, #f5eeed 50%, #f5eeed 75%, #f4e2de 75%, #f4e2de);
