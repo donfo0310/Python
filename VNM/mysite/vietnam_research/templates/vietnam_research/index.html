@@ -98,19 +98,42 @@
             <img src="{% static 'vietnam_research/chart/' %}{{ row.symbol }}.png" alt="{{ row.symbol }}">
         </a>
     {% endfor %}
-
+    
     <!-- uptrends -->
     <h2>株価直近（14日線/7日線/3日線）上昇銘柄（SBI証券取り扱い銘柄のみ）</h2>
-    {% for idx, row in uptrends.iterrows %}
-        <h3>{{ row.company_name }}</h3>
-        <div class="uptrends">
-            <a href="https://www.viet-kabu.com/{{ row.mkt }}/{{ row.symbol }}.html" target="_blank">
-                <img src="{% static 'vietnam_research/chart_uptrend/' %}{{ row.symbol }}.png" alt="{{ row.symbol }}">
-            </a>
-            <p>{{ row.stocks_price_latest }}（＋{{ row.stocks_price_delta }}）</p>
-        </div>
-    {% endfor %}
-
+    <div id="uptrends_wrapper"></div>
+    <script>
+        json = JSON.parse('{{ uptrends|safe }}');
+        var uptrends = document.getElementById('uptrends_wrapper');
+        for (var industry in json) {
+            h3 = document.createElement('h3');
+            h3.textContent = json[industry]['ind_name'];
+            ul = document.createElement("ul");
+            for (var i in json[industry]['datasets']) {
+                mkt = json[industry]['datasets'][i]['mkt'];
+                symbol = json[industry]['datasets'][i]['symbol'];
+                price_latest = json[industry]['datasets'][i]['stocks_price_latest'];
+                price_delta = json[industry]['datasets'][i]['stocks_price_delta'];
+                img = document.createElement('img');
+                img.src = "{% static 'vietnam_research/chart_uptrend/' %}" + symbol + ".png";
+                img.alt = symbol;
+                a = document.createElement('a');
+                a.href = "https://www.viet-kabu.com/" + mkt + "/" + symbol + ".html";
+                a.target = "_blank";
+                p = document.createElement('p');
+                p.textContent = symbol + ": " + price_latest + "（＋" + price_delta + "）";
+                li = document.createElement("li");
+                li.className = 'uptrends';
+                a.appendChild(img);
+                li.appendChild(a);
+                li.appendChild(p);
+                ul.appendChild(li);
+            }
+            uptrends.appendChild(h3);
+            uptrends.appendChild(ul);
+        }
+    </script>
+    
     <!-- watchlist -->
     <h2>ウォッチリスト</h2>
     {% for idx, row in watchlist.iterrows %}

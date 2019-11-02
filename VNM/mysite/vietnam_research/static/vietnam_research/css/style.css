@@ -103,6 +103,9 @@ h3 {
   padding: 10px 0;
 }
 
+#uptrends_wrapper li { 	
+  display: inline-block;
+} 
 .uptrends {
   position: relative;
 }

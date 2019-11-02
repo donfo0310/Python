@@ -166,29 +166,41 @@ def index(request):
     order_criteria = [True, False, False]
     top5 = top5.sort_values(by=sort_criteria[0], ascending=order_criteria[0])
 
-    # uptrends
-    uptrends = pd.read_sql_query(
+    # uptrends（業種別にグループ化してjsonにします）
+    uptrends = []
+    temp = pd.read_sql_query(
         '''
         SELECT DISTINCT
               u.ind_name
-            , u.market_code
             , CASE
                 WHEN u.market_code = "HOSE" THEN "hcm"
                 WHEN u.market_code = "HNX" THEN "hn"
               END mkt
             , u.symbol
-            , CONCAT('(', i.industry1, ')', u.symbol, ' ', i.company_name) AS company_name
-            , stocks_price_oldest
-            , stocks_price_latest
-            , stocks_price_delta
-            FROM vietnam_research_dailyuptrends u INNER JOIN vietnam_research_industry i
+            , i.industry1
+            , i.company_name
+            , u.stocks_price_oldest
+            , u.stocks_price_latest
+            , u.stocks_price_delta
+        FROM vietnam_research_dailyuptrends u INNER JOIN vietnam_research_industry i
             ON u.symbol = i.symbol
         ORDER BY u.ind_name, stocks_price_delta DESC;
         '''
         , con)
-    sort_criteria = ['ind_name', 'marketcap', 'per']
-    order_criteria = [True, False, False]
-    top5 = top5.sort_values(by=sort_criteria[0], ascending=order_criteria[0])
+    for groups in temp.groupby('ind_name'):
+        print('\n', groups[0])
+        inner = {"ind_name": groups[0], "datasets": []}
+        for row in groups[1].iterrows():
+            inner["datasets"].append({
+                "mkt": row[1]['mkt'],
+                "symbol": row[1]['symbol'],
+                "industry1": row[1]['industry1'],
+                "company_name": row[1]['company_name'],
+                "stocks_price_oldest": row[1]['stocks_price_oldest'],
+                "stocks_price_latest": row[1]['stocks_price_latest'],
+                "stocks_price_delta": row[1]['stocks_price_delta']
+            })
+        uptrends.append(inner)
 
     # context
     context = {
@@ -200,7 +212,7 @@ def index(request):
         'watchlist': watchelist,
         'basicinfo': basicinfo,
         'top5list': top5,
-        'uptrends': uptrends,
+        'uptrends': json.dumps(uptrends, ensure_ascii=False),
         'form': form
     }
 
