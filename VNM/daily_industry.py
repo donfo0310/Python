@@ -33,33 +33,35 @@ def scraping(url, mkt):
     # data
     for tag_tr in soup.find_all('tr', id=True):
         # Symbol, company_name, date
-        temp = tag_tr.find_all('td', class_='table_list_center')[0]
-        symbol_code.append(re.sub("＊", '', temp.text.strip()))       # AAA
-        company_name.append(temp.a.get('title'))    # アンファット・バイオプラスチック
-        date.append(ymdhms)                         # 2019-08-16 15:00:00
-        # industry1, industry2
-        temp = tag_tr.find_all('td', class_='table_list_center')[1]
-        industry1.append(re.sub(r'\[(.+)\]', '', temp.img.get('title')))
-        industry2.append(re.search(r'\[(.+)\]', temp.img.get('title')).group(1))
-        # closing_price	終値（千ドン）
-        temp = tag_tr.find_all('td', class_='table_list_right')[1].text
-        closing_price.append(float(temp))
-        # volume 出来高（株）
-        temp = tag_tr.find_all('td', class_='table_list_right')[7].text
-        temp = temp.replace('-', '0').replace(',', '')
-        volume.append(float(temp))
-        # trade_price_of_a_day 売買代金（千ドン）
-        temp = tag_tr.find_all('td', class_='table_list_right')[8].text
-        temp = temp.replace('-', '0').replace(',', '')
-        trade_price_of_a_day.append(float(temp))
-        # market_cap 時価総額（億円）
-        temp = tag_tr.find_all('td', class_='table_list_right')[10].text
-        temp = temp.replace('-', '0').replace(',', '')
-        market_cap.append(float(temp))
-        # per 15倍以下が割安
-        temp = tag_tr.find_all('td', class_='table_list_right')[11].text
-        temp = temp.replace('-', '0')
-        per.append(float(temp))
+        temp = tag_tr.find_all('td', class_='table_list_center')
+        if temp:
+            temp = tag_tr.find_all('td', class_='table_list_center')[0]
+            symbol_code.append(re.sub("＊", '', temp.text.strip()))       # AAA
+            company_name.append(temp.a.get('title'))    # アンファット・バイオプラスチック
+            date.append(ymdhms)                         # 2019-08-16 15:00:00
+            # industry1, industry2
+            temp = tag_tr.find_all('td', class_='table_list_center')[1]
+            industry1.append(re.sub(r'\[(.+)\]', '', temp.img.get('title')))
+            industry2.append(re.search(r'\[(.+)\]', temp.img.get('title')).group(1))
+            # closing_price	終値（千ドン）
+            temp = tag_tr.find_all('td', class_='table_list_right')[1].text
+            closing_price.append(float(temp))
+            # volume 出来高（株）
+            temp = tag_tr.find_all('td', class_='table_list_right')[7].text
+            temp = temp.replace('-', '0').replace(',', '')
+            volume.append(float(temp))
+            # trade_price_of_a_day 売買代金（千ドン）
+            temp = tag_tr.find_all('td', class_='table_list_right')[8].text
+            temp = temp.replace('-', '0').replace(',', '')
+            trade_price_of_a_day.append(float(temp))
+            # market_cap 時価総額（億円）
+            temp = tag_tr.find_all('td', class_='table_list_right')[10].text
+            temp = temp.replace('-', '0').replace(',', '')
+            market_cap.append(float(temp))
+            # per 15倍以下が割安
+            temp = tag_tr.find_all('td', class_='table_list_right')[11].text
+            temp = temp.replace('-', '0')
+            per.append(float(temp))
 
     # mysql
     con_str = 'mysql+mysqldb://python:python123@127.0.0.1/pythondb?charset=utf8&use_unicode=1'
