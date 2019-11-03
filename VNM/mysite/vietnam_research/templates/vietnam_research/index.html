@@ -114,6 +114,8 @@
                 symbol = json[industry]['datasets'][i]['symbol'];
                 price_latest = json[industry]['datasets'][i]['stocks_price_latest'];
                 price_delta = json[industry]['datasets'][i]['stocks_price_delta'];
+                price_delta_sign = Math.sign(price_delta) <0 ? "▲":"＋";
+                price_delta = Math.abs(price_delta);
                 img = document.createElement('img');
                 img.src = "{% static 'vietnam_research/chart_uptrend/' %}" + symbol + ".png";
                 img.alt = symbol;
@@ -121,7 +123,7 @@
                 a.href = "https://www.viet-kabu.com/" + mkt + "/" + symbol + ".html";
                 a.target = "_blank";
                 p = document.createElement('p');
-                p.textContent = symbol + ": " + price_latest + "（＋" + price_delta + "）";
+                p.textContent = symbol + ": " + price_latest + "（" + price_delta_sign + price_delta + "）";
                 li = document.createElement("li");
                 li.className = 'uptrends';
                 a.appendChild(img);
