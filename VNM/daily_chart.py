@@ -174,3 +174,4 @@ with open(os.path.dirname(os.path.abspath(__file__)) + '/result.log', mode='a') 
 
 # Output
 print('Congrats!')
+time.sleep(2)

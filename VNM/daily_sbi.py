@@ -4,6 +4,7 @@ SBI証券ベトナム株式取扱銘柄一覧を取得します
 from os.path import dirname
 from os.path import abspath
 import urllib.request
+import time
 import datetime
 from sqlalchemy import create_engine
 from bs4 import BeautifulSoup
@@ -42,3 +43,4 @@ with open(dirname(abspath(__file__)) + '/result.log', mode='a') as f:
 
 # Output
 print('Congrats!')
+time.sleep(2)

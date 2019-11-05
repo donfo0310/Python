@@ -3,6 +3,7 @@ from os.path import dirname
 from os.path import abspath
 import re
 import urllib.request
+import time
 import datetime
 from sqlalchemy import create_engine
 from bs4 import BeautifulSoup
@@ -11,7 +12,7 @@ import pandas as pd
 def scraping(url, mkt):
     """ Market_code, Symbol, company_name, industry1, industry2 """
 
-    symbol_code = []
+    symbols = []
     company_name = []
     industry1 = []
     industry2 = []
@@ -36,7 +37,9 @@ def scraping(url, mkt):
         temp = tag_tr.find_all('td', class_='table_list_center')
         if temp:
             temp = tag_tr.find_all('td', class_='table_list_center')[0]
-            symbol_code.append(re.sub("＊", '', temp.text.strip()))       # AAA
+            symbol = re.sub("＊", '', temp.text.strip()) # AAA
+            print(symbol)
+            symbols.append(symbol)
             company_name.append(temp.a.get('title'))    # アンファット・バイオプラスチック
             date.append(ymdhms)                         # 2019-08-16 15:00:00
             # industry1, industry2
@@ -70,7 +73,7 @@ def scraping(url, mkt):
     # data1 summary data（毎月末のデータが蓄積する）
     df_summary = pd.DataFrame({
         'market_code': mkt,
-        'symbol': symbol_code,
+        'symbol': symbols,
         'company_name': company_name,
         'industry1': industry1,
         'industry2': industry2,
@@ -89,16 +92,21 @@ def scraping(url, mkt):
     con.execute(sql)
     df_summary.to_sql('vietnam_research_industry', con, if_exists='append', index=None)
 
+    return df_summary.shape[0]
+
+CNT = 0
+
 # ホーチミン証券取引所
 print('HOSE')
-scraping('https://www.viet-kabu.com/stock/hcm.html', 'HOSE')
+CNT += scraping('https://www.viet-kabu.com/stock/hcm.html', 'HOSE')
 # ハノイ証券取引所
 print('HNX')
-scraping('https://www.viet-kabu.com/stock/hn.html', 'HNX')
+CNT += scraping('https://www.viet-kabu.com/stock/hn.html', 'HNX')
 
 # log
 with open(dirname(abspath(__file__)) + '/result.log', mode='a') as f:
     f.write('\n' + datetime.datetime.now().strftime("%Y/%m/%d %a %H:%M:%S ") + 'industry.py')
 
 # finish
-print('congrats!')
+print(CNT, 'congrats!')
+time.sleep(2)
