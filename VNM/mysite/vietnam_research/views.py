@@ -119,23 +119,35 @@ def index(request):
     # watchlist
     watchelist = pd.read_sql_query(
         '''
-        SELECT DISTINCT
-              CASE
-                WHEN market_code = "HOSE" THEN "hcm"
-                WHEN market_code = "HNX" THEN "hn"
-              END mkt
-            , w.symbol
-            , CONCAT('(', i.industry1, ')', w.symbol, ' ', i.company_name) AS company_name
-            , w.bought_day
-            , w.stocks_price
-            , w.stocks_count
-            , w.bikou
-            , already_has
-            , i.industry1
-        FROM vietnam_research_watchlist w INNER JOIN vietnam_research_industry i
-            ON w.symbol = i.symbol
-        WHERE already_has = 1
-        ORDER BY already_has DESC, i.industry1;
+        SELECT
+              IQ.*
+            , ROUND(i_tdy.closing_price, 0) AS closing_price
+            , ROUND(((i_tdy.closing_price / IQ.stocks_price) -1) *100, 2) AS stocks_price_delta
+        FROM
+        (
+            SELECT DISTINCT
+                CASE
+                    WHEN market_code = "HOSE" THEN "hcm"
+                    WHEN market_code = "HNX" THEN "hn"
+                END mkt
+                , w.symbol
+                , CONCAT('(', i.industry1, ')', w.symbol, ' ', i.company_name) AS company_name
+                , w.bought_day
+                , w.stocks_price
+                , w.stocks_count
+                , w.bikou
+                , already_has
+                , i.industry1
+            FROM vietnam_research_watchlist w INNER JOIN vietnam_research_industry i
+                ON w.symbol = i.symbol
+            WHERE already_has = 1
+        ) IQ INNER JOIN (
+            SELECT
+                i.symbol, i.closing_price * 1000 closing_price
+            FROM vietnam_research_industry i
+            WHERE i.pub_date = (SELECT MAX(i.pub_date) pub_date FROM vietnam_research_industry i)
+        ) i_tdy ON IQ.symbol = i_tdy.symbol
+        ORDER BY IQ.bought_day;
         '''
         , con)
 

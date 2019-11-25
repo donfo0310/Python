@@ -140,7 +140,11 @@
     <h2>ウォッチリスト</h2>
     {% for idx, row in watchlist.iterrows %}
         <h3>{{ row.company_name }}</h3>
-        <p>{{ row.bought_day }}, {{ row.stocks_price }}VND, {{ row.stocks_count }}株, {{ row.bikou }}</p>
+        <p>購入日：{{ row.bought_day }}</p>
+        <p>購入時点単価：{{ row.stocks_price }} VND</p>
+        <p>本日時点単価：{{ row.closing_price }} VND（{{ row.stocks_price_delta }}%）</p>
+        <p>購入数：{{ row.stocks_count }}株</p>
+        <p>備考：{{ row.bikou }}</p>
         <a href="https://www.viet-kabu.com/{{ row.mkt }}/{{ row.symbol }}.html" target="_blank">
             <img src="{% static 'vietnam_research/chart/' %}{{ row.symbol }}.png" alt="{{ row.symbol }}">
         </a>
