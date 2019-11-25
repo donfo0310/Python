@@ -11,6 +11,7 @@ class DailyData(models.Model):
 class Category(models.Model):
     '''descriptionをカテゴリーに置き換えてpivotしやすくします'''
     description = models.CharField(max_length=200)
-    category1 = models.CharField(max_length=100)
-    category2 = models.CharField(max_length=100)
+    category1 = models.CharField(max_length=100, null=True, blank=True)
+    category2 = models.CharField(max_length=100, null=True, blank=True)
+    bikou = models.CharField(max_length=200, null=True, blank=True)
     

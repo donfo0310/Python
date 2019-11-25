@@ -2,6 +2,7 @@
 import os
 import sqlite3
 from datetime import datetime as dt
+import re
 import pandas as pd
 
 # sqlite3
@@ -43,9 +44,26 @@ for file in FILES:
         CSV = CSV[COLS_OUT]
         CSV.to_sql('bankdata_dailydata', CON, if_exists='append', index=None)
 
-    # MUFG - VISA
-    # if file[:8] == 'MUFGVISA':
-    #     print(file)
+    # MUFGVISA
+    if file[:8] == 'MUFGVISA':
+        COLS = ['利用日', '利用内容', '今回請求額']
+        COLS_NEW = ['ymd', 'description', 'amount']
+        ym = int(file[-10:][:6])
+        if ym < 201805:
+            CSV = pd.read_csv('import/csv/' + file \
+                , usecols=COLS, encoding="shift-jis", skiprows=12, engine='python')
+        else:
+            CSV = pd.read_csv('import/csv/' + file \
+                , usecols=COLS, encoding="shift-jis", skiprows=12, skipfooter=8, engine='python')
+        CSV = CSV.rename(columns=dict(zip(COLS, COLS_NEW)))
+        CSV['ymd'] = CSV['ymd'].str.replace('/', '-')
+        CSV['description'] = CSV['description'].str.strip()
+        CSV['description'] = CSV['description'].apply(lambda x: re.sub('( |　)+', ' ', x))
+        CSV['description'] = CSV['description'].str.replace('−', 'ー')
+        CSV['amount'] = CSV['amount'].str.replace(',', '')
+        CSV['bank_name'] = 'MUFGVISA'
+        CSV.to_sql('bankdata_dailydata', CON, if_exists='append', index=None)
+        print(CSV['amount'].astype(int).sum())
 
     # NAGAGIN
     if file[:4] == 'NAGA':

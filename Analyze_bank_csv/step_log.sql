@@ -20,6 +20,7 @@ SELECT COUNT(1) FROM bankdata_dailydata;
 SELECT * FROM bankdata_dailydata;
 SELECT description, SUM(amount) FROM bankdata_dailydata GROUP BY description;
 SELECT ymd, description, amount FROM bankdata_dailydata WHERE description = '口座振替４ オリコ';
+SELECT ymd, description, amount FROM bankdata_dailydata WHERE ymd = '201908';
 -- テーブル削除
 DROP TABLE bankdata_dailydata;
 -- データ削除
@@ -28,6 +29,8 @@ DELETE FROM bankdata_dailydata;
 -- ●Categoryテーブル
 -- 確認
 SELECT description, category1, category2 FROM bankdata_category GROUP BY description;
+-- マスタメンテナンス
+SELECT d.description, c.category1, c.category2, c.bikou, COUNT(d.description) cnt_detail, MIN(d.ymd) min_date, MAX(d.ymd) max_date, SUM(d.amount) sum_amount FROM bankdata_dailydata d LEFT JOIN bankdata_category c ON d.description = c.description GROUP BY d.description ORDER BY c.category1, c.category2, d.ymd;
 
 -- ●組み合わせ
 -- 確認

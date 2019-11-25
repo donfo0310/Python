@@ -12,10 +12,10 @@ SQL = '''DELETE FROM bankdata_category'''
 CUR.execute(SQL)
 
 # insert
-DF = pd.read_excel('import/xlsx/Category.xlsx', sheet_name=['bank', 'credit'])
-DF['bank'].to_sql('bankdata_category', CON, if_exists='append', index=None)
-DF['credit'].to_sql('bankdata_category', CON, if_exists='append', index=None)
+COLS_OUT = ['description', 'category1', 'category2', 'bikou']
+DF = pd.read_excel('import/xlsx/Category.xlsx', usecols=COLS_OUT, sheet_name='bankcredit')
+DF = DF[COLS_OUT]
+DF.to_sql('bankdata_category', CON, if_exists='append', index=None)
 
-# check
-SQL = 'SELECT description, category1, category2 FROM bankdata_category GROUP BY description;'
-DF = pd.read_sql_query(SQL, CON)
+# finish
+print('Congrats!')
