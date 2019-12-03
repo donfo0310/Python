@@ -18,6 +18,9 @@ def scraping(url, mkt):
     industry2 = []
     market_cap = []
     closing_price = []
+    open_price = []
+    high_price = []
+    low_price = []
     volume = []
     trade_price_of_a_day = []
     per = []
@@ -49,6 +52,15 @@ def scraping(url, mkt):
             # closing_price	終値（千ドン）
             temp = tag_tr.find_all('td', class_='table_list_right')[1].text
             closing_price.append(float(temp))
+            # open_price	始値（千ドン）
+            temp = tag_tr.find_all('td', class_='table_list_right')[2].text
+            open_price.append(float(temp))
+            # high_price	高値（千ドン）
+            temp = tag_tr.find_all('td', class_='table_list_right')[3].text
+            high_price.append(float(temp))
+            # low_price	安値（千ドン）
+            temp = tag_tr.find_all('td', class_='table_list_right')[4].text
+            low_price.append(float(temp))
             # volume 出来高（株）
             temp = tag_tr.find_all('td', class_='table_list_right')[7].text
             temp = temp.replace('-', '0').replace(',', '')
@@ -78,6 +90,9 @@ def scraping(url, mkt):
         'industry1': industry1,
         'industry2': industry2,
         'closing_price': closing_price,
+        'open_price': open_price,
+        'high_price': high_price,
+        'low_price': low_price,
         'volume': volume,
         'trade_price_of_a_day': trade_price_of_a_day,
         'marketcap': market_cap,
