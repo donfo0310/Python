@@ -30,152 +30,168 @@
     
 </head>
 <body>
-    
-    <!-- nav -->
-    <h1></h1>
-    <div class="nav fixed">
-        <ul class="right_align">
-            <li class="usrname"><span><u>username</u></span></li>
-            <li class="pptx"><a href="#pptx">pptx資料</a></li>
-            <li class="xlsx"><a href="{% static 'vietnam_research/xlsx/sample.xlsx' %}" onclick='countup();'>xlsx資料</a></li>
-            <li class="logout"><a href="#logout">ログアウト</a></li>
-        </ul>
-    </div>
+    <div id="container">
+        <!-- nav -->
+        <h1></h1>
+        <header>
+            <ul class="right_align">
+                <li class="usrname"><span><u>username</u></span></li>
+                <li class="pptx"><a href="#pptx">pptx資料</a></li>
+                <li class="xlsx"><a href="{% static 'vietnam_research/xlsx/sample.xlsx' %}" onclick='countup();'>xlsx資料</a></li>
+                <li class="logout"><a href="#logout">ログアウト</a></li>
+            </ul>
+        </header>
 
-    <!-- todo -->
-    <h2>Todo</h2>
-    <p>国の成長期に金融が稼げる理由は？</p>
-    <p>
-        データ:<br>
-        セクター別リターン<br>
-        個社利率<br>
-        配当性向<br>
-        50万円で大口株主になれる先リスト<br>
-        センチメント分析<br>
-        ニュース・有報から上方修正先を抽出<br>
-        あと何株買えるの？の計算式（excelでやるやつ）をフォームで
-    </p>
-    <p>スクレイピング: 上場日</p>
+        <div id="main">
+            <p>likes test</p>
+            <form class="likes" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <ul>
+                    <li><a href="{% url 'vnm:likes' user_id=1 likes_id=1 %}"></span>いいね！1</a></li>
+                    <li><a href="{% url 'vnm:likes' user_id=1 likes_id=2 %}"></span>いいね！2</a></li>
+                    <li><a href="{% url 'vnm:likes' user_id=1 likes_id=3 %}"></span>いいね！3</a></li>
+                </ul>
+            </form>
 
-    <!-- macro by industry -->
-    <h2>業種別マクロ分析</h2>
-    <p>これで3年分ぐらいを重ねてみたい</p>
-    <p>足元の鉱業の不調は、かつてベトナムの主力輸出品であった原油の生産量が原油価格低迷に伴い減少したことが主因と見られる。
-        他方、足元で製造業の伸び率が加速している点については、ベトナムに進出した外資系企業による鉄鋼や電機製品などの生産が
-        拡大したことに影響されたと見られる。中国やタイに比べて低いとされてきたベトナムの賃金は、近年、上昇が続いており、
-        ベトナムに進出した日系企業にとって悩みの種となっている。<BR>
-        <a href="https://www.murc.jp/wp-content/uploads/2018/03/report_180316.pdf">MURCベトナム経済の現状と今後の展望(20180316)</a>
-    </p>
-    <div class="radarChart1" style="display: inline-flex;"></div>
-    <div class="radarChart2" style="display: inline-flex;"></div>
+            <!-- todo -->
+            <h2>Todo</h2>
+            <p>国の成長期に金融が稼げる理由は？</p>
+            <p>
+                データ:<br>
+                セクター別リターン<br>
+                個社利率<br>
+                配当性向<br>
+                50万円で大口株主になれる先リスト<br>
+                センチメント分析<br>
+                ニュース・有報から上方修正先を抽出<br>
+                あと何株買えるの？の計算式（excelでやるやつ）をフォームで
+            </p>
+            <p>スクレイピング: 上場日</p>
 
-    <!-- trading price by industry -->
-    <h2>業種別売買代金（千ドン）</h2>
-    <canvas id="barChart1" width="1000px" height="400px"></canvas>
+            <!-- macro by industry -->
+            <h2>業種別マクロ分析</h2>
+            <p>これで3年分ぐらいを重ねてみたい</p>
+            <p>足元の鉱業の不調は、かつてベトナムの主力輸出品であった原油の生産量が原油価格低迷に伴い減少したことが主因と見られる。
+                他方、足元で製造業の伸び率が加速している点については、ベトナムに進出した外資系企業による鉄鋼や電機製品などの生産が
+                拡大したことに影響されたと見られる。中国やタイに比べて低いとされてきたベトナムの賃金は、近年、上昇が続いており、
+                ベトナムに進出した日系企業にとって悩みの種となっている。<BR>
+                <a href="https://www.murc.jp/wp-content/uploads/2018/03/report_180316.pdf">MURCベトナム経済の現状と今後の展望(20180316)</a>
+            </p>
+            <div class="radarChart1" style="display: inline-flex;"></div>
+            <div class="radarChart2" style="display: inline-flex;"></div>
 
-    <!-- vn-index -->
-    <h2>VN-Index（時系列）</h2>
-    <p>底堅く上昇トレンド</p>
-    <canvas id="vnChart" style="height:300px; width:1000px"></canvas>
+            <!-- trading price by industry -->
+            <h2>業種別売買代金（千ドン）</h2>
+            <canvas id="barChart1" width="1000px" height="400px"></canvas>
 
-    <!-- vn-index layer -->
-    <h2>VN-Index（年単位ミルフィーユ）</h2>
-    <p>季節要因は特に感じられない</p>
-    <canvas id="vnChart_layer" style="height:300px; width:1000px"></canvas>
+            <!-- vn-index -->
+            <h2>VN-Index（時系列）</h2>
+            <p>底堅く上昇トレンド</p>
+            <canvas id="vnChart" style="height:300px; width:1000px"></canvas>
 
-    <!-- exchange -->
-    <h2>ドンから日本円へ</h2>
-    ドンを200で割ると、ざっくり日本円になります。
-    1,000don -> 5円
+            <!-- vn-index layer -->
+            <h2>VN-Index（年単位ミルフィーユ）</h2>
+            <p>季節要因は特に感じられない</p>
+            <canvas id="vnChart_layer" style="height:300px; width:1000px"></canvas>
 
-    <!-- top5 -->
-    <h2>業種別企業別「売買代金」全期間平均TOP5（SBI証券取り扱い銘柄のみ）</h2>
-    {% for idx, row in top5list.iterrows %}
-        {%if forloop.counter0|divisibleby:"5" %}
-            <h3>{{ row.ind_name }}</h3>
-        {% endif %}
-        <a href="https://www.viet-kabu.com/{{ row.mkt }}/{{ row.symbol }}.html" target="_blank">
-            <img src="{% static 'vietnam_research/chart/' %}{{ row.symbol }}.png" alt="{{ row.symbol }}">
-        </a>
-    {% endfor %}
-    
-    <!-- uptrends -->
-    <h2>株価直近（14日線/7日線/3日線）上昇銘柄（SBI証券取り扱い銘柄のみ）</h2>
-    <div id="uptrends_wrapper"></div>
-    <script>
-        json = JSON.parse('{{ uptrends|safe }}');
-        var uptrends = document.getElementById('uptrends_wrapper');
-        for (var industry in json) {
-            h3 = document.createElement('h3');
-            h3.textContent = json[industry]['ind_name'];
-            ul = document.createElement("ul");
-            for (var i in json[industry]['datasets']) {
-                mkt = json[industry]['datasets'][i]['mkt'];
-                symbol = json[industry]['datasets'][i]['symbol'];
-                price_latest = json[industry]['datasets'][i]['stocks_price_latest'];
-                price_delta = json[industry]['datasets'][i]['stocks_price_delta'];
-                price_delta_sign = Math.sign(price_delta) <0 ? "▲":"＋";
-                price_delta = Math.abs(price_delta);
-                img = document.createElement('img');
-                img.src = "{% static 'vietnam_research/chart_uptrend/' %}" + symbol + ".png";
-                img.alt = symbol;
-                a = document.createElement('a');
-                a.href = "https://www.viet-kabu.com/" + mkt + "/" + symbol + ".html";
-                a.target = "_blank";
-                p = document.createElement('p');
-                p.textContent = symbol + ": " + price_latest + "（" + price_delta_sign + price_delta + "）";
-                li = document.createElement("li");
-                li.className = 'uptrends';
-                a.appendChild(img);
-                li.appendChild(a);
-                li.appendChild(p);
-                ul.appendChild(li);
-            }
-            uptrends.appendChild(h3);
-            uptrends.appendChild(ul);
-        }
-    </script>
-    
-    <!-- watchlist -->
-    <h2>ウォッチリスト</h2>
-    {% for idx, row in watchlist.iterrows %}
-        <h3>{{ row.company_name }}</h3>
-        <p>購入日：{{ row.bought_day }}</p>
-        <p>購入時点単価：{{ row.stocks_price }} VND</p>
-        <p>本日時点単価：{{ row.closing_price }} VND（{{ row.stocks_price_delta }}%）</p>
-        <p>購入数：{{ row.stocks_count }}株</p>
-        <p>備考：{{ row.bikou }}</p>
-        <a href="https://www.viet-kabu.com/{{ row.mkt }}/{{ row.symbol }}.html" target="_blank">
-            <img src="{% static 'vietnam_research/chart/' %}{{ row.symbol }}.png" alt="{{ row.symbol }}">
-        </a>
-    {% endfor %}
-    <!-- regist to watchlist -->
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="registration">
-            <ul>{{ form.as_ul }} <li><input type="submit" value="登録"></li></ul>
+            <!-- exchange -->
+            <h2>ドンから日本円へ</h2>
+            ドンを200で割ると、ざっくり日本円になります。
+            1,000don -> 5円
+
+            <!-- top5 -->
+            <h2>業種別企業別「売買代金」全期間平均TOP5（SBI証券取り扱い銘柄のみ）</h2>
+            {% for idx, row in top5list.iterrows %}
+                {%if forloop.counter0|divisibleby:"5" %}
+                    <h3>{{ row.ind_name }}</h3>
+                {% endif %}
+                <a href="https://www.viet-kabu.com/{{ row.mkt }}/{{ row.symbol }}.html" target="_blank">
+                    <img src="{% static 'vietnam_research/chart/' %}{{ row.symbol }}.png" alt="{{ row.symbol }}">
+                </a>
+            {% endfor %}
+            
+            <!-- uptrends -->
+            <h2>株価直近（14日線/7日線/3日線）上昇銘柄（SBI証券取り扱い銘柄のみ）</h2>
+            <div id="uptrends_wrapper"></div>
+            <script>
+                json = JSON.parse('{{ uptrends|safe }}');
+                var uptrends = document.getElementById('uptrends_wrapper');
+                for (var industry in json) {
+                    h3 = document.createElement('h3');
+                    h3.textContent = json[industry]['ind_name'];
+                    ul = document.createElement("ul");
+                    for (var i in json[industry]['datasets']) {
+                        mkt = json[industry]['datasets'][i]['mkt'];
+                        symbol = json[industry]['datasets'][i]['symbol'];
+                        price_latest = json[industry]['datasets'][i]['stocks_price_latest'];
+                        price_delta = json[industry]['datasets'][i]['stocks_price_delta'];
+                        price_delta_sign = Math.sign(price_delta) <0 ? "▲":"＋";
+                        price_delta = Math.abs(price_delta);
+                        img = document.createElement('img');
+                        img.src = "{% static 'vietnam_research/chart_uptrend/' %}" + symbol + ".png";
+                        img.alt = symbol;
+                        a = document.createElement('a');
+                        a.href = "https://www.viet-kabu.com/" + mkt + "/" + symbol + ".html";
+                        a.target = "_blank";
+                        p = document.createElement('p');
+                        p.textContent = symbol + ": " + price_latest + "（" + price_delta_sign + price_delta + "）";
+                        li = document.createElement("li");
+                        li.className = 'uptrends';
+                        a.appendChild(img);
+                        li.appendChild(a);
+                        li.appendChild(p);
+                        ul.appendChild(li);
+                    }
+                    uptrends.appendChild(h3);
+                    uptrends.appendChild(ul);
+                }
+            </script>
+            
+            <!-- watchlist -->
+            <h2>ウォッチリスト</h2>
+            {% for idx, row in watchlist.iterrows %}
+                <h3>{{ row.company_name }}</h3>
+                <p>購入日：{{ row.bought_day }}</p>
+                <p>購入時点単価：{{ row.stocks_price }} VND</p>
+                <p>本日時点単価：{{ row.closing_price }} VND（{{ row.stocks_price_delta }}%）</p>
+                <p>購入数：{{ row.stocks_count }}株</p>
+                <p>備考：{{ row.bikou }}</p>
+                <a href="https://www.viet-kabu.com/{{ row.mkt }}/{{ row.symbol }}.html" target="_blank">
+                    <img src="{% static 'vietnam_research/chart/' %}{{ row.symbol }}.png" alt="{{ row.symbol }}">
+                </a>
+            {% endfor %}
+            <!-- regist to watchlist -->
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="registration">
+                    <ul>{{ form.as_ul }} <li><input type="submit" value="登録"></li></ul>
+                </div>
+            </form>
+
+            <!-- what is PER? -->
+            <h2>PERとは</h2>
+            <img src="{% static 'vietnam_research/images/PER.png' %}" alt="PER">
+
+            <!-- basicinfo -->
+            <h2>ベトナム基本情報</h2>
+            <div class="basicinfo">
+            {% for idx, row in basicinfo.iterrows %}
+            <table><tbody>
+                <tr>
+                    <th><p>{{ row.item }}</p></th>
+                    <td><p>{{ row.description }}</p></td>
+                </tr>
+            </tbody></table>
+            {% endfor %}
+            </div>
+            <a href="https://www.jetro.go.jp/world/asia/vn/stat_01.html">基礎的経済指標（日本貿易振興機構 jetro.go.jp）</a>
+            <p>※IMFデータをもとにSBI証券が作成を参考に</p>
+            <p>ベトナム経済は人口ボーナス期の真っ最中</p>
         </div>
-    </form>
-
-    <!-- what is PER? -->
-    <h2>PERとは</h2>
-    <img src="{% static 'vietnam_research/images/PER.png' %}" alt="PER">
-
-    <!-- basicinfo -->
-    <h2>ベトナム基本情報</h2>
-    <div class="basicinfo">
-    {% for idx, row in basicinfo.iterrows %}
-    <table><tbody>
-        <tr>
-            <th><p>{{ row.item }}</p></th>
-            <td><p>{{ row.description }}</p></td>
-        </tr>
-    </tbody></table>
-    {% endfor %}
+        <footer>
+            <p>(c)copyright yoshitaka okada / <a href="https://github.com/duri0214">django project</a></p>
+        </footer>
     </div>
-    <a href="https://www.jetro.go.jp/world/asia/vn/stat_01.html">基礎的経済指標（日本貿易振興機構 jetro.go.jp）</a>
-    <p>※IMFデータをもとにSBI証券が作成を参考に</p>
-    <p>ベトナム経済は人口ボーナス期の真っ最中</p>
 
     <script>
         var radarChartOptions = {

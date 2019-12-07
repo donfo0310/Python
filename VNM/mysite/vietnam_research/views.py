@@ -2,11 +2,11 @@
 import json
 from datetime import datetime
 from sqlalchemy import create_engine
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 import pandas as pd
 
 from .forms import WatchelistForm
-from .models import WatchList
+from .models import WatchList, Likes
 
 def index(request):
     """いわばhtmlのページ単位の構成物です"""
@@ -230,3 +230,12 @@ def index(request):
 
     # htmlとして返却します
     return render(request, 'vietnam_research/index.html', context)
+
+def likes(request, user_id, likes_id):
+    """いいねボタンをクリック"""
+    if request.method == 'POST':
+        likes_tbl = get_object_or_404(Likes, user_id=user_id, article_id=likes_id)
+        likes_tbl.user_id = user_id
+        likes_tbl.article_id = likes_id
+        likes_tbl.save()
+    return redirect('vnm:index')

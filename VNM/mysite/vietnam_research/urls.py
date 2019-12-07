@@ -8,4 +8,5 @@ from . import views
 app_name = 'vnm'
 urlpatterns = [
     path('', views.index, name='index'),
+    path('likes/<int:user_id>/<int:likes_id>', views.likes, name='likes'),
 ]
