@@ -35,6 +35,7 @@ header {
   width: 100%;
   height: 58px;
   text-align: right;
+  z-index: 2
 }
 header ul {
   margin: 0;
@@ -89,6 +90,7 @@ header .logout a::before {
 #main {
   padding-top: 58px;
   padding-bottom: 50px;
+  z-index: 1
 }
 footer {
   background-color: #ff5900;
@@ -98,6 +100,7 @@ footer {
   width: 100%;
   height: 50px;
   text-align: center;
+  z-index: 2
 }
 #container {
   position: relative;
