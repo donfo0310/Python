@@ -4,6 +4,13 @@ body {
   height: 100%;
 }
 
+button, [role="button"] {
+  color: gray;
+}
+button:active, button:focus, [role="button"][aria-pressed="true"] {
+  color: rgb(32, 120, 244);
+}
+
 /* 見出し */
 h1 {
     display: none;
@@ -118,6 +125,7 @@ footer {
   display: inline-block;
   list-style: none;
   padding: 10px;
+
 }
 .likes li:hover {
   background-color: whitesmoke;
@@ -125,6 +133,7 @@ footer {
 .likes a {
   text-decoration: none;
   color: gray;
+  padding-right: 15px;
 }
 
 .basicinfo table {
