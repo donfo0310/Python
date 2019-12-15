@@ -2,7 +2,7 @@
 import json
 from datetime import datetime
 from sqlalchemy import create_engine
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, HttpResponse
 import pandas as pd
 
 from .forms import WatchelistForm
@@ -214,6 +214,12 @@ def index(request):
             })
         uptrends.append(inner)
 
+    # likes
+    # https://developer.mozilla.org/ja/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_button_role
+    # Djangoでフォーム内でクリックされた"Aタグの"ボタンによって異なる処理を行いたい
+    # https://teratail.com/questions/181301
+    like = pd.read_sql_query('SELECT user_id, article_id FROM vietnam_research_likes;', con)
+
     # context
     context = {
         'industry_count': json.dumps(industry_count, ensure_ascii=False),
@@ -234,8 +240,15 @@ def index(request):
 def likes(request, user_id, likes_id):
     """いいねボタンをクリック"""
     if request.method == 'POST':
-        likes_tbl = get_object_or_404(Likes, user_id=user_id, article_id=likes_id)
+        query = Likes.objects.filter(user_id=user_id, article_id=likes_id)
+    if query.count() == 0:
+        likes_tbl = Likes()
         likes_tbl.user_id = user_id
         likes_tbl.article_id = likes_id
         likes_tbl.save()
-    return redirect('vnm:index')
+    else:
+        query.delete()
+
+    print('****************')
+    print('ajax is done')
+    return HttpResponse("ajax is done!")

@@ -21,7 +21,7 @@
     <script src="{% static 'vietnam_research/js/radarChart.js' %}" charset="utf-8"></script>
 
     <!-- button behivier -->
-    <script src="{% static 'vietnam_research/js/button_behavior.js' %}" charset="utf-8"></script>
+    <script src="{% static 'vietnam_research/js/ajax.js' %}" charset="utf-8"></script>
 
     <!-- font -->
     <link href="https://fonts.googleapis.com/css?family=Sawarabi+Gothic" rel="stylesheet">
@@ -50,7 +50,7 @@
             <form class="likes" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <ul>
-                    <li><a aria-pressed="false" role="button" onclick="handleBtnClick(event)" href="#"></span>いいね！1</a></li>
+                    <li><a aria-pressed="false" role="button" onclick="likes(event)"></span>いいね！1</a></li>
                     <li><a href="{% url 'vnm:likes' user_id=1 likes_id=2 %}"></span>いいね！2</a></li>
                     <li><a href="{% url 'vnm:likes' user_id=1 likes_id=3 %}"></span>いいね！3</a></li>
                 </ul>
