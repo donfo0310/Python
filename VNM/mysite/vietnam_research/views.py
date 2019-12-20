@@ -237,18 +237,15 @@ def index(request):
     # htmlとして返却します
     return render(request, 'vietnam_research/index.html', context)
 
-def likes(request, user_id, likes_id):
+def likes(request, user_id, article_id):
     """いいねボタンをクリック"""
     if request.method == 'POST':
-        query = Likes.objects.filter(user_id=user_id, article_id=likes_id)
-    if query.count() == 0:
-        likes_tbl = Likes()
-        likes_tbl.user_id = user_id
-        likes_tbl.article_id = likes_id
-        likes_tbl.save()
-    else:
-        query.delete()
-
-    print('****************')
-    print('ajax is done')
-    return HttpResponse("ajax is done!")
+        query = Likes.objects.filter(user_id=user_id, article_id=article_id)
+        if query.count() == 0:
+            likes_tbl = Likes()
+            likes_tbl.user_id = user_id
+            likes_tbl.article_id = article_id
+            likes_tbl.save()
+        else:
+            query.delete()
+        return HttpResponse("ajax is done!")

@@ -22,6 +22,7 @@
 
     <!-- button behivier -->
     <script src="{% static 'vietnam_research/js/ajax.js' %}" charset="utf-8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>    
 
     <!-- font -->
     <link href="https://fonts.googleapis.com/css?family=Sawarabi+Gothic" rel="stylesheet">
@@ -47,14 +48,11 @@
 
         <div id="main">
             <p>likes test</p>
-            <form class="likes" method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                <ul>
-                    <li><a aria-pressed="false" role="button" onclick="likes(event)"></span>いいね！1</a></li>
-                    <li><a href="{% url 'vnm:likes' user_id=1 likes_id=2 %}"></span>いいね！2</a></li>
-                    <li><a href="{% url 'vnm:likes' user_id=1 likes_id=3 %}"></span>いいね！3</a></li>
-                </ul>
-            </form>
+            <ul class="likes">
+                <li><a aria-pressed="false" role="button" onclick="likes(event, 1, 1)">いいね！1</a></li>
+                <li><a aria-pressed="false" role="button" onclick="likes(event, 1, 2)">いいね！2</a></li>
+                <li><a aria-pressed="false" role="button" onclick="likes(event, 1, 3)">いいね！3</a></li>
+            </ul>
 
             <!-- todo -->
             <h2>Todo</h2>

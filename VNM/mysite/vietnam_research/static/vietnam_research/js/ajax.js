@@ -1,4 +1,4 @@
-function likes(event) {
+function likes(event, user_id, article_id) {
 
     // toggle
     var pressed = (event.target.getAttribute("aria-pressed") === "true");
@@ -6,17 +6,7 @@ function likes(event) {
 
     // ajax: using pure javascript
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', "/vietnam_research/likes/1/2");
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            alert('ajax ok')
-        }
-        else {
-            alert('Request failed.  Returned status of ' + status)
-        }
-        function callback(result){
-            alert(result + ' is done!')
-        }
-    };
+    xhr.open('POST', '/vietnam_research/likes/' + user_id + '/' + article_id);
+    xhr.setRequestHeader("X-CSRFToken", Cookies.get('csrftoken'));
     xhr.send(); 
 }
