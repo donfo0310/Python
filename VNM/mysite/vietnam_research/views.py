@@ -218,7 +218,10 @@ def index(request):
     # https://developer.mozilla.org/ja/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_button_role
     # Djangoでフォーム内でクリックされた"Aタグの"ボタンによって異なる処理を行いたい
     # https://teratail.com/questions/181301
-    like = pd.read_sql_query('SELECT user_id, article_id FROM vietnam_research_likes;', con)
+    # article_like = pd.read_sql_query('SELECT user_id, article_id FROM vietnam_research_likes WHERE user_id = 1;', con) # todo: where user_id
+    # article_likes = pd.read_sql_query('SELECT article_id, COUNT(user_id) cnt FROM vietnam_research_likes GROUP BY article_id;', con)
+    # for groups in article_likes:
+    #     inner = {"ind_name": groups[0], "datasets": []}
 
     # context
     context = {
@@ -237,15 +240,17 @@ def index(request):
     # htmlとして返却します
     return render(request, 'vietnam_research/index.html', context)
 
-def likes(request, user_id, article_id):
+def likes(request, user_id, articles_id):
     """いいねボタンをクリック"""
     if request.method == 'POST':
-        query = Likes.objects.filter(user_id=user_id, article_id=article_id)
+        query = Likes.objects.filter(user_id=user_id, articles_id=articles_id)
         if query.count() == 0:
             likes_tbl = Likes()
             likes_tbl.user_id = user_id
-            likes_tbl.article_id = article_id
+            likes_tbl.articles_id = articles_id
             likes_tbl.save()
         else:
             query.delete()
+
+        # necessary return?
         return HttpResponse("ajax is done!")

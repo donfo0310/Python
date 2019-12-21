@@ -77,9 +77,15 @@ class BasicInformation(models.Model):
     item = models.TextField()
     description = models.TextField(blank=True, null=True)
 
+class Articles(models.Model):
+    '''記事'''
+    title = models.CharField('title', default='no title', max_length=200)
+    text = models.TextField('text', default='no text')
+    created_at = models.DateTimeField('公開日時', auto_now_add=True)
+
 class Likes(models.Model):
     '''いいね'''
     user_id = models.IntegerField(default=0)
-    article_id = models.IntegerField(default=0)
+    articles = models.ForeignKey('Articles', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     
