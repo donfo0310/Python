@@ -240,14 +240,14 @@ def index(request):
     # htmlとして返却します
     return render(request, 'vietnam_research/index.html', context)
 
-def likes(request, user_id, articles_id):
+def likes(request, user_id, article_id):
     """いいねボタンをクリック"""
     if request.method == 'POST':
-        query = Likes.objects.filter(user_id=user_id, articles_id=articles_id)
+        query = Likes.objects.filter(user_id=user_id, articles_id=article_id)
         if query.count() == 0:
             likes_tbl = Likes()
             likes_tbl.user_id = user_id
-            likes_tbl.articles_id = articles_id
+            likes_tbl.articles_id = article_id
             likes_tbl.save()
         else:
             query.delete()
