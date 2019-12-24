@@ -121,11 +121,15 @@ footer {
   font-weight: 400;
   padding: 10px;
 }
+.likes ul {
+  margin: 0px;
+  padding: 0px;
+}
 .likes li {
   display: inline-block;
   list-style: none;
   padding: 10px;
-
+  user-select: none;
 }
 .likes li:hover {
   background-color: whitesmoke;
@@ -134,6 +138,36 @@ footer {
   text-decoration: none;
   color: gray;
   padding-right: 15px;
+}
+.likes a span {
+  display: inline;
+  font-size: small;
+  color: gray;
+  padding: 0px;
+}
+.likes {
+  position: relative;
+  margin: 2em 0;
+  padding: 25px 10px 7px;
+  border: solid 2px #FFC107;
+  width: 300px;
+}
+.likes .box-title {
+  position: absolute;
+  display: inline-block;
+  top: -2px;
+  left: -2px;
+  padding: 0 9px;
+  height: 25px;
+  line-height: 25px;
+  font-size: 17px;
+  background: #FFC107;
+  color: #ffffff;
+  font-weight: bold;
+}
+.likes p {
+  margin: 20px; 
+  padding: 0px;
 }
 
 .basicinfo table {

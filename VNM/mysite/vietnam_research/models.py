@@ -80,7 +80,7 @@ class BasicInformation(models.Model):
 class Articles(models.Model):
     '''記事'''
     title = models.CharField('title', default='no title', max_length=200)
-    text = models.TextField('text', default='no text')
+    note = models.TextField('text', default='no text')
     created_at = models.DateTimeField('公開日時', auto_now_add=True)
 
 class Likes(models.Model):

@@ -47,12 +47,24 @@
         </header>
 
         <div id="main">
-            <p>likes test</p>
-            <ul class="likes">
-                <li><a aria-pressed="false" role="button" onclick="likes(event, 1, 1)">いいね！1</a></li>
-                <li><a aria-pressed="false" role="button" onclick="likes(event, 1, 2)">いいね！2</a></li>
-                <li><a aria-pressed="false" role="button" onclick="likes(event, 1, 3)">いいね！3</a></li>
-            </ul>
+
+            <!-- likes -->
+            <h2>likes test</h2>
+            {% for idx, row in articles.iterrows %}
+                <div class="likes">
+                    <span class="box-title">{{ row.title }}</span>
+                    <p>{{ row.note }}</p>
+                    <ul>
+                        <li><a role="button" onclick="likes(event, 1, '{{ row.id }}')">いいね！<span>({{ row.cnt }})</span></a></li>
+                        <script>let a = document.querySelecterAll('.likes li:last-child a');</script>
+                        {% if row.is_like == '1' %}
+                            <script>a.setAttribute("aria-pressed", "true");</script>
+                        {% else %}
+                            <script>a.setAttribute("aria-pressed", "false");</script>
+                        {% endif %}
+                    </ul>
+                </div>
+            {% endfor %}
 
             <!-- todo -->
             <h2>Todo</h2>

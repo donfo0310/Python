@@ -218,10 +218,20 @@ def index(request):
     # https://developer.mozilla.org/ja/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_button_role
     # Djangoでフォーム内でクリックされた"Aタグの"ボタンによって異なる処理を行いたい
     # https://teratail.com/questions/181301
-    # article_like = pd.read_sql_query('SELECT user_id, article_id FROM vietnam_research_likes WHERE user_id = 1;', con) # todo: where user_id
-    # article_likes = pd.read_sql_query('SELECT article_id, COUNT(user_id) cnt FROM vietnam_research_likes GROUP BY article_id;', con)
-    # for groups in article_likes:
-    #     inner = {"ind_name": groups[0], "datasets": []}
+    user_id = 1 # todo: where user_id
+    articles = pd.read_sql_query(
+        '''
+        SELECT a.id, a.title, a.note, subq.is_like, subq.cnt
+        FROM vietnam_research_articles a
+        LEFT JOIN (
+            SELECT l.articles_id, ll.is_like, COUNT(l.user_id) cnt
+            FROM vietnam_research_likes l
+            LEFT JOIN (
+                SELECT articles_id, 1 AS is_like FROM vietnam_research_likes
+                WHERE user_id = '{0}'
+            ) ll ON l.articles_id = ll.articles_id GROUP BY articles_id, ll.is_like
+        ) subq ON a.id = subq.articles_id;
+        '''.format(user_id), con)
 
     # context
     context = {
@@ -230,6 +240,7 @@ def index(request):
         'industry_stack': json.dumps(industry_stack, ensure_ascii=False),
         'vnindex_timeline': json.dumps(vnindex_timeline, ensure_ascii=False),
         'vnindex_layers': json.dumps(vnindex_layers, ensure_ascii=False),
+        'articles': articles,
         'watchlist': watchelist,
         'basicinfo': basicinfo,
         'top5list': top5,
