@@ -49,18 +49,16 @@
         <div id="main">
 
             <!-- likes -->
-            <h2>likes test</h2>
+            <h2>いいね！機能</h2>
             {% for idx, row in articles.iterrows %}
                 <div class="likes">
                     <span class="box-title">{{ row.title }}</span>
                     <p>{{ row.note }}</p>
                     <ul>
-                        <li><a role="button" onclick="likes(event, 1, '{{ row.id }}')">いいね！<span>({{ row.cnt }})</span></a></li>
-                        <script>let a = document.querySelecterAll('.likes li:last-child a');</script>
-                        {% if row.is_like == '1' %}
-                            <script>a.setAttribute("aria-pressed", "true");</script>
+                        {% if row.is_like == 1 %}
+                            <li><a role="button" aria-pressed="true" onclick="likes(event, 1, '{{ row.id }}')">いいね！<span>({{ row.likes_cnt }})</span></a></li>
                         {% else %}
-                            <script>a.setAttribute("aria-pressed", "false");</script>
+                            <li><a role="button" aria-pressed="false" onclick="likes(event, 1, '{{ row.id }}')">いいね！<span>({{ row.likes_cnt }})</span></a></li>
                         {% endif %}
                     </ul>
                 </div>

@@ -200,7 +200,7 @@ def index(request):
         '''
         , con)
     for groups in temp.groupby('ind_name'):
-        print('\n', groups[0])
+        # print('\n', groups[0])
         inner = {"ind_name": groups[0], "datasets": []}
         for row in groups[1].iterrows():
             inner["datasets"].append({
@@ -221,16 +221,9 @@ def index(request):
     user_id = 1 # todo: where user_id
     articles = pd.read_sql_query(
         '''
-        SELECT a.id, a.title, a.note, subq.is_like, subq.cnt
-        FROM vietnam_research_articles a
-        LEFT JOIN (
-            SELECT l.articles_id, ll.is_like, COUNT(l.user_id) cnt
-            FROM vietnam_research_likes l
-            LEFT JOIN (
-                SELECT articles_id, 1 AS is_like FROM vietnam_research_likes
-                WHERE user_id = '{0}'
-            ) ll ON l.articles_id = ll.articles_id GROUP BY articles_id, ll.is_like
-        ) subq ON a.id = subq.articles_id;
+        SELECT a.id, a.title, a.note, qry1.is_like, qry2.likes_cnt FROM vietnam_research_articles a
+            LEFT JOIN (SELECT articles_id, 1 is_like FROM vietnam_research_likes WHERE user_id = {0}) qry1 ON a.id = qry1.articles_id
+            LEFT JOIN (SELECT articles_id, COUNT(user_id) likes_cnt FROM vietnam_research_likes GROUP BY articles_id) qry2 ON a.id = qry2.articles_id
         '''.format(user_id), con)
 
     # context
