@@ -99,7 +99,7 @@ def index(request):
     # vnindex
     temp = pd.read_sql_query(
         '''
-        SELECT Y, M, closing_price
+        SELECT DISTINCT Y, M, closing_price
         FROM vietnam_research_vnindex
         ORDER BY Y, M;
         '''
