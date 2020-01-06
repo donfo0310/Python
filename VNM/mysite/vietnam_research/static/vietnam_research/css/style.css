@@ -114,45 +114,45 @@ footer {
   min-height: 100%;
 }
 
-/* likes */
-.likes a::before {
+/* article */
+.article a::before {
   font-family: "Font Awesome 5 Free";
   content: '\f164';
   font-weight: 400;
   padding: 10px;
 }
-.likes ul {
+.article ul {
   margin: 0px;
   padding: 0px;
 }
-.likes li {
+.article li {
   display: inline-block;
   list-style: none;
   padding: 10px;
   user-select: none;
 }
-.likes li:hover {
+.article li:hover {
   background-color: whitesmoke;
 }
-.likes a {
+.article a {
   text-decoration: none;
   color: gray;
   padding-right: 15px;
 }
-.likes a span {
+.article a span {
   display: inline;
   font-size: small;
   color: gray;
   padding: 0px;
 }
-.likes {
+.article {
   position: relative;
   margin: 2em 0;
   padding: 25px 10px 7px;
   border: solid 2px #FFC107;
   width: 300px;
 }
-.likes .box-title {
+.article .title {
   position: absolute;
   display: inline-block;
   top: -2px;
@@ -165,7 +165,7 @@ footer {
   color: #ffffff;
   font-weight: bold;
 }
-.likes p {
+.article p {
   margin: 20px; 
   padding: 0px;
 }

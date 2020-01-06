@@ -51,8 +51,8 @@
             <!-- likes -->
             <h2>いいね！機能</h2>
             {% for idx, row in articles.iterrows %}
-                <div class="likes">
-                    <span class="box-title">{{ row.title }}</span>
+                <div class="article">
+                    <span class="title">{{ row.title }}</span>
                     <p>{{ row.note }}</p>
                     <ul>
                         {% if row.is_like == 1 %}
