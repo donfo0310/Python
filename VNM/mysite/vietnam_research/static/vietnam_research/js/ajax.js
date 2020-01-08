@@ -1,11 +1,16 @@
 function likes(event, user_id, article_id) {
 
-    // toggle
-    var pressed = (event.target.getAttribute("aria-pressed") === "true");
-    event.target.setAttribute("aria-pressed", !pressed);
-
-    // likes count up/down
-    console.log(event.currentTarget.getElementsByTagName('span')[0].innerHTML.slice(1).split(')')[0]);
+    // button-state
+    var is_pressed = (event.target.getAttribute("aria-pressed") === "true");
+    var span = event.currentTarget.getElementsByTagName('span')[0];
+    var cnt = parseInt(span.innerHTML.slice(1).split(')')[0]);
+    if(is_pressed) {
+        event.target.setAttribute("aria-pressed", false);
+        span.innerHTML = '(' + (cnt - 1) + ')';
+    } else {
+        event.target.setAttribute("aria-pressed", true);
+        span.innerHTML = '(' + (cnt + 1) + ')';
+    }
 
     // ajax: using pure javascript
     var xhr = new XMLHttpRequest();
