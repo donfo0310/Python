@@ -56,9 +56,9 @@
                     <p>{{ row.note }}</p>
                     <ul>
                         {% if row.is_like == 1 %}
-                            <li><a role="button" aria-pressed="true" onclick="likes(event, 1, '{{ row.id }}')">いいね！<span>({{ row.likes_cnt }})</span></a></li>
+                            <li><a role="button" aria-pressed="true" onclick="likes(event, '1', '{{ row.id }}')">いいね！<span>({{ row.likes_cnt }})</span></a></li>
                         {% else %}
-                            <li><a role="button" aria-pressed="false" onclick="likes(event, 1, '{{ row.id }}')">いいね！<span>({{ row.likes_cnt }})</span></a></li>
+                            <li><a role="button" aria-pressed="false" onclick="likes(event, '1', '{{ row.id }}')">いいね！<span>({{ row.likes_cnt }})</span></a></li>
                         {% endif %}
                     </ul>
                 </div>
