@@ -215,15 +215,17 @@ def index(request):
         uptrends.append(inner)
 
     # likes
-    # https://developer.mozilla.org/ja/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_button_role
-    # Djangoでフォーム内でクリックされた"Aタグの"ボタンによって異なる処理を行いたい
-    # https://teratail.com/questions/181301
     user_id = 1 # todo: where user_id
     articles = pd.read_sql_query(
         '''
-        SELECT a.id, a.title, a.note, COALESCE(qry1.is_like, 0) is_like, qry2.likes_cnt FROM vietnam_research_articles a
-            LEFT JOIN (SELECT articles_id, 1 is_like FROM vietnam_research_likes WHERE user_id = {0}) qry1 ON a.id = qry1.articles_id
-            LEFT JOIN (SELECT articles_id, COUNT(user_id) likes_cnt FROM vietnam_research_likes GROUP BY articles_id) qry2 ON a.id = qry2.articles_id
+        SELECT a.id, a.title, a.note, COALESCE(qry1.is_like, 0) is_like, qry2.likes_cnt
+        FROM vietnam_research_articles a
+            LEFT JOIN (
+                SELECT articles_id, 1 is_like
+                FROM vietnam_research_likes WHERE user_id = {0}) qry1 ON a.id = qry1.articles_id
+            LEFT JOIN (
+                SELECT articles_id, COUNT(user_id) likes_cnt
+                FROM vietnam_research_likes GROUP BY articles_id) qry2 ON a.id = qry2.articles_id
         ORDER BY a.id;
         '''.format(user_id), con)
 
