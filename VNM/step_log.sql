@@ -9,8 +9,8 @@ mysql> use pythondb;
 -- 2. pub_date の yyyy-mm-dd hh:mm:ss データをCSVインポートしようとすると桁が足りない？とかいう
 -- 3. mysqlの%表記をdjangoが勘違いしてDATE_FORMATが使えない
 
---dump
-vscode> mysqldump -u root -p -t pythondb --default-character-set=binary vietnam_research_industry > industry.dump;
+-- dump（shift-jisで吐き出すと日本語が大丈夫になる）
+vscode> mysqldump -u root -p -t pythondb --default-character-set=cp932 vietnam_research_industry > industry.dump;
 
 -- ●industry
 -- 確認

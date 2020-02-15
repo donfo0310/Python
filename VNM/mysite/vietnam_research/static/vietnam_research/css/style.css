@@ -219,3 +219,50 @@ footer {
   display: inline;
   padding: 0px 0px 0px 20px;
 }
+
+/* card design */
+.cards ul {
+  margin: 30px;
+  padding: 0px;
+}
+.cards li {
+  display: inline-block;
+  list-style: none;
+}
+.card {
+  width: 300px;
+  background: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px #ccc;
+}
+.card-img {
+  display: block;
+  margin: auto;
+}
+
+.card-content {
+  padding: 20px;
+}
+.card-title {
+  font-size: 14px;
+  margin-bottom: 20px;
+  color: #333;
+}
+.card-text {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #777;
+}
+.card-link {
+  text-align: center;
+  border-top: 1px solid #eee;
+  padding: 20px;
+}
+.card-link a {
+  text-decoration: none;
+  color: #0bd;
+  margin: 0 10px;
+}
+.card-link a:hover {
+  color: #0090aa;
+}
