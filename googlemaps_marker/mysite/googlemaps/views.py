@@ -17,12 +17,13 @@ def index(request):
     miss_data = []
     detail_free = soup.findAll('div', class_='detail_free')[0]
     for tag_a in detail_free.findAll('a'):
-        print(tag_a.text)   # ex. 神奈川県内広域水道企業団
         lat, lng = get_geo(tag_a.text)
         if lat:
             json_data.append({"name":tag_a.text, "lat":lat, "lng":lng})
+            print(tag_a.text, 'OK')   # ex. 神奈川県内広域水道企業団
         else:
             miss_data.append({"name":tag_a.text, "lat":lat, "lng":lng})
+            print(tag_a.text, 'NG')   # ex. 神奈川県内広域水道企業団
 
     # json変換して保存
     # runserver する場所、すなわち mysite からのパス（ハマりポイント）
@@ -34,6 +35,6 @@ def index(request):
 
 def get_geo(googlemapkeyword):
     """緯度経度を取得する"""
-    geo = geocoder.google(googlemapkeyword)
+    geo = geocoder.osm(googlemapkeyword)
     return geo.lat, geo.lng
     

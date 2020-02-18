@@ -9,7 +9,7 @@
     <title>GoogleMapsAPI Sample</title>
 
     <!-- googlemap api -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgDQ9wpQPMQIcYU0FzpNElatGKnt--1Qg" type="text/javascript"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXuwuKR5qRnnEdVtvXmW4ewkUAdNj9068" type="text/javascript"></script>
 
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
@@ -19,7 +19,8 @@
 
 </head>
 
-<body onload="initialize()">
+<!-- body の load のタイミングで json を読んでマーキングする -->
+<body onload="read_json_to_marking()">
 
     <!-- 地図の生成 -->
     <div id="map_canvas" style="width: 500px; height: 500px"></div>

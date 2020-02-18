@@ -1,6 +1,6 @@
 var map;
 
-function initialize() {
+function read_json_to_marking() {
 
     // 中心位置を設定
     var latlng = new google.maps.LatLng(35.383575, 139.344170);
@@ -19,7 +19,7 @@ function initialize() {
     // url: Pythonがローカルへ出力するときと、ブラウザから（Djangoが "効いて"）読み込むときでは当然パスの捉え方が違う（ハマりポイント）
     jQuery.ajax({
         type: 'GET',
-        url: '/static/js/data.json',
+        url: '/static/googlemaps/js/data.json',
         dataType: 'json',
         async: false,
         success: function(data){
@@ -28,12 +28,14 @@ function initialize() {
     });
 
     //JSONの要素数分マーカーを作成
-    for (i = 0; i < json.length; i++) {
-        latlng = new google.maps.LatLng(json[i].lat, json[i].lng);
-        var marker = new google.maps.Marker({
-            position: latlng,
-            map: map
-        });
+    if (json != null){
+        for (i = 0; i < json.length; i++) {
+            latlng = new google.maps.LatLng(json[i].lat, json[i].lng);
+            var marker = new google.maps.Marker({
+                position: latlng,
+                map: map
+            });
+        }
     }
 
 }
