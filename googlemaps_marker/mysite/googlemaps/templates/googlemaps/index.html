@@ -8,6 +8,9 @@
 
     <title>GoogleMapsAPI Sample</title>
 
+    <!-- css -->
+    <link rel="stylesheet" href="{% static 'googlemaps/css/index.css' %}"> 
+
     <!-- googlemap api -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXuwuKR5qRnnEdVtvXmW4ewkUAdNj9068" type="text/javascript"></script>
 
@@ -26,13 +29,29 @@
     <div id="map_canvas" style="width: 500px; height: 500px"></div>
 
     <!-- 取得した緯度経度リストを debug 表示 -->
-    以下のリストが取得できました
-    <ul>
+    <h2>以下のリストが取得できました</h2>
+    <div class="cards">
+        <ul>
         {% for j in json %}
-            <li>{{ j.lat }},{{ j.lng }},{{ j.name }}</li>
+            <li>
+                <section class="card">
+                    <img class="card-img" src="{% static 'googlemaps/img/' %}{{ j.name }}.png" alt="{{ j.name }}">
+                    <div class="card-content">
+                        <h3 class="card-title">{{ j.name }}</h3>
+                        <p class="card-text">
+                            lat: {{ j.lat }}<br>
+                            lng: {{ j.lng }}
+                        </p>
+                    </div>
+                    <div class="card-link">
+                        <a href="#" target="_blank">link</a>
+                    </div>
+                </section>
+            </li>
         {% endfor %}
-    </ul>
-    以下のリストは取得できませんでした
+        </ul>
+    </div>
+    <h2>以下のリストは取得できませんでした</h2>
     <ul>
         {% for j in miss %}
             <li>{{ j.name }}</li>
