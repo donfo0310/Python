@@ -58,11 +58,21 @@
         {% endfor %}
     </ul>
 
+    <h2>指定して再表示</h2>
     <form>
-        <p>
-            <input type="text" name="データ名" value="35.383575,139.344170" />
-            <input type="button" id="btn" value="マーカー作成" onclick="loadJson()" />
-        </p>
+        <ul class="specific_form">
+            <li>
+                <label for="centerpoint">URL: </label>
+                <input type="text" name="scraping_at" value="http://www.pref.kanagawa.jp/cnt/f1029/p70915.html" />        
+            </li>
+            <li>
+                <label for="centerpoint">中心点: </label>
+                <input type="text" name="centerpoint" value="35.383575,139.344170" />        
+            </li>
+            <li>
+                <input class="btn-flat-border" type="button" id="btn" value="マーカー作成" onclick="loadJson()" />
+            </li>
+        </ul>        
     </form>
 
     </body>
