@@ -95,9 +95,24 @@ header .logout a::before {
   padding: 10px;
 }
 #main {
+  width: 1500px;
+  margin: 0 auto;
   padding-top: 58px;
   padding-bottom: 50px;
   z-index: 1
+}
+#like, #basicinfo {
+  margin: 0 50px;
+}
+#basicinfo {
+  width: 1000px;
+}
+#like {
+  width: 500px;
+}
+.wrapper {
+  display: flex;
+  width: 100%;
 }
 footer {
   background-color: #ff5900;

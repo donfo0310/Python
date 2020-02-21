@@ -47,22 +47,38 @@
         </header>
 
         <div id="main">
-
-            <!-- likes -->
-            <h2>いいね！機能</h2>
-            {% for idx, row in articles.iterrows %}
-                <div class="article">
-                    <span class="title">{{ row.title }}</span>
-                    <p>{{ row.note }}</p>
-                    <ul>
-                        {% if row.is_like == 1 %}
-                            <li><a role="button" aria-pressed="true" onclick="likes(event, '1', '{{ row.id }}')">いいね！<span>({{ row.likes_cnt }})</span></a></li>
-                        {% else %}
-                            <li><a role="button" aria-pressed="false" onclick="likes(event, '1', '{{ row.id }}')">いいね！<span>({{ row.likes_cnt }})</span></a></li>
-                        {% endif %}
-                    </ul>
+            <div class="wrapper">
+                <div id="like">
+                    <h2>いいね！機能</h2>
+                    {% for idx, row in articles.iterrows %}
+                        <div class="article">
+                            <span class="title">{{ row.title }}</span>
+                            <p>{{ row.note }}</p>
+                            <ul>
+                                {% if row.is_like == 1 %}
+                                    <li><a role="button" aria-pressed="true" onclick="likes(event, '1', '{{ row.id }}')">いいね！<span>({{ row.likes_cnt }})</span></a></li>
+                                {% else %}
+                                    <li><a role="button" aria-pressed="false" onclick="likes(event, '1', '{{ row.id }}')">いいね！<span>({{ row.likes_cnt }})</span></a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    {% endfor %}
                 </div>
-            {% endfor %}
+
+                <!-- basicinfo -->
+                <div id="basicinfo" class="basicinfo">
+                    <h2>ベトナム基本情報</h2>
+                    {% for idx, row in basicinfo.iterrows %}
+                    <table><tbody>
+                        <tr>
+                            <th><p>{{ row.item }}</p></th>
+                            <td><p>{{ row.description }}</p></td>
+                        </tr>
+                    </tbody></table>
+                    {% endfor %}
+                </div>
+            </div>
+            <p><a href="https://www.jetro.go.jp/world/asia/vn/stat_01.html">基礎的経済指標（日本貿易振興機構 jetro.go.jp）</a>※IMFデータをもとにSBI証券が作成を参考に</p>
 
             <!-- todo -->
             <h2>Todo</h2>
@@ -197,21 +213,6 @@
             <h2>PERとは</h2>
             <img src="{% static 'vietnam_research/images/PER.png' %}" alt="PER">
 
-            <!-- basicinfo -->
-            <h2>ベトナム基本情報</h2>
-            <div class="basicinfo">
-            {% for idx, row in basicinfo.iterrows %}
-            <table><tbody>
-                <tr>
-                    <th><p>{{ row.item }}</p></th>
-                    <td><p>{{ row.description }}</p></td>
-                </tr>
-            </tbody></table>
-            {% endfor %}
-            </div>
-            <a href="https://www.jetro.go.jp/world/asia/vn/stat_01.html">基礎的経済指標（日本貿易振興機構 jetro.go.jp）</a>
-            <p>※IMFデータをもとにSBI証券が作成を参考に</p>
-            <p>ベトナム経済は人口ボーナス期の真っ最中</p>
         </div>
         <footer>
             <p>(c)copyright yoshitaka okada / <a href="https://github.com/duri0214">django portfolio</a></p>
