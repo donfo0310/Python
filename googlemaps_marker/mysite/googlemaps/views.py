@@ -25,6 +25,7 @@ def index(request):
         lat, lng = get_geo(place_j)
         rating = get_rating(apikey, place_j)
         link = get_link(apikey, get_placeid(apikey, place_j))
+        # reviews = get_reviews(apikey, get_placeid(apikey, place_j))
         if lat:
             json_data.append({"name":place_j, "lat":lat, "lng":lng, "rating":rating, "url":link})
             print(place_j, 'OK')
@@ -38,7 +39,7 @@ def index(request):
                 file_path = file_path.format(place_j, 'png')
                 get_picture(apikey, get_photoreference(apikey, place_j), file_path)
         else:
-            miss_data.append({"name":place_j, "lat":lat, "lng":lng, "rating":rating, "url":link})
+            miss_data.append({"name":place_j})
             print(place_j, 'NG')
 
     # save to json: manage.pyのある場所すなわち mysite からのパス（ハマりポイント）
@@ -199,3 +200,26 @@ def get_picture(apikey, photoreference, file_path, size=(250, 240)):
         if res.code == 200:
             with open(file_path, 'wb') as file:
                 file.write(res.read())
+
+def get_reviews(apikey, place_id):
+    '''
+    dependency
+    ----------
+    Places API
+    parameters
+    ----------
+    place_id: ChIJN1t_tDeuEmsRUsoyG83frY4
+    return
+    ------
+    json data: {'html_attributions': [], 'result': {'revie ...
+    '''
+    retvalue = None
+    url = 'https://maps.googleapis.com/maps/api/place/details/json?' \
+        'place_id={}&fields=reviews&key={}'.format(place_id, apikey)
+    res = urllib.request.urlopen(url)
+    if res.code == 200:
+        res_json = json.loads(res.read())
+        if res_json.get("result"):
+            if res_json["result"].get("reviews"):
+                retvalue = res_json["result"]["reviews"]
+    return retvalue

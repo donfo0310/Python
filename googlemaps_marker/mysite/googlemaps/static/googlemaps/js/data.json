@@ -4,6 +4,7 @@
         "lng": 139.50229829745734,
         "name": "神奈川県内広域水道企業団",
         "rating": 0,
+        "reviews": null,
         "url": "https://maps.google.com/?q=Yasashich%C5%8D,+%EF%BC%91%EF%BC%91%EF%BC%99%EF%BC%94&ftid=0x601857a4685906d5:0xc7cdea1d78e2bc9d"
     },
     {
@@ -11,6 +12,18 @@
         "lng": 139.53163372080587,
         "name": "横浜市水道局",
         "rating": 4,
+        "reviews": [
+            {
+                "author_name": "ちもばよ",
+                "author_url": "https://www.google.com/maps/contrib/101059595934018229672/reviews",
+                "language": "ja",
+                "profile_photo_url": "https://lh5.ggpht.com/-bICsraLrREw/AAAAAAAAAAI/AAAAAAAAAAA/vKCJv_SCOR4/s128-c0x00000000-cc-rp-mo-ba5/photo.jpg",
+                "rating": 4,
+                "relative_time_description": "a year ago",
+                "text": "お水は美味しい。売上はアフリカ支援に役立つそうです。",
+                "time": 1532214527
+            }
+        ],
         "url": "https://maps.google.com/?cid=12323430008367896374"
     },
     {
@@ -18,6 +31,37 @@
         "lng": 139.40745781478984,
         "name": "座間市上下水道局",
         "rating": 4,
+        "reviews": [
+            {
+                "author_name": "まさ・なち",
+                "author_url": "https://www.google.com/maps/contrib/108566625170608508132/reviews",
+                "language": "ja",
+                "profile_photo_url": "https://lh4.ggpht.com/-44zvQ2iS0ko/AAAAAAAAAAI/AAAAAAAAAAA/5W9oTORlnaw/s128-c0x00000000-cc-rp-mo-ba8/photo.jpg",
+                "rating": 4,
+                "relative_time_description": "6 months ago",
+                "text": "2019年8月7日に配布を開始した座間市のマンホールカードは平日はココ上下水道局庁舎1階の水道料金お客様センターにて8:30～20:00に配布されています。ただし年末年始は休みです。",
+                "time": 1566097616
+            },
+            {
+                "author_name": "川内輝彦",
+                "author_url": "https://www.google.com/maps/contrib/110466984106917482475/reviews",
+                "language": "ja",
+                "profile_photo_url": "https://lh5.ggpht.com/-Fj0TSl9Le8s/AAAAAAAAAAI/AAAAAAAAAAA/oSj2BIUMlBI/s128-c0x00000000-cc-rp-mo-ba6/photo.jpg",
+                "rating": 5,
+                "relative_time_description": "5 months ago",
+                "text": "★９月１０日上下水道の日。座間の水道８５％地下水で美味しいです。\n水を大切に心掛けています。\n★４月２日業務開始。座間市は水の都市、しっかりサービスとＰＲをお願いします。1階コンビニ、品揃え豊富。",
+                "time": 1567497581
+            },
+            {
+                "author_name": "k takada",
+                "author_url": "https://www.google.com/maps/contrib/114550481430028877190/reviews",
+                "profile_photo_url": "https://lh6.ggpht.com/-xYXe1gPy2Zw/AAAAAAAAAAI/AAAAAAAAAAA/wXa3MX3huHw/s128-c0x00000000-cc-rp-mo-ba5/photo.jpg",
+                "rating": 3,
+                "relative_time_description": "2 years ago",
+                "text": "",
+                "time": 1519174567
+            }
+        ],
         "url": "https://maps.google.com/?cid=10078668621059038914"
     }
 ]
