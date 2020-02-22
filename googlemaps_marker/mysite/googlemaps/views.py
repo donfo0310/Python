@@ -24,8 +24,9 @@ def index(request):
         place_j = tag_a.text
         lat, lng = get_geo(place_j)
         rating = get_rating(apikey, place_j)
+        link = get_link(apikey, get_placeid(apikey, place_j))
         if lat:
-            json_data.append({"name":place_j, "lat":lat, "lng":lng, "rating":rating})
+            json_data.append({"name":place_j, "lat":lat, "lng":lng, "rating":rating, "url":link})
             print(place_j, 'OK')
             debugsw = 2
             if debugsw == 1:
@@ -37,7 +38,7 @@ def index(request):
                 file_path = file_path.format(place_j, 'png')
                 get_picture(apikey, get_photoreference(apikey, place_j), file_path)
         else:
-            miss_data.append({"name":place_j, "lat":lat, "lng":lng, "rating":rating})
+            miss_data.append({"name":place_j, "lat":lat, "lng":lng, "rating":rating, "url":link})
             print(place_j, 'NG')
 
     # save to json: manage.pyのある場所すなわち mysite からのパス（ハマりポイント）
@@ -99,10 +100,62 @@ def get_rating(apikey, place):
         'input={}&inputtype=textquery&fields=rating&key={}'
     url = url.format(urllib.parse.quote(place), apikey)
     res = urllib.request.urlopen(url)
-    rating = 0
+    rating = None
     if res.code == 200:
-        rating = json.loads(res.read())["candidates"][0].get("rating")
+        res_json = json.loads(res.read())
+        if res_json.get('candidates'):
+            if res_json["candidates"][0].get("rating"):
+                rating = res_json["candidates"][0]["rating"]
+            else:
+                rating = 0
     return rating
+
+def get_placeid(apikey, place):
+    '''
+    dependency
+    ----------
+    Places API
+    parameters
+    ----------
+    place: 東京都
+    return
+    ------
+    e.g. CmRaAAAARRAYThPn0sTB1aE-Afx0_...
+    '''
+    url = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?' \
+        'input={}&inputtype=textquery&fields=place_id&key={}'
+    url = url.format(urllib.parse.quote(place), apikey)
+    res = urllib.request.urlopen(url)
+    retvalue = None
+    if res.code == 200:
+        res_json = json.loads(res.read())
+        if res_json.get("candidates"):
+            retvalue = res_json["candidates"][0].get("place_id")
+    return retvalue
+
+def get_link(apikey, place_id):
+    '''
+    dependency
+    ----------
+    Places API
+    parameters
+    ----------
+    place_id: ChIJN1t_tDeuEmsRUsoyG83frY4
+    return
+    ------
+    e.g. https://maps.google.com/?cid=10281119596374313554
+    '''
+    retvalue = '#'
+    if place_id:
+        url = 'https://maps.googleapis.com/maps/api/place/details/json?' \
+            'place_id={}&fields=url&key={}'.format(place_id, apikey)
+        res = urllib.request.urlopen(url)
+        if res.code == 200:
+            res_json = json.loads(res.read())
+            if res_json.get("result"):
+                if res_json["result"].get("url"):
+                    retvalue = res_json["result"]["url"]
+    return retvalue
 
 def get_photoreference(apikey, place):
     '''
@@ -120,12 +173,13 @@ def get_photoreference(apikey, place):
         'input={}&inputtype=textquery&fields=photos&key={}'
     url = url.format(urllib.parse.quote(place), apikey)
     res = urllib.request.urlopen(url)
-    photo_reference = None
+    retvalue = None
     if res.code == 200:
-        res_json = json.loads(res.read())["candidates"][0]
-        if res_json.get("photos"):
-            photo_reference = res_json["photos"][0].get("photo_reference")
-    return photo_reference
+        res_json = json.loads(res.read())
+        if res_json.get("candidates"):
+            if res_json["candidates"][0].get("photos"):
+                retvalue = res_json["candidates"][0]["photos"][0].get("photo_reference")
+    return retvalue
 
 def get_picture(apikey, photoreference, file_path, size=(250, 240)):
     '''

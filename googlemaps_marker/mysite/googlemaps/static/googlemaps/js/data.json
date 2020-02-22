@@ -3,18 +3,21 @@
         "lat": 35.47551705,
         "lng": 139.50229829745734,
         "name": "ê_ìﬁêÏåßì‡çLàÊêÖìπäÈã∆íc",
-        "rating": null
+        "rating": 0,
+        "url": "https://maps.google.com/?q=Yasashich%C5%8D,+%EF%BC%91%EF%BC%91%EF%BC%99%EF%BC%94&ftid=0x601857a4685906d5:0xc7cdea1d78e2bc9d"
     },
     {
         "lat": 35.55858875,
         "lng": 139.53163372080587,
         "name": "â°ïlésêÖìπã«",
-        "rating": 4
+        "rating": 4,
+        "url": "https://maps.google.com/?cid=12323430008367896374"
     },
     {
         "lat": 35.4879456,
         "lng": 139.40745781478984,
         "name": "ç¿ä‘ésè„â∫êÖìπã«",
-        "rating": 4
+        "rating": 4,
+        "url": "https://maps.google.com/?cid=10078668621059038914"
     }
 ]
