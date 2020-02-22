@@ -2,21 +2,19 @@ var map;
 
 function read_json_to_marking() {
 
-    // 中心位置を設定
+    // centerposition and options
     var latlng = new google.maps.LatLng(35.383575, 139.344170);
 
-    // 地図のオプションを設定
     var options = {
         zoom: 10,
         center: latlng,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
-    // キャンパスの要素を取得
+    // create canvas and read json
     map = new google.maps.Map(document.getElementById("map_canvas"), options);
     map.setCenter(latlng);
-
-    // url: Pythonがローカルへ出力するときと、ブラウザから（Djangoが "効いて"）読み込むときでは当然パスの捉え方が違う（ハマりポイント）
+    // url: pythonが mysite からdumpするときと documentroot からjsonをreadするときでは当然パスが違う（ハマりポイント）
     jQuery.ajax({
         type: 'GET',
         url: '/static/googlemaps/js/data.json',
@@ -27,7 +25,7 @@ function read_json_to_marking() {
         }
     });
 
-    //JSONの要素数分マーカーを作成
+    // JSONの要素数分マーカーを作成
     if (json != null){
         for (i = 0; i < json.length; i++) {
             latlng = new google.maps.LatLng(json[i].lat, json[i].lng);
