@@ -101,11 +101,9 @@ header .logout a::before {
   padding-bottom: 50px;
   z-index: 1
 }
-#like, #basicinfo {
-  margin: 0 50px;
-}
 #basicinfo {
-  width: 1000px;
+  width: 950px;
+  margin-left: 50px;
 }
 #like {
   width: 500px;
