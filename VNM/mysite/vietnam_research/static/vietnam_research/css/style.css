@@ -201,6 +201,30 @@ footer {
   padding: 10px 0;
 }
 
+/* todo */
+ul.todo {
+  border: solid 2px #ffb03f;
+  padding: 0 0.5em;
+  position: relative;
+  width: 600px;
+}
+ul.todo li:before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 400;
+  padding-right: 20px;
+  content: '\f0f3'; /* '\f138' */
+  color: #ffb03f;
+}
+ul.todo li {
+  line-height: 1.5;
+  padding: 0.5em 0 0.5em 1.4em;
+  border-bottom: dashed 2px silver;
+  list-style-type: none;
+}
+ul.todo li:last-of-type {
+  border-bottom: none;
+}
+
 #uptrends_wrapper li { 	
   display: inline-block;
 } 
